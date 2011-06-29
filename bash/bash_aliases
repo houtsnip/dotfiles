@@ -1,0 +1,14 @@
+# .bash_aliases
+
+if [ "`uname -s`" == 'Darwin' ]; then
+    alias ls='ls -FG'
+else
+    alias ls='ls -F --color'
+fi
+if [ -x /usr/bin/rlwrap ]; then
+    alias mysql='/usr/bin/rlwrap -aDUMMY -pGREEN mysql'
+fi
+
+alias realias='vim ~/.bash_aliases; source ~/.bash_aliases'
+alias refunction='vim ~/.bash_functions; source ~/.bash_functions'
+

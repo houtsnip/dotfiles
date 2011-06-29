@@ -1,0 +1,14 @@
+require_once 'Tig/DataMapper.php';
+
+class App_Model_Mapper_${1:MapperName} extends Tig_DataMapper
+{
+
+	public function createGateway() { return new App_Model_TableDataGateway_$1(); }
+
+	public function _createObject($data = null)
+	{
+		return new App_Model_${2:$1}($data);
+	}
+
+}
+

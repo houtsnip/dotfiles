@@ -1,0 +1,17 @@
+require_once 'Tig/DomainObject/List.php';
+
+class App_Model_${1:Model}List extends Tig_DomainObject_List {
+
+    protected function _createObject($data) { return new App_Model_${2:$1}($data); }
+
+    protected function _isDomainObject($value) { return $value instanceof App_Model_${3:$2}; }
+
+    public function has(App_Model_${4:$2} $obj) {
+        foreach ($this as $item) {
+            if ($item->isIdentical($obj)) return true;
+        }
+        return false;
+    }
+${5}
+}
+

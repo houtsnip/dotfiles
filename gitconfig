@@ -1,0 +1,67 @@
+[user]
+    name = houtsnip
+
+[github]
+    user = houtsnip
+
+[color]
+    diff = auto
+    status = auto
+    branch = auto
+    interactive = auto
+    ui = true
+    pager = true
+
+[color "branch"]
+    current = yellow reverse
+    local = yellow
+    remote = green
+
+[color "diff"]
+    meta = yellow bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
+
+[color "status"]
+    added = yellow
+    changed = green
+    untracked = cyan
+
+[core]
+    pager = less -FRSX
+    whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
+
+[apply]
+    whitespace = fix
+
+[alias]
+    b = branch
+    ba = branch -a
+    ci = commit
+    co = checkout
+    di = diff
+    dif = diff
+    dic = diff --cached
+    fp = format-patch
+    g = !git gui &
+    gr = log --graph
+    go = log --graph --pretty=oneline --abbrev-commit
+    h = help
+    k = !gitk &
+    ka = !gitk --all &
+    lc = log ORIG_HEAD.. --stat --no-merges
+    lp = log --patch-with-stat
+    mnf = merge --no-ff
+    mnff = merge --no-ff
+    mt = mergetool
+    p = format-patch -1
+    serve = !git daemon --reuseaddr --verbose --base-path=. --export-all ./.git
+    sra = svn rebase --all
+    sh = !git-sh
+    st = status
+    stat = status
+    stm = status --untracked=no
+    stfu = status --untracked=no
+    pullsrb = !git stash save && git pull --rebase && git stash pop && echo 'Success!'
+    w = whatchanged

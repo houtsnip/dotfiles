@@ -1,0 +1,323 @@
+# .zshrc
+
+local ZSHDIR="$HOME/.zsh"
+
+###############################
+# Environment variables
+###############################
+
+export EDITOR="vim"
+export PATH="$HOME/bin:$HOME/site/bin:$HOME/site/bin/tig:$HOME/dev/pear/bin:/opt/local/bin:/usr/local/mysql/bin:$PATH"
+
+
+###############################
+# Set options
+###############################
+
+HISTFILE=~/.zsh_history
+HISTSIZE=2500
+SAVEHIST=2500
+
+setopt append_history
+setopt auto_cd
+setopt extended_glob
+setopt hist_ignore_all_dups
+setopt hist_ignore_space
+
+unsetopt bg_nice
+unsetopt check_jobs
+unsetopt hup
+
+
+###############################
+# Setup completion
+###############################
+
+zstyle ':completion:*' completer _expand _complete _ignored
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*' max-errors 1
+zstyle :compinstall filename '~/.zshrc'
+
+autoload -Uz compinit
+compinit
+
+
+###############################
+# Sourcing
+###############################
+
+source "$ZSHDIR/zsh_aliases"
+source ".shell_aliases"
+source "$ZSHDIR/zsh_completion"
+source "$ZSHDIR/zsh_functions"
+source ".shell_servers"
+#source "$ZSHDIR/kde"
+
+###############################
+# Aliases
+###############################
+
+#source ~/.zsh_aliases
+
+
+###############################
+# Setup prompt
+###############################
+
+# Colors
+autoload colors zsh/terminfo
+if [[ "$terminfo[colors]" -ge 8 ]]; then
+colors
+fi
+for color in RED GREEN YELLOW BLUE MAGENTA CYAN WHITE; do
+eval PR_$color='%{$terminfo[bold]$fg[${(L)color}]%}'
+eval PRL_$color='%{$fg[${(L)color}]%}'
+(( count = $count + 1 ))
+done
+PR_NC="%{$terminfo[sgr0]%}"
+
+# Left prompt
+#PROMPT="%(!.${PR_RED}.${PR_GREEN})%n@%m ${PR_YELLOW}%y ${PR_WHITE}%# ${PR_NC}"
+PROMPT="%(!.${PR_RED}.${PR_GREEN})%m ${PR_YELLOW}%y ${PR_WHITE}%# ${PR_NC}"
+
+# Right prompt
+RPROMPT="${PRL_WHITE}%?${PR_NC} ${PR_GREEN}%~${PR_NC} ${PRL_WHITE}%D{%T}${PR_NC}"
+
+bindkey -e
+
+DIRSTACKSIZE=8
+setopt AUTOPUSHD PUSHDMINUS PUSHDSILENT PUSHDTOHOME
+alias dh='dirs -v'
+
+# beeps are annoying
+setopt NO_BEEP
+
+# Keep echo "station" > station from clobbering station
+setopt NO_CLOBBER
+
+# Case insensitive globbing
+setopt NO_CASE_GLOB
+
+# Be Reasonable!
+setopt NUMERIC_GLOB_SORT
+
+# I don't know why I never set this before.
+setopt EXTENDED_GLOB
+
+# hows about arrays be awesome?  (that is, frew${cool}frew has frew surrounding all the variables, not just first and last
+setopt RC_EXPAND_PARAM
+
+#}}}
+
+
+#autojump
+#Copyright Joel Schaerer 2008, 2009
+#This file is part of autojump
+
+#autojump is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#
+#autojump is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with autojump.  If not, see <http://www.gnu.org/licenses/>.
+
+#local data_dir=${XDG_DATA_HOME:-$([ -e ~/.local/share ] && echo ~/.local/share || echo ~)}
+local data_dir=$([ -e ~/.local/share ] && echo ~/.local/share || echo ~)
+if [[ "$data_dir" = "${HOME}" ]]
+then
+    export AUTOJUMP_DATA_DIR=${data_dir}
+else
+    export AUTOJUMP_DATA_DIR=${data_dir}/autojump
+fi
+if [ ! -e "${AUTOJUMP_DATA_DIR}" ]
+then
+    mkdir "${AUTOJUMP_DATA_DIR}"
+    mv ~/.autojump_py "${AUTOJUMP_DATA_DIR}/autojump_py" 2>>/dev/null #migration
+    mv ~/.autojump_py.bak "${AUTOJUMP_DATA_DIR}/autojump_py.bak" 2>>/dev/null
+    mv ~/.autojump_errors "${AUTOJUMP_DATA_DIR}/autojump_errors" 2>>/dev/null
+fi
+
+function autojump_preexec() {
+    { (autojump -a "$(pwd -P)"&)>/dev/null 2>>|${AUTOJUMP_DATA_DIR}/autojump_errors ; } 2>/dev/null
+}
+
+typeset -ga preexec_functions
+preexec_functions+=autojump_preexec
+
+alias jumpstat="autojump --stat"
+
+function j { local new_path="$(autojump $@)";if [ -n "$new_path" ]; then echo -e "\\033[31m${new_path}\\033[0m"; cd "$new_path";fi }
+
+
+# key bindings
+bindkey "\e[1~" beginning-of-line
+bindkey "\e[4~" end-of-line
+bindkey "\e[5~" beginning-of-history
+bindkey "\e[6~" end-of-history
+bindkey "\e[3~" delete-char
+bindkey "\e[2~" quoted-insert
+bindkey "\e[5C" forward-word
+bindkey "\eOc" emacs-forward-word
+bindkey "\e[5D" backward-word
+bindkey "\eOd" emacs-backward-word
+bindkey "\ee[C" forward-word
+bindkey "\ee[D" backward-word
+bindkey "^H" backward-delete-word
+# for rxvt
+bindkey "\e[8~" end-of-line
+bindkey "\e[7~" beginning-of-line
+# for non RH/Debian xterm, can't hurt for RH/DEbian xterm
+bindkey "\eOH" beginning-of-line
+bindkey "\eOF" end-of-line
+# for freebsd console
+bindkey "\e[H" beginning-of-line
+bindkey "\e[F" end-of-line
+# completion in the middle of a line
+bindkey '^i' expand-or-complete-prefix
+
+_my_extended_wordchars='*?_-.[]~=&;!#$%^(){}<>:@,\\';
+_my_extended_wordchars_space="${my_extended_wordchars} "
+_my_extended_wordchars_slash="${my_extended_wordchars}/"
+
+# is the current position \-quoted ?
+function _is_quoted(){
+ test "${BUFFER[$CURSOR-1,CURSOR-1]}" = "\\"
+}
+
+_unquote-backward-delete-word(){
+    while  _is_quoted
+      do zle .backward-kill-word
+    done
+}
+
+_unquote-forward-delete-word(){
+    while  _is_quoted
+      do zle .kill-word
+    done
+}
+
+_unquote-backward-word(){
+    while  _is_quoted
+      do zle .backward-word
+    done
+}
+
+_unquote-forward-word(){
+    while _is_quoted
+      do zle .forward-word
+    done
+}
+
+_backward-delete-to-space() {
+    local WORDCHARS=${_my_extended_wordchars_slash}
+    zle .backward-kill-word
+    _unquote-backward-delete-word
+}
+
+_backward-delete-to-/ () {
+    local WORDCHARS=${_my_extended_wordchars}
+    zle .backward-kill-word
+    _unquote-backward-delete-word
+}
+
+_forward-delete-to-space() {
+    local WORDCHARS=${_my_extended_wordchars_slash}
+    zle .kill-word
+    _unquote-forward-delete-word
+}
+
+_forward-delete-to-/ () {
+    local WORDCHARS=${_my_extended_wordchars}
+    zle .kill-word
+    _unquote-forward-delete-word
+}
+
+_backward-to-space() {
+    local WORDCHARS=${_my_extended_wordchars_slash}
+    zle .backward-word
+    _unquote-backward-word
+}
+
+_forward-to-space() {
+     local WORDCHARS=${_my_extended_wordchars_slash}
+     zle .forward-word
+     _unquote-forward-word
+}
+
+_backward-to-/ () {
+    local WORDCHARS=${_my_extended_wordchars}
+    zle .backward-word
+    _unquote-backward-word
+}
+
+_forward-to-/ () {
+     local WORDCHARS=${_my_extended_wordchars}
+     zle .forward-word
+     _unquote-forward-word
+}
+
+zle -N _backward-delete-to-/
+zle -N _forward-delete-to-/
+zle -N _backward-delete-to-space
+zle -N _forward-delete-to-space
+zle -N _backward-to-/
+zle -N _forward-to-/
+bindkey '^[^H'    _backward-delete-to-/
+bindkey '^W'      _backward-delete-to-space
+bindkey "^[^[[D"  _backward-to-/
+bindkey "^[^[[C"  _forward-to-/
+bindkey "^[^B"    _backward-to-/
+bindkey "^[^F"    _forward-to-/
+bindkey "^[^?"    _backward-delete-to-/
+bindkey "^[^[[3~" _forward-delete-to-/
+
+
+#{{{ History Stuff
+
+# Where it gets saved
+HISTFILE=~/.history
+
+# Remember about a years worth of history (AWESOME)
+SAVEHIST=10000
+HISTSIZE=10000
+
+# Don't overwrite, append!
+setopt APPEND_HISTORY
+
+# Write after each command
+# setopt INC_APPEND_HISTORY
+
+# Killer: share history between multiple shells
+setopt SHARE_HISTORY
+
+# If I type cd and then cd again, only save the last one
+setopt HIST_IGNORE_DUPS
+
+# Even if there are commands inbetween commands that are the same, still only save the last one
+setopt HIST_IGNORE_ALL_DUPS
+
+# Pretty    Obvious.  Right?
+setopt HIST_REDUCE_BLANKS
+
+# If a line starts with a space, don't save it.
+setopt HIST_IGNORE_SPACE
+setopt HIST_NO_STORE
+
+# When using a hist thing, make a newline show the change before executing it.
+setopt HIST_VERIFY
+
+# Save the time and how long a command ran
+setopt EXTENDED_HISTORY
+
+setopt HIST_SAVE_NO_DUPS
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_FIND_NO_DUPS
+
+#}}}
+

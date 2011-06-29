@@ -1,0 +1,42 @@
+# .shell_aliases
+# Aliases common to bash and zsh
+
+alias agi='sudo apt-get install'
+alias pi='sudo port install'
+alias yi='sudo yum install'
+
+alias l='ls'
+alias ll='ls -la'
+alias lrt='ls -lart'
+alias ls1='ls -1rt | tail -1'
+
+alias md='mkdir'
+alias rd='rmdir'
+alias q='exit'
+alias su='sudo -s'
+
+alias ql='qlmanage -p 2>/dev/null'
+
+alias vi='vim'
+alias vimr='vi `lsmr`'
+
+alias tree='tree -C'
+alias grep='grep --color=auto'
+alias apachectl="sudo /opt/local/apache2/bin/apachectl"
+alias mongod="sudo mongod"
+
+alias last_trace='vi ~/dev/xdebug/`ls -t ~/dev/xdebug | sed -n "1p"`'
+
+alias svn_propfind='for d in `find . -type d | grep -v svn`; do t=`svn proplist $d 2> /dev/null`; if [ "$t" != "" ]; then echo $d; echo $t; fi; done'
+alias svn_addall='for f in `svn st | grep "^?" | sed "s/. *//"`; do svn add $f; done'
+alias svn_rmall='for f in `svn st | grep "^\!" | sed "s/. *//"`; do svn rm $f; done'
+alias svn_stc='svn st | grep "^ *C"'
+alias svn_mod2unix="svn st | grep '^M' | sed 's/^M \{7\}\(.*\)/\1/' | xargs dos2unix"
+alias svn_mod2dos="svn st | grep '^M' | sed 's/^M \{7\}\(.*\)/\1/' | xargs unix2dos"
+
+alias snv='svn'
+
+alias write_phpinfo="echo '<?php phpinfo();' > phpinfo.php"
+
+alias diff='diff -u'
+

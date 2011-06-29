@@ -1,0 +1,21 @@
+require_once 'Tig/$2.php'
+
+class App_Model_${1:ClassName} extends Tig_${2:ParentClass}
+{
+
+	protected $data = array(
+		'${3:field}' => null,${4}
+	);
+
+	protected function _get($name, $pb_original = false) {
+		switch ($name) {
+			case 'id':
+				return new App_Model_Id(parent::_get($name, $pb_original));
+
+		} // end switch
+		return parent::_get($name, $pb_original);
+	}
+
+
+}
+

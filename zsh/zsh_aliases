@@ -1,0 +1,5 @@
+# .zsh_aliases
+
+alias ls='ls -FG'
+alias diff='grc diff -u'
+alias less='less -R'

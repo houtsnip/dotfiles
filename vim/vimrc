@@ -1,0 +1,1174 @@
+set nocompatible " There is no point in being vi compatible (this should also be the first line)
+
+" Put github plugins under .vim/bundle/ -- which allows keeping them updated
+" without having to do separate installation.
+" Call "filetype off" first to ensure that bundle ftplugins can be added to the
+" path before we re-enable it later in the vimrc.
+filetype off
+call pathogen#runtime_append_all_bundles()
+call pathogen#helptags()
+
+" .inc, phpt, phtml, phps files as PHP
+autocmd BufNewFile,BufRead *.inc set ft=php
+autocmd BufNewFile,BufRead *.phpt set ft=php
+autocmd BufNewFile,BufRead *.phtml set ft=php
+autocmd BufNewFile,BufRead *.phps set ft=php
+
+" Turn on filetype plugins
+filetype plugin on
+runtime! $HOME/.vim/ftdetect/*.vim
+
+" Remember cursor position when opening a new file
+autocmd BufReadPost * normal `"
+
+" Skeleton (template) files...
+autocmd BufNewFile *.html 0r $HOME/.vim/skeleton.html
+
+" Note: The "normal" command afterwards deletes an ugly pending line and moves
+" the cursor to the middle of the file.
+autocmd BufNewFile *.php 0r ~/.vim/skeleton.php | normal Gdd
+
+set switchbuf=useopen " reveal already opened files from the
+                      " quickfix window instead of opening new
+                      " buffers
+
+"set lazyredraw
+
+set backspace=2
+set modeline
+set modelines=4
+" Hit <C-R><C-P> in insert mode after a bad paste
+inoremap <silent> <C-R><C-R> <Esc>u:set paste<CR>.:set nopaste<CR>gi
+" Use normal mode paste (i.e. "+p) when pasting from clipboard in insert mode
+inoremap <silent> <C-R>+ <Esc>"+p`]i
+inoremap <silent> <C-R><C-E> <Esc>u@.
+" don't move the cursor to the start of the line when changing buffers
+set nostartofline
+" no bells whatsoever
+set vb t_vb=
+" 50 milliseconds for escape timeout instead of 1000
+set ttimeoutlen=50
+" send more data to the terminal in a way that makes the screen update faster
+set ttyfast
+
+" Emacs(-like) commands in insert mode for deletion
+inoremap <silent> <Esc><C-D> <Del>
+inoremap <silent> <Esc><BS> <C-W>
+
+" "Hidden" buffers -- i.e., don't require saving before editing another file.
+" Calling quit will prompt you to save unsaved buffers anyways.
+set hidden
+
+
+" Various minor modifications to in-built bindings
+"
+" Use ~ as an operator
+set tildeop
+" Have Y behave analogously to D rather than to dd
+nnoremap Y y$
+xnoremap Y y$
+" Delete selection without updating the delete register in visual mode
+xnoremap x "_x
+xnoremap X "_X
+" Replace selection without overwriting the default register in visual mode
+xnoremap P p :call setreg('"', getreg('0'))<CR>
+" Keep visual selection active when indenting
+xnoremap > >gv
+xnoremap < <gv
+" faster viewport scrolling
+nnoremap <C-E> 3<C-E>
+nnoremap <C-Y> 3<C-Y>
+vnoremap <C-E> 3<C-E>
+vnoremap <C-Y> 3<C-Y>
+" Make j and k go one line down when lines are wrapped
+nnoremap j gj
+nnoremap k gk
+" Remap ' to ` but not vice-versa (which I think is confusing) and not in
+" operator-pending mode (where I think the original meaning is still useful)
+nnoremap ' `
+xnoremap ' `
+nnoremap g' g`
+xnoremap g' g`
+" Don't prompt for 'Press ENTER or type command to continue' when viewing man pages
+nnoremap K K<CR>
+
+
+" Define Meta-E as an easy binding for gE (move to end of previous WORD)
+nnoremap <Esc>e gE
+xnoremap <Esc>e gE
+onoremap <Esc>e gE
+nnoremap <Esc>, ,
+nnoremap <Esc>; ;
+" : takes two keystrokes, ; takes one; map the latter to the former in normal mode to get to the command line faster:
+noremap ; :
+
+" Easier bindings for completion in insert mode
+inoremap <Esc>f <C-X><C-F>
+inoremap <Esc>l <C-X><C-L>
+inoremap <Esc>o <C-X><C-O>
+inoremap <Esc>] <C-X><C-]>
+
+" Indentation
+"
+set modeline
+set shiftwidth=4
+set expandtab
+"set smartindent
+"set smarttab
+set autoindent
+"autocmd BufReadPost php retab! 4
+" show the last line even if it doesn't fit - no @
+set display=lastline
+
+set showmatch
+set matchtime=1
+
+set nofoldenable
+
+set autoread
+
+" Encoding
+"
+if has("multi_byte")
+  if &termencoding == ""
+    let &termencoding = &encoding
+  endif
+  set encoding=utf-8
+  setglobal fileencoding=utf-8 nobomb
+  set fileencodings=utf-8,latin1
+endif
+
+" Mac settings
+set noanti
+set gfn=Courier:h13
+
+set history=1000
+" Use viminfo
+" Tell vim to remember certain things when we exit
+"  '100  : save marks (a-z) for 100 files
+"  f1    : store global marks (A-Z and 0-9)
+"  <500  : save maximum of 500 lines for each of the registers
+"  :1000 : save 1000 lines from the command line history
+"  @100  : save 100 lines from the input line history
+"  /100  : save 100 lines from the search history
+"  h     : disable 'hlsearch' highlighting when starting
+set viminfo='100,f1,<500,:1000,@100,/100,h
+
+" To avoid the 'Hit ENTER to continue' prompt
+set shortmess=aOItT
+" Access man pages in insert mode with Meta-K
+inoremap <Esc>k <C-O>K
+
+" Do not keep backup files
+set nobackup
+" Store swap files in one of these directories
+set directory=~/.vim/.tmp,~/tmp,/tmp
+" Undoing
+set undolevels=1000 " maximum number of changes that can be undone
+set undofile " keep a persistent backup file
+set undodir=~/.vim/.undo,~/tmp,/tmp
+set undoreload=10000 " maximum number lines to save for undo on a buffer reload
+
+" Colours
+"
+syntax on
+set background=dark
+colorscheme desert
+if version >= 703
+    " Highlight trailing white-space, but not when I'm typing it in insert mode
+    highlight BadCharacters ctermbg=red
+    match BadCharacters /\s\+$/
+    autocmd BufWinEnter * match BadCharacters /\s\+$\|\$\$\@=/
+    autocmd InsertEnter * match BadCharacters /\s\+\%#\@<!$\|\$\$\@=/
+    autocmd InsertLeave * match BadCharacters /\s\+$\|\$\$\@=/
+    autocmd BufWinLeave * call clearmatches()
+endif
+
+" Show info in ruler
+set ruler
+set laststatus=2
+"set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{CurDir()}%h\ \ \ Line:\ %l/%L:%c
+" Status-line
+"
+hi StatusLine ctermfg=Brown
+hi StatColour ctermfg=White ctermbg=Black
+hi Modified   ctermbg=Red
+au VimEnter * hi Modified ctermbg=Red
+
+function! MyStatusLine(mode)
+    let statusline=' #%n '
+    if a:mode == 'Enter'
+        let statusline.="%#StatColour#"
+    endif
+    let statusline.="%f"
+    if a:mode == 'Enter'
+        let statusline.="%*"
+    endif
+    let statusline .= ' %#Modified#%m%* [%(%R%W%Y%),%{&fenc}:%{&ff}]%* %4*%k%* %= 0x%B @ %4*%l%*/%L:%c%V'
+    return statusline
+endfunction
+
+if version >= 703
+    au VimEnter * set      statusline=%!MyStatusLine('Enter')
+    au WinEnter * setlocal statusline=%!MyStatusLine('Enter')
+    au WinLeave * setlocal statusline=%!MyStatusLine('Leave')
+else
+    au VimEnter * set      statusline=" #%n %#StatColour#%f%* %#Modified#%m%* [%(%R%W%Y%),%{&fenc}:%{&ff}]%* %4*%k%* %= 0x%B @ %4*%l%*/%L:%c%V"
+    au WinEnter * setlocal statusline=" #%n %#StatColour#%f%* %#Modified#%m%* [%(%R%W%Y%),%{&fenc}:%{&ff}]%* %4*%k%* %= 0x%B @ %4*%l%*/%L:%c%V"
+    au WinLeave * setlocal statusline=" #%n %f [%(%R%W%Y%),%{&fenc}:%{&ff}]%* %4*%k%* %= 0x%B @ %4*%l%*/%L:%c%V"
+endif
+
+au VimEnter * hi StatusLine ctermfg=Brown
+au WinEnter * hi StatusLine ctermfg=Brown
+
+function! InsertStatuslineColour(mode)
+  if a:mode == 'i'
+    hi StatusLine ctermbg=Black ctermfg=DarkCyan
+  else
+    hi StatusLine ctermbg=White ctermfg=DarkBlue
+  endif
+  if a:mode == 'v'
+    hi StatColour ctermbg=Green ctermfg=Black
+  endif
+endfunction
+function! CurDir()
+    let curdir = substitute(getcwd(), '/Users/[username]/', "~/", "g")
+    return curdir
+endfunction
+function! HasPaste()
+    if &paste
+        return '[PASTE MODE]  '
+    else
+        return ''
+    endif
+endfunction
+
+au InsertEnter * call InsertStatuslineColour(v:insertmode)
+au InsertLeave * hi StatusLine ctermfg=Brown ctermbg=Black
+
+" Change <Leader> key:
+"
+let mapleader = ","
+let maplocalleader = ","
+
+" Re-map Caps Lock to Escape & get the Meta key working properly
+"
+" I have re-mapped Caps Lock to F8 in my OS.  Then I have F8 re-mapped to Escape in
+" vim, so that I can define Meta-<key> mappings using <Esc><key>, because in
+" my terminal the Meta key just prefixes the following key with Escape.  These
+" mappings slow down the Escape key (when used alone), because vim waits to see
+" if there is a key following the Escape, which would be interpreted as a
+" Meta-<key> mapping.  That's really annoying, because I use Escape all the
+" time (to get out of insert mode).  So this redefines the Caps lock as a pure
+" mapping to Escape, without having to wait for any other crap.
+" It also allows mappings such as Meta-J, which otherwise I cannot define
+" because I use the Escape and arrow (h,j,k,l) keys so much that occasionally
+" it gets wrongly interpreted as the Meta mapping.
+" I chose F8 because it doesn't get used much by anything else
+" Get rid of highlighted search results by pressing Leader-Space
+noremap <F8> <Esc>
+noremap! <F8> <Esc>
+nnoremap <silent> <F8> :noh<Bar>:set nois<Bar>:echo<CR><Esc>
+" Nice mapping, but I always use hlsearch
+"nnoremap <silent> <Leader>h :set hls! hls?<CR>
+
+" Delete all buffers, except for those with unsaved changes
+noremap <leader>bda :bufdo silent! bdelete<CR>
+
+" Use the arrow keys to move between buffers (useful when opening multiple
+" files from the command line)
+noremap <Right> :bn<CR>
+noremap <Left>  :bp<CR>
+
+" Move a line of text using Ctrl-Alt-J / Ctrl-Alt-K
+nnoremap <Esc><C-K> mz:m-2<CR>`z
+nnoremap <Esc><C-J> mz:m+<CR>`z
+vnoremap <Esc><C-K> :m'<-2<CR>`>my`<mzgv`yo`z
+vnoremap <Esc><C-J> :m'>+<CR>`<my`>mzgv`yo`z
+nnoremap <Esc><C-H> <<
+nnoremap <Esc><C-L> >>
+vmap <Esc><C-H> <
+vmap <Esc><C-L> >
+
+" Use Ctrl plus direction key to move around within windows
+nnoremap <C-H> <C-W>h
+nnoremap <C-J> <C-W>j
+nnoremap <C-K> <C-W>k
+nnoremap <C-L> <C-W>l
+nnoremap <Leader>rd <C-L>
+nnoremap <Esc>+ <C-W>5+
+nnoremap <Esc>- <C-W>5-
+nnoremap <Esc>> <C-W>5>
+nnoremap <Esc>< <C-W>5<
+nmap <Esc>_ <Esc>-
+
+" Custom <leader> macros
+" strip trailing whitespace
+"nnoremap <leader>ks :%s/\s\+$//<CR>:let @/=''<CR>
+function! <SID>StripTrailingWhitespace()
+    " Preparation: save last search, and cursor position.
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    " Do the business:
+    %s/\s\+$//e
+    " Clean up: restore previous search history, and cursor position
+    let @/=_s
+    call cursor(l, c)
+endfunction
+nmap <silent> <Leader>ks :call <SID>StripTrailingWhitespace()<CR>
+
+" Convert tabs to spaces
+nnoremap <Leader>kt :%s/\t/  /g<CR>
+" Kill DOS line breaks
+nnoremap <Leader>kd :%s///g<CR>
+" Split window vertically
+nnoremap <leader>w <C-W>v<C-W>l
+
+" Search options
+"
+set ignorecase
+set smartcase
+"set gdefault " always do substitions with g modifier
+"set incsearch
+" Meta-/ does incsearch (Escape then turns it off afterwards)
+nnoremap <Esc>/ :set is<CR>/
+nnoremap <Esc>? :set is<CR>?
+set showmatch
+set hlsearch
+set nowrapscan
+autocmd! VimEnter nohlsearch
+" Search for definition of function under cursor
+nnoremap gfd "zyiw/function\s\+<C-R>z(<CR>
+noremap n nzz
+sunmap n
+noremap N Nzz
+sunmap N
+noremap * *zz
+sunmap *
+noremap # #zz
+sunmap #
+noremap <C-O> <C-O>zz
+sunmap <C-O>
+noremap <C-I> <C-I>zz
+sunmap <C-I>
+" Search for selected text in visual mode using * and #
+xnoremap * "zy/<C-R>=substitute(escape(@z, '/^$[.*~\\'), '\n', '\\n', 'g')<CR><CR>zz
+xnoremap # "zy?<C-R>=substitute(escape(@z, '?^$[.*~\\'), '\n', '\\n', 'g')<CR><CR>zz
+nnoremap <Esc>i 0i<Space><Esc>r
+nnoremap <Esc>a A<Space><Esc>r
+nnoremap <Esc>p /<C-P>
+nnoremap <Esc><C-P> ?<C-P>
+cnoremap <Esc>p <C-P>
+cnoremap <Esc><C-P> <C-P>
+
+" Open help in a vertically-split window 78 columns wide, on the right
+cnoremap <F1> vertical rightbelow help<CR>78<C-W><Bar>:help<Space>
+nmap <Leader>h :<F1>
+
+" Shortcuts for saving file
+cnoremap w!! w !sudo tee % >/dev/null
+
+"
+" Quickly save from any mode except insert mode
+nnoremap <C-Z> :w<CR>
+vmap <C-Z> <C-C><C-Z>
+omap <C-Z> <C-C><C-Z>
+cmap <C-Z> <C-C><C-Z>
+inoremap <C-Z> <Nop>
+
+" Quickly close the current window
+nnoremap <Leader>q         :q<CR>
+nnoremap <Leader><Leader>q :q!<CR>
+nnoremap <Leader>wq        :wq<CR>
+nmap <Leader><Leader>w :w!!<CR>
+nnoremap <Leader>w.  :w %:p:h/.%:e<Left><Left><Left><Left>
+nnoremap <Leader>e.  :e %:p:h/.%:e<Left><Left><Left><Left>
+nnoremap <Leader>sav. :sav %:p:h/.%:e<Left><Left><Left><Left>
+nnoremap <Leader>savc gg/class<CR>:nohls<CR>EElyT_:sav %:p:h/<C-R>0.%:e
+nmap <Leader><Leader>savc <Leader>savc<Home><Right><Right><Right>!<End>
+nnoremap <Leader>ls :!ls %:p:h/<CR>
+nnoremap <Leader>mv :!mv % %:p:h/.%:e<Left><Left><Left><Left>
+
+" Close the current buffer
+nnoremap <leader>bd :Bclose<CR>
+
+" Close all the buffers
+nnoremap <leader>ba :1,300 bd!<CR>
+
+" ACK support
+set grepprg=ack-grep\ -a
+let g:ackprg="ack-grep -H --nocolor --nogroup --column"
+nnoremap <Esc>f<Esc>f :Ack<Space>
+nmap <Esc>f <Esc>f<Esc>f
+nnoremap <Esc>fa :Ack<Space><Space>project/app<Home><Right><Right><Right><Right>
+nnoremap <Esc>ft :Ack<Space><Space>lib/Tig<Home><Right><Right><Right><Right>
+nnoremap <Esc>fz :Ack<Space><Space>lib/Zend<Home><Right><Right><Right><Right>
+"cmap <Esc>f<Esc>f <C-C><Esc>f<Esc>f
+"imap <Esc>f<Esc>f <Esc><Esc>f<Esc>f
+"vmap <Esc>f<Esc>f <Esc><Esc>f<Esc>f
+"cmap <Esc>f <C-C><Esc>f
+"imap <Esc>f <Esc><Esc>f
+"vmap <Esc>f <Esc><Esc>f
+"cmap <Esc>fa <C-C><Esc>fa
+"imap <Esc>fa <Esc><Esc>fa
+"vmap <Esc>fa <Esc><Esc>fa
+"cmap <Esc>ft <C-C><Esc>ft
+"imap <Esc>ft <Esc><Esc>ft
+"vmap <Esc>ft <Esc><Esc>ft
+"cmap <Esc>fz <C-C><Esc>fz
+"imap <Esc>fz <Esc><Esc>fz
+"vmap <Esc>fz <Esc><Esc>fz
+
+" snipMate options
+let g:snips_author = "C.A. Woodcock"
+let g:snippets_dir = $HOME . "/.vim/snippets/"
+
+" NERDTree options
+let NERDChristmasTree=1
+let NERDTreeCaseSensitiveSort=1
+let NERDTreeChDirMode=2
+let NERDTreeBookmarksFile = $HOME . "/.vim/NERDTreeBookmarks"
+let NERDTreeShowBookmarks=1
+let NERDTreeShowHidden=1
+let NERDTreeQuitOnOpen=1
+nnoremap <Leader>n :NERDTreeFromBookmark<Space>
+nnoremap <Esc>n    :NERDTreeToggle<CR>
+vmap <Esc>n <C-C><Esc>n
+omap <Esc>n <C-C><Esc>n
+cmap <Esc>n <C-C><Esc>n
+
+" ZenCoding
+let g:user_zen_settings = {
+\  'indentation':'    ',
+\  'php':{
+\    'aliases':{
+\    },
+\    'snippets':{
+\      'req':"require_once '';",
+\      'inc':"include_once '';",
+\      'thr':"throw new Exception();\n",
+\    }
+\  }
+\}
+let g:user_zen_leader_key = '<C-G>'
+let g:user_zen_complete_tag = 1
+
+" argumentrewrap binding
+nnoremap <silent> <Leader>rw :call argumentrewrap#RewrapArguments()<CR>
+nnoremap <silent> <Leader><Leader>r :call argumentrewrap#RewrapArguments()<CR>
+
+" CommandT
+nmap <Esc>t <Leader>t
+vmap <Esc>t <C-C><Esc>t
+omap <Esc>t <C-C><Esc>t
+imap <Esc>t <F8><Esc>t
+cmap <Esc>t <C-C><Esc>t
+let g:CommandTMaxHeight = 20
+let g:CommandTCursorLeftMap = '<C-B>'
+let g:CommandTCursorRightMap = '<C-F>'
+"let g:CommandTBackspaceMap = '<C-H>'
+let g:CommandTDeleteMap = '<C-D>'
+
+" bufExplorer
+let g:bufExplorerSplitOutPathName = 0
+let g:bufExplorerSplitRight = 1
+
+" Gundo
+nnoremap <silent> <Esc>u :GundoToggle<CR>
+vmap <Esc>u <C-C><Esc>u
+omap <Esc>u <C-C><Esc>u
+imap <Esc>u <F8><Esc>u
+cmap <Esc>u <C-C><Esc>u
+
+" Tags
+"
+" Load a tag file
+" Loads a tag file from ~/.vim.tags/, based on the argument provided. The
+" command "Ltag"" is mapped to this function.
+function! LoadTags(file)
+   let tagspath = $HOME . "/.vim.tags/" . a:file
+   let tagcommand = 'set tags+=' . tagspath
+   execute tagcommand
+endfunction
+command! -nargs=1 Ltag :call LoadTags("<args>")
+call LoadTags("httpdocs")
+"call LoadTags("Tig")
+"call LoadTags("Zend")
+"call LoadTags("doctrine")
+"call LoadTags("fpdf16")
+"call LoadTags("project")
+"call LoadTags("symfony")
+
+" TagList
+nnoremap <silent> <Esc>m :TlistToggle<CR>
+vmap <Esc>m <C-C><Esc>m
+omap <Esc>m <C-C><Esc>m
+imap <Esc>m <F8><Esc>m
+cmap <Esc>m <C-C><Esc>m
+let Tlist_Use_Right_Window = 1
+let Tlist_Compact_Format = 1
+let Tlist_Exit_OnlyWindow = 1
+let Tlist_GainFocus_On_ToggleOpen = 1
+let Tlist_File_Fild_Auto_Close = 1
+let Tlist_Inc_Winwidth = 0
+let Tlist_Close_On_Select = 1
+let Tlist_Process_File_Always = 1
+let Tlist_Display_Prototype = 0
+let Tlist_Display_Tag_Scope = 1
+
+" VCSCommand
+let VCSCommandSplit = 'vertical'
+let VCSCommandMapPrefix = '<Leader>s'
+
+" NERD Commenter:
+" Put a space after comments, like // foo instead of //foo
+let NERDSpaceDelims=1
+let NERDCreateDefaultMappings=0
+
+" Scratch
+nnoremap <Leader><Tab> :Sscratch<CR><C-W>L
+
+" CheckSyntax
+let g:checksyntax = {
+    \ 'php': {
+        \ 'auto': 0,
+        \ 'cmd': 'php -l',
+        \ 'efm': '%*[^:]: %m in %f on line %l',
+        \ 'okrx': 'No syntax errors detected in ',
+        \ 'alt': 'phpp'
+        \ }
+    \ }
+
+" ShowMarks
+let g:showmarks_include   = 'qwertasdfgzxcvb'
+let g:showmarks_textlower = ' '
+
+" LustyJuggler
+nnoremap <Esc>b :LustyJuggler<CR>
+
+" run file with PHP CLI (CTRL-M)
+autocmd FileType php noremap <Leader><Leader>m :w!<CR>:!/usr/bin/php %<CR>
+
+" PHP parser check
+autocmd FileType php noremap <Leader><Leader>l :!/usr/bin/php -l %<CR>
+
+" run file with phpunit
+autocmd FileType php noremap <Leader><Leader>t :!phpunit %<CR>
+
+" Code completion
+autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+
+"autocmd InsertEnter syn clear EOLWS | syn match EOLWS excludenl /\s\+\%#\@!$/
+"autocmd InsertLeave syn clear EOLWS | syn match EOLWS excludenl /\s\+$/
+"highlight EOLWS ctermbg=red
+
+function! MakeExecutable()
+    silent !chmod a+x %
+endfunction
+" on save, make file executable if has shebang line with '/bin/'
+autocmd BufWritePost * if (getline(1) =~ "^#!.*/bin/") | :call MakeExecutable() | endif
+
+iab lorem Lorem ipsum dolor sit amet, consectetur adipisicing elit<Space>
+iab llorem Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation<Space>
+iab llorem Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<Space>
+
+" Edit the vimrc file
+"nmap <silent> <leader>ev :e $MYVIMRC<CR>
+"nmap <silent> <leader>sv :so $MYVIMRC<CR>
+"autocmd! bufwritepost .vimrc source! %
+nnoremap <Leader>; :e ~/.vimrc<CR><C-W>_
+"nnoremap <Leader>;! :e! ~/.vimrc<CR><C-W>_
+nnoremap <silent> <Leader>: :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
+" Execute current line in ex
+noremap <Leader><Leader>: 0y$:<C-R>"<CR>
+
+" Copy/Paste Shortcuts
+"
+" Make the unnamed register the same as the "* register
+"set clipboard=unnamed
+" copy to system clipboard
+vmap <C-C> "+y
+" paste in NORMAL mode from system clipboard (at or after cursor)
+nmap <Leader>V "+gP
+nmap <Leader>v "+gp
+" paste in INSERT mode from Vim's clipboard (unnamed register)
+"imap vp <ESC>pa
+" paste in INSERT mode from system clipboard
+"imap vv <ESC>"+gpa
+" paste in COMMAND mode from Vim's clipboard (unnamed register)
+"cmap vp <C-r>"
+" paste in COMMAND mode from system clipboard
+"cmap vv <C-r>+
+set pastetoggle=<F7>
+" Yank/paste to the OS clipboard with ,y and ,p
+nmap <leader>y "+y
+nmap <leader>Y "+yy
+nmap <leader>p "+p
+nmap <leader>P "+P
+" Copy line - like yyp but keep cursor position
+nnoremap <silent> <Esc>c :copy .-1<CR>
+imap     <silent> <Esc>c <C-O><Esc>c
+" In visual mode, copy selected text and keep selection
+xnoremap <Esc>c y'>pgv
+
+" Quick command-line ranges
+" This slows down : but I have ; as a quicker map for command mode
+nnoremap :gg :1,.
+nnoremap :G  :.,$
+nnoremap ::  !!<BS>
+nnoremap :{  :?^$?+1,.
+nnoremap :2{ :?^$??^$?+1,.
+nnoremap :3{ :?^$??^$??^$?+1,.
+" (More than 3 paragraphs is probably better done in visual mode)
+nnoremap :}  :.,/^$/-1
+nnoremap :2} :.,/^$//^$/-1
+nnoremap :3} :.,/^$//^$//^$/-1
+nnoremap :ap :?^$?+1,/^$/
+nnoremap :ip :?^$?+1,/^$/-1
+nnoremap :;  :.;+
+nnoremap :'a :'a,.
+nnoremap :'z :.,'z
+nnoremap :/  :.,//-1<Left><Left><Left>
+nnoremap :?  :??+1,.<Home><Right>
+nmap     :a{ !a{<BS>
+nmap     :a} :a{
+nmap     :aB :a{
+nmap     :i{ !i{<BS>
+nmap     :i} :i{
+nmap     :iB :i{
+nmap     :a( !a(<BS>
+nmap     :a) :a(
+nmap     :ab :a(
+nmap     :i( !i(<BS>
+nmap     :i) :i(
+nmap     :ib :i(
+
+" Better filter commands
+nnoremap !%  :%!
+nmap     !gg :gg!
+nmap     !{  :{!
+nmap     !2{ :2{!
+nmap     !3{ :3{!
+nmap     !ap :ap!
+nmap     !ip :ip!
+nmap     !;  :;!<Left>
+nmap     !'a :'a!
+nnoremap !/  :.,//-1!<Left><Left><Left><Left>
+nnoremap !?  :??+1,.<Home><Right>
+
+" Substitutions
+nnoremap Z%  :%s!!!g<Left><Left><Left>
+nmap     Zgg :ggs!!!g<Left><Left><Left>
+nmap     ZG  :Gs!!!g<Left><Left><Left>
+nmap     ZZ  ::s!!!g<Left><Left><Left>
+nmap     Z{  :{s!!!g<Left><Left><Left>
+nmap     Z2{ :2{s!!!g<Left><Left><Left>
+nmap     Z3{ :3{s!!!g<Left><Left><Left>
+nmap     Z}  :}s!!!g<Left><Left><Left>
+nmap     Z2} :2}s!!!g<Left><Left><Left>
+nmap     Z3} :3}s!!!g<Left><Left><Left>
+nmap     Zap :aps!!!g<Left><Left><Left>
+nmap     Zip :ips!!!g<Left><Left><Left>
+nmap     Z;  :;s!!!g<Home><Right><Right><Right>
+nmap     Z'a :'as!!!g<Left><Left><Left>
+nmap     Z'z :'zs!!!g<Left><Left><Left>
+nnoremap Z/  :.,//-1s!!!g<Home><Right><Right><Right>
+nnoremap Z?  :??+1,.s!!!g<Home><Right>
+nmap     Za{ :a{s!!!g<Left><Left><Left>
+nmap     Za} Za{
+nmap     ZaB Za{
+nmap     Zi{ :i{s!!!g<Left><Left><Left>
+nmap     Zi} Zi{
+nmap     ZiB Zi{
+nmap     Za( :a(s!!!g<Left><Left><Left>
+nmap     Za) Za(
+nmap     Zab Za(
+nmap     Zi( :i(s!!!g<Left><Left><Left>
+nmap     Zi) Zi(
+nmap     Zib Zi(
+" Do a substitution within this selection
+xnoremap Zv  :s!!!g<Left><Left><Left>
+" Substitute the selected string
+xmap     Z%  "zyZ%<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR><Right>
+xmap     Zgg "zyZgg<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR><Right>
+xmap     ZG  "zyZG<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR><Right>
+xmap     ZZ  "zyZZ<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR><Right>
+xmap     2ZZ "zy2ZZ<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR><Right>
+xmap     3ZZ "zy3ZZ<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR><Right>
+xmap     4ZZ "zy4ZZ<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR><Right>
+xmap     5ZZ "zy5ZZ<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR><Right>
+xmap     6ZZ "zy6ZZ<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR><Right>
+xmap     7ZZ "zy7ZZ<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR><Right>
+xmap     8ZZ "zy8ZZ<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR><Right>
+xmap     9ZZ "zy9ZZ<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR><Right>
+xmap     Z{  "zyZ{<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR><Right>
+xmap     Z2{ "zyZ2{<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR><Right>
+xmap     Z3{ "zyZ3{<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR><Right>
+xmap     Z}  "zyZ}<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR><Right>
+xmap     Z2} "zyZ2}<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR><Right>
+xmap     Z3} "zyZ3}<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR><Right>
+xmap     Zap "zyZap<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR><Right>
+xmap     Zip "zyZip<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR><Right>
+xnoremap Z;  "zy:.;+s!<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR>!!g<Home><Right><Right><Right>
+xmap     Z'a "zyZ'a<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR><Right>
+xmap     Z'z "zyZ'z<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR><Right>
+xnoremap Z/  "zy:.,//-1s!<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR>!!g<Home><Right><Right><Right>
+xnoremap Z?  "zy:??+1,.s!<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR>!!g<Home><Right>
+xmap     Za{ "zyZa{<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR><Right>
+xmap     Za} Za{
+xmap     ZaB Za{
+xmap     Zi{ "zyZi{<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR><Right>
+xmap     Zi} Zi{
+xmap     ZiB Zi{
+xmap     Za( "zyZa(<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR><Right>
+xmap     Za) Za(
+xmap     Zab Za(
+xmap     Zi( "zyZi(<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR><Right>
+xmap     Zi) Zi(
+xmap     Zib Zi(
+
+" Pull word under cursor into LHS of a substitution!
+nnoremap Zw%  "zyiw:%s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nnoremap Zw%  "zyiw:%s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zwgg "zyiw:ggs!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     ZwG  "zyiw:Gs!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nnoremap Zww  "zyiw:.s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zw{  "zyiw:{s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zw2{ "zyiw:2{s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zw3{ "zyiw:3{s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zw}  "zyiw:}s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zw2} "zyiw:2}s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zw3} "zyiw:3}s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zwap "zyiw:aps!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zwip "zyiw:ips!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zw;  "zyiw:;s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Home><Right><Right><Right>
+nmap     Zw'a "zyiw:'as!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zw'z "zyiw:'zs!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nnoremap Zw/  "zyiw:.,//-1s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Home><Right><Right><Right>
+nnoremap Zw?  "zyiw:??+1,.s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Home><Right>
+nmap     2Zww Zw;1<End><Left><Left>
+nmap     3Zww Zw;2<End><Left><Left>
+nmap     4Zww Zw;3<End><Left><Left>
+nmap     5Zww Zw;4<End><Left><Left>
+nmap     6Zww Zw;5<End><Left><Left>
+nmap     7Zww Zw;6<End><Left><Left>
+nmap     8Zww Zw;7<End><Left><Left>
+nmap     9Zww Zw;8<End><Left><Left>
+nmap     Zwa{ "zyiw:a{s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zwa} Zwa{
+nmap     ZwaB Zwa{
+nmap     Zwi{ "zyiw:i{s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zwi} Zwi{
+nmap     ZwiB Zwi{
+nmap     Zwa( "zyiw:a(s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zwa) Zwa(
+nmap     Zwab Zwa(
+nmap     Zwi( "zyiw:i(s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zwi) Zwi(
+nmap     Zwib Zwi(
+
+" Pull WORD under cursor into LHS of a substitution!
+nnoremap ZW%  "zyiW:%s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nnoremap ZW%  "zyiW:%s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZWgg "zyiW:ggs!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZWG  "zyiW:Gs!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nnoremap ZWW  "zyiW:.s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZW{  "zyiW:{s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZW2{ "zyiW:2{s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZW3{ "zyiW:3{s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZW}  "zyiW:}s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZW2} "zyiW:2}s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZW3} "zyiW:3}s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZWap "zyiW:aps!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZWip "zyiW:ips!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZW;  "zyiW:;s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Home><Right><Right><Right>
+nmap     ZW'a "zyiW:'as!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZW'z "zyiW:'zs!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nnoremap ZW/  "zyiW:.,//-1s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Home><Right><Right><Right>
+nnoremap ZW?  "zyiW:??+1,.s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Home><Right>
+nmap     2ZWW ZW;1<End><Left><Left>
+nmap     3ZWW ZW;2<End><Left><Left>
+nmap     4ZWW ZW;3<End><Left><Left>
+nmap     5ZWW ZW;4<End><Left><Left>
+nmap     6ZWW ZW;5<End><Left><Left>
+nmap     7ZWW ZW;6<End><Left><Left>
+nmap     8ZWW ZW;7<End><Left><Left>
+nmap     9ZWW ZW;8<End><Left><Left>
+nmap     ZWa{ "zyiW:a{s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZWa} ZWa{
+nmap     ZWaB ZWa{
+nmap     ZWi{ "zyiW:i{s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZWi} ZWi{
+nmap     ZWiB ZWi{
+nmap     ZWa( "zyiW:a(s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZWa) ZWa(
+nmap     ZWab ZWa(
+nmap     ZWi( "zyiW:i(s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZWi) ZWi(
+nmap     ZWib ZWi(
+
+" Repeat-commands
+"
+" Repeat last command and put cursor at start of change
+nnoremap . .`[
+" Repeat last command-line change with Meta-.
+nnoremap <Esc>. @:
+" Move to beginning / end of last change
+noremap <Esc>h `[
+noremap <Esc>l `]
+" (To select last-inserted text: enter visual mode, then Meta-H)
+" Move up/down one line and repeat last command
+nnoremap <Esc>j j.`[
+nnoremap <Esc>k k.`[
+" Move up/down one line and repeat last command-line change
+nnoremap <Esc>J j@:
+nnoremap <Esc>K k@:
+
+nnoremap <S-Tab> <C-^>
+nnoremap <Esc><Tab> <C-^>
+
+"nmap <Esc>[ [[
+"nmap <Esc>] ]]
+
+nnoremap <C-P> :<C-P>
+
+" Replace functionality of ; and , with \ and | (on the same key)
+"noremap  \     ;
+"noremap  <Bar> ,
+" Remap ; and , commands so they also work after t and T
+" Only do the remapping for normal and visual mode, not operator pending
+" Use @= instead of :call to prevent leaving visual mode
+nnoremap <silent> \ @=FixCommaAndSemicolon(";")<CR>
+nnoremap <silent> <Bar> @=FixCommaAndSemicolon(",")<CR>
+xnoremap <silent> \ @=FixCommaAndSemicolon(";")<CR>
+xnoremap <silent> <Bar> @=FixCommaAndSemicolon(",")<CR>
+function! FixCommaAndSemicolon(command)
+   let s:pos1 = getpos(".")
+   execute "normal! " . a:command
+   let s:pos2 = getpos(".")
+   if s:pos1 == s:pos2
+      execute "normal! 2" . a:command
+   endif
+   return ""
+endfunction
+nmap <Esc>\     \.
+nmap <Esc><Bar> <Bar>.
+
+" <Leader>cd to the dir of the current buffer for current window
+cnoremap <Esc>. %:p:h/
+nnoremap <Leader>cd :lcd %:p:h<CR>
+
+nnoremap <Leader>Q Q
+nnoremap <Leader>l <C-L>
+
+" Highlight text on the screen matching that under the cursor: Press Meta-; to
+" start; each subsequent Meta-' matches one more character.  Meta-@ does the
+" same but searches backwards.  Uses marks 'm' and 'n', and register 'm'.
+map <Esc>; mm
+map <Esc>' lmn"my`m/<C-R>m<CR>`n
+map <Esc>@ lmn"my`m?<C-R>m<CR>`n
+
+" Insert Comment
+map <leader>/ I// <ESC>
+" map <leader>cc <plug>NERDCommenterAlignLeft
+" map <leader>cl <plug>NERDCommenterAlignLeft
+" map <leader>cu <plug>NERDCommenterUncomment
+" map <leader>ci <plug>NERDCommenterToggle
+
+" Also use emacs-style '1' to make this window the only one
+map <leader>1 <C-W>o
+map <leader>2 <C-W>s
+map <leader>3 <C-W>v
+" Close window shortcuts
+map <leader>0 <C-W>c
+
+" Quickfix Mappings {{{2
+" " Go next/prev error/search result
+" map <C-Down> :cn<Enter>
+" map <C-Up> :cp<Enter>
+"
+" " Go to next/previous SET of errors/search results
+" map <C-Right> :cnew<CR>
+" map <C-Left> :cold<CR>
+
+" function s:GrepCurFile
+" Prompts for search text, then lists occurrences
+" in the :cope window for easy navigation
+function! s:GrepCurFile()
+    let v:errmsg = ""
+    let text = input("Search for: ", expand("<cword>"))
+    let curfile = resolve(expand("%:p"))
+    if text != ""
+        let cmd = 'Ack ' . text . ' ' . curfile
+        exe cmd
+    endif
+endfunction
+nnoremap <Leader>m :call <SID>GrepCurFile()<CR>
+
+" Handles the stupid :bd versus :BD debate
+" :BD uses the bufkill thingy, where it will keep the window
+" open if there are other buffers in the dam window.
+" Problem is that if I open a help file, and issue a :BD, then
+" it tries to find the last used buffer, and I want to blast the help window.
+function! s:BlastBuffer()
+    if &filetype == 'help'
+        " Just close it.
+        :bw
+    else
+        " We're going to use :BD from BufKill plugin
+        " Check for modifications
+        if &modified
+            let a:ret_val = confirm("Save changes?", "&Yes\n&No\n&Cancel")
+            if a:ret_val == 1
+                :w
+            elseif a:ret_val == 3
+                return
+            endif
+        endif
+        :BW!
+    endif
+endfunction
+map <silent> <leader>k :call <SID>BlastBuffer()<Enter>
+
+" NextIndent()
+
+" Jump to the next or previous line that has the same level or a lower
+
+" level of indentation than the current line.
+"
+" exclusive (bool): true: Motion is exclusive
+" false: Motion is inclusive
+" fwd (bool): true: Go to next line
+" false: Go to previous line
+" lowerlevel (bool): true: Go to line with lower indentation level
+" false: Go to line with the same indentation level
+" skipblanks (bool): true: Skip blank lines
+" false: Don't skip blank lines
+function! NextIndent(exclusive, fwd, lowerlevel, skipblanks)
+    let line = line('.')
+    let column = col('.')
+    let lastline = line('$')
+    let indent = indent(line)
+    let stepvalue = a:fwd ? 1 : -1
+    while (line > 0 && line <= lastline)
+        let line = line + stepvalue
+        if ( ! a:lowerlevel && indent(line) == indent ||
+                    \ a:lowerlevel && indent(line) < indent)
+            if (! a:skipblanks || strlen(getline(line)) > 0)
+                if (a:exclusive)
+                    let line = line - stepvalue
+                endif
+                exe line
+                exe "normal " column . "|"
+                return
+            endif
+        endif
+    endwhile
+endfunc
+
+" Moving back and forth between lines of same or lower indentation.
+nnoremap <silent> [l :call NextIndent(0, 0, 0, 1)<CR>
+nnoremap <silent> ]l :call NextIndent(0, 1, 0, 1)<CR>
+nnoremap <silent> [L :call NextIndent(0, 0, 1, 1)<CR>
+nnoremap <silent> ]L :call NextIndent(0, 1, 1, 1)<CR>
+xnoremap <silent> [l <Esc>:call NextIndent(0, 0, 0, 1)<CR>m'gv''
+xnoremap <silent> ]l <Esc>:call NextIndent(0, 1, 0, 1)<CR>m'gv''
+xnoremap <silent> [L <Esc>:call NextIndent(0, 0, 1, 1)<CR>m'gv''
+xnoremap <silent> ]L <Esc>:call NextIndent(0, 1, 1, 1)<CR>m'gv''
+onoremap <silent> [l :call NextIndent(0, 0, 0, 1)<CR>
+onoremap <silent> ]l :call NextIndent(0, 1, 0, 1)<CR>
+onoremap <silent> [L :call NextIndent(1, 0, 1, 1)<CR>
+onoremap <silent> ]L :call NextIndent(1, 1, 1, 1)<CR>
+
+" Quickfix window
+"
+function! GetBufferList()
+  redir =>buflist
+  silent! ls
+  redir END
+  return buflist
+endfunction
+function! ToggleList(bufname, pfx)
+  let buflist = GetBufferList()
+  for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
+    if bufwinnr(bufnum) != -1
+      exec(a:pfx.'close')
+      return
+    endif
+  endfor
+  if a:pfx == 'l' && len(getloclist(0)) == 0
+      echohl ErrorMsg
+      echo "Location List is Empty."
+      return
+  endif
+  let winnr = winnr()
+  exec(a:pfx.'open')
+  if winnr() != winnr
+    wincmd p
+  endif
+endfunction
+nmap <silent> <Esc>4 :call ToggleList("Quickfix List", 'c')<CR>
+nmap <silent> <Esc>5 :call ToggleList("Location List", 'l')<CR>
+" map <F3> and <S-F3> to jump between locations in a quickfix list, or
+" differences if in window in diff mode
+nnoremap <expr> <silent> <Esc>2 (&diff ? "[c" : ":cprev\<CR>") . 'zz'
+nnoremap <expr> <silent> <Esc>3 (&diff ? "]c" : ":cnext\<CR>") . 'zz'
+
+digraphs Eu 8364 " Euro sign
+
+" Use ,d (or ,dd or ,dj or 20,dd) to delete a line without adding it to the
+" yanked stack (also, in visual mode)
+nnoremap <silent> <leader>d "_d
+xnoremap <silent> <leader>d "_d
+
+" Quick alignment of text
+nnoremap <leader>al :left<CR>
+nnoremap <leader>ar :right<CR>
+nnoremap <leader>ac :center<CR>
+
+" Managing buffers with LustyJuggler {{{
+map ,b :LustyJuggler<CR>
+
+" Reselect text that was just pasted with ,v or ,V
+nnoremap <leader>v v`[
+nnoremap <leader>V `]V`[
+
+" Conflict markers {{{
+" highlight conflict markers
+match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
+
+" shortcut to jump to next conflict marker
+" nnoremap <silent> <leader>c /^\(<\\|=\\|>\)\{7\}\([^=].\+\)\?$<CR>
+
+" Creating underline/overline headings for markup languages
+" Inspired by http://sphinx.pocoo.org/rest.html#sections
+nnoremap <leader>1 yyPVr=jyypVr=
+nnoremap <leader>2 yyPVr*jyypVr*
+nnoremap <leader>3 yypVr=
+nnoremap <leader>4 yypVr-
+nnoremap <leader>5 yypVr^
+nnoremap <leader>6 yypVr"
+
+" show the registers from things cut/yanked
+nnoremap <leader>r :registers<CR>
+
+" Hints for other movements
+" <c-w><c-r> rotate window to next spot
+" <c-w><c-x> swap window with current one
+
+" Search for potentially strange non-ascii characters
+map <leader>u :match Error /[\x7f-\xff]/<CR>
+
+set complete+=.
+set complete+=k
+set complete+=b
+set complete+=t
+set completeopt+=menuone,longest
+
+"let g:SuperTabDefaultCompletionType = "context"
+"let g:SuperTabContextDefaultCompletionType = "<c-n>"
+"let g:SuperTabLongestHighlight = 1
+"let g:SuperTabMidWordCompletion = 1
+
+inoremap <Esc>n <Space>.<Space>"\n"
+inoremap <Esc>. ->
+inoremap <Esc>> <Space>=><Space>
+
+"runtime macros/matchit.vim
+
+" Remove block leaving contents
+nnoremap qdb hf{mm<%%S<Esc>'mS<Esc>
+" Put selected text inside block
+xnoremap qb ><Esc>`[ma`]o<C-D>}<Esc>'aO<C-D>{<Esc>
+nmap qbb Vqb
+nmap 2qbb Vjqb
+nmap 3qbb V2jqb
+nmap 4qbb V3jqb
+nmap 5qbb V4jqb
+nmap 6qbb V5jqb
+nmap 7qbb V6jqb
+nmap 8qbb V7jqb
+nmap 9qbb V8jqb
+
+" Pull line into condition and insert empty block
+nmap q) yss)A<CR>{<CR>}<F8>kki <F8>i
+nmap q( yss(A<CR>{<CR>}<F8>kki <F8>i
+
+" Pull selected text into condition and insert empty block
+xmap q) S)d^%lC<CR>{<CR>}<F8>kki <F8>i
+xmap q( S(d^%lC<CR>{<CR>}<F8>kki <F8>i
+
+" Out-line an inline function
+nnoremap qolf ^f{i<BS><CR><Esc>la<CR><C-T><Esc>f}i<BS><CR><C-D><Esc>%
+" Out-line an inline block, e.g.
+" if (condition) expression;
+nnoremap qolb ^f(%a<CR>{<CR><C-T><Esc>o<C-D>}<Esc>-
+
+nnoremap qol? ^f?a<CR><C-T><Esc>f:a<CR><Esc>
+
+" Convert $array->key to $array['key']
+nmap qak lF-xxveS'gvS]
+" Convert $object['property'] to $object->property
+nmap qop lF[llds'ds]i-><F8>h
+
+" Convert $this->method to self::method
+nmap qsc l?\$this-><CR>cf>self::<F8>bb:nohls<CR>
+" Convert self::method to $this->method
+nmap qdc l?self::<CR>c2f:$this-><F8>F$:nohls<CR>
+
+" Convert isset($array['key']) to array_key_exists('key', $array)
+nmap qfake l?\(isset\<Bar>empty\)(<CR>cwarray_key_exists<F8>f[di]h"_2xF$Pa, <F8>?array_key_exists(<CR>:nohls<CR>
+nmap qfia l?\(isset\<Bar>empty\)(<CR>cwin_array<F8>f[di]h"_2xF$Pa, <F8>?in_array(<CR>:nohls<CR>
+" Convert array_key_exists('key', $array) to isset('key', $array) or empty(...)
+nmap qfisset l?\(array_key_exists\<Bar>in_array\)(<CR>cwisset<F8>lldt,"_2xf)i[<C-R>-]<F8>?isset(<CR>:nohls<CR>
+nmap qfempty l?\(array_key_exists\<Bar>in_array\)(<CR>cwempty<F8>lldt,"_2xf)i[<C-R>-]<F8>?empty(<CR>:nohls<CR>
+
+" Split line at cursor
+nnoremap S i<CR><Esc>k$
+" 'Inside-line' operator-pending-mode mapping
+onoremap <silent> il :<C-U>normal! 0v$h<CR>
+
+nnoremap <Leader>bp :Bp<CR>
+
+nnoremap ]k /->\<Bar>::/e+1<CR>
+nnoremap [k ?->\<Bar>::?e+1<CR>
+
+" Insert a line above current line, but indented as though inserting a line below
+nnoremap <Esc>o ko
+
+" Swap function arguments in PHP
+nnoremap gs :set nohls<CR>l?&\=\$<CR>dt,/&\=\$<CR>v/[,)]/s-1<CR>pF,P/&\=\$<CR>:set hls<CR>:nohls<CR>
+nnoremap gS :set nohls<CR>l?&\=\$<CR>d/[,)]<CR>F,hv?&\=\$<CR>pf,lp2?&\=\$<CR>:set hls<CR>:nohls<CR>
+
+" Toggle Color Column Keybinding
+map <leader>C :call g:ToggleColorColumn()<CR>"
+" Toggle Color Column
+function! g:ToggleColorColumn()
+    if(&cc == 85)
+        set cc=""
+    else
+        set cc=85
+    endif
+endfun
+
+" Relative numbering shortcut
+nnoremap <leader>N :call g:ToggleRelativeNumbering()<CR>
+" Toggle Relative Numbering Function
+function! g:ToggleRelativeNumbering()
+    if(&rnu == 1)
+        set nu
+    else
+        set rnu
+    endif
+endfunc
+
+" Markdown conversion
+map <leader>M :%!markdown<CR>
+vmap <leader>M :!markdown<CR>
+
+" Markdown Preview
+map <leader>p :Mm<cr>
+
+nmap <Esc><Space> ysl<Space><Space>
+

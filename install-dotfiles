@@ -1,0 +1,48 @@
+#! /bin/bash
+
+dotfiles_dir=`dirname $0`
+cd ~
+
+for f in ackrc gitconfig shell_aliases shell_servers vim zsh; do
+    if [ -L .$f ]; then
+        rm .$f
+    fi
+    if [ ! -e .$f -a -e $dotfiles_dir/$f ]; then
+        ln -s $dotfiles_dir/$f .$f
+    fi
+done
+
+# .bash/*
+for f in rc _aliases _colours _functions _profile _servers; do
+    if [ -L .bash$f ]; then
+        rm .bash$f
+    fi
+    if [ ! -e .bash$f -a -e $dotfiles_dir/bash/bash$f ]; then
+        ln -s $dotfiles_dir/bash/bash$f .bash$f
+    fi
+done
+
+# .vim/*
+if [ -L .vimrc ]; then rm .vimrc; fi
+if [ ! -e .vimrc ]; then ln -s .vim/vimrc .vimrc; fi
+if [ ! -d .vim/plugin ]; then mkdir .vim/plugin; fi
+if [ -f .vim/bundle/dbgpclient/plugin/debugger.py ]; then
+    if [ -L .vim/plugin/debugger.py ]; then rm .vim/plugin/debugger.py; fi
+    ln -s ../bundle/dbgpclient/plugin/debugger.py .vim/plugin/debugger.py
+fi
+if [ -d .vim/bundle/commandt ]; then
+    cd .vim/bundle/commandt/ruby/command-t
+    ruby extconf.rb
+    make
+fi
+cd ~
+
+# .zsh/*
+for f in login profile shenv shrc; do
+    if [ -L .z$f ]; then
+        rm .z$f
+    fi
+    if [ ! -e .z$f -a -e .zsh/z$f ]; then
+        ln -s .zsh/z$f .z$f
+    fi
+done

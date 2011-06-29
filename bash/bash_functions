@@ -1,0 +1,85 @@
+function take {
+    mkdir -p $1 && cd $1
+}
+
+function rgrep {
+    grep -r $1 . | grep -v svn | grep $1
+}
+
+function set_dev_site {
+    if [[ "$1" == "" ]]; then
+        return
+    fi
+    cd ~
+    if [[ -h site ]]; then 
+        rm site
+    fi
+    if [[ ! -e site ]]; then
+        ln -s site$1 site
+    fi
+}
+
+function export_bol {
+    svn export svn+ssh://svn/sites/beheeronline/trunk/project/app`pwd | sed 's/.*\/app\(.*\)/\1/'`/$1
+}
+
+function cdl { cd $1; ll; }
+
+function extract {
+    if [[ "-d" == "$1" ]]; then
+        file="$2"
+        case $file in
+            *.tar.*)  dir=${file%.tar.*}  ;;
+            *)        dir=${file%.*}      ;;
+        esac
+        if [[ -d "$dir" ]]; then
+            echo "Directory $dir already exists"
+            return
+        fi
+        mkdir $dir;
+        mv $file $dir
+        cd $dir
+        echo "Extracting $file to $dir/"
+    else
+        file="$1"
+    fi
+    if [[ -f "$file" ]] ; then
+        case "$file" in
+            *.tar.bz2)  tar xjf $file      ;;
+            *.tar.gz)   tar xzf $file      ;;
+            *.bz2)      bunzip2 $file      ;;
+            *.rar)      rar x $file        ;;
+            *.gz)       gunzip $file       ;;
+            *.tar)      tar xf $file       ;;
+            *.tbz2)     tar xjf $file      ;;
+            *.tgz)      tar xzf $file      ;;
+            *.zip)      unzip $file        ;;
+            *.Z)        uncompress $file   ;;
+            *)          echo "'$file' cannot be extracted via extract()" ;;
+        esac
+    else
+        echo "'$file' is not a valid file"
+    fi
+    if [[ "-d" == "$1" ]]; then
+        mv $file ..
+        cd ..
+    fi
+}
+
+function c {
+    local prev=$PWD
+    [[ -d "$@" ]] && cd "$@" || j "$@"
+    [[ $PWD != $prev ]] && ls
+}
+
+function .. {
+    local arg=${1:-1};
+    local dir=""
+    while [[ $arg -gt 0 ]]; do
+        dir="../$dir"
+        arg=$(($arg - 1));
+    done
+    cd $dir #>&/dev/null
+    pwd
+}
+
