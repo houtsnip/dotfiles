@@ -50,6 +50,7 @@ source "$ZSHDIR/zsh_aliases"
 source ".shell_aliases"
 source "$ZSHDIR/zsh_completion"
 source "$ZSHDIR/zsh_functions"
+source ".shell_functions"
 source ".shell_servers"
 #source "$ZSHDIR/kde"
 

@@ -3,22 +3,12 @@
 dotfiles_dir=`dirname $0`
 cd ~
 
-for f in ackrc gitconfig shell_aliases shell_servers vim zsh; do
+for f in ackrc gitconfig shell_aliases shell_functions shell_servers vim bash zsh; do
     if [ -L .$f ]; then
         rm .$f
     fi
     if [ ! -e .$f -a -e $dotfiles_dir/$f ]; then
         ln -s $dotfiles_dir/$f .$f
-    fi
-done
-
-# .bash/*
-for f in rc _aliases _colours _functions _profile _servers; do
-    if [ -L .bash$f ]; then
-        rm .bash$f
-    fi
-    if [ ! -e .bash$f -a -e $dotfiles_dir/bash/bash$f ]; then
-        ln -s $dotfiles_dir/bash/bash$f .bash$f
     fi
 done
 
@@ -37,6 +27,15 @@ if [ -d .vim/bundle/commandt ]; then
 fi
 cd ~
 
+# .bash/*
+for f in _profile rc; do
+    if [ -L .bash$f ]; then
+        rm .bash$f
+    fi
+    if [ ! -e .bash$f -a -e .bash/bash$f ]; then
+        ln -s .bash/bash$f .bash$f
+    fi
+done
 # .zsh/*
 for f in login profile shenv shrc; do
     if [ -L .z$f ]; then
