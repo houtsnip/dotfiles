@@ -6,7 +6,7 @@
 	url = git://github.com/mileszs/ack.vim.git
 [submodule "vim/bundle/align"]
 	path = vim/bundle/align
-	url = git://github.com/tsaleh/vim-align.git
+	url = git://github.com/houtsnip/vim-align.git
 [submodule "vim/bundle/argumentrewrap"]
 	path = vim/bundle/argumentrewrap
 	url = git://github.com/jakobwesthoff/argumentrewrap.git
