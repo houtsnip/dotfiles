@@ -3,9 +3,15 @@
 dotfiles_dir=`dirname $0`
 cd ~
 
-for f in ackrc gitconfig shell_aliases shell_functions shell_servers vim bash zsh; do
+for f in ackrc gitconfig gitignore_global shell_aliases shell_functions shell_servers vim bash zsh; do
     if [ -L .$f ]; then
         rm .$f
+    fi
+    if [ -e .$f ]; then
+	echo .$f exists
+    fi
+    if [ ! -e $dotfiles_dir/$f ]; then
+	echo $dotfiles_dir/$f doesnt exist
     fi
     if [ ! -e .$f -a -e $dotfiles_dir/$f ]; then
         ln -s $dotfiles_dir/$f .$f
@@ -14,18 +20,20 @@ done
 
 # .vim/*
 if [ -L .vimrc ]; then rm .vimrc; fi
-if [ ! -e .vimrc ]; then ln -s .vim/vimrc .vimrc; fi
-if [ ! -d .vim/plugin ]; then mkdir .vim/plugin; fi
-if [ -f .vim/bundle/dbgpclient/plugin/debugger.py ]; then
-    if [ -L .vim/plugin/debugger.py ]; then rm .vim/plugin/debugger.py; fi
-    ln -s ../bundle/dbgpclient/plugin/debugger.py .vim/plugin/debugger.py
+if [ -e .vim ]; then
+    if [ ! -e .vimrc ]; then ln -s .vim/vimrc .vimrc; fi
+    if [ ! -d .vim/plugin ]; then mkdir .vim/plugin; fi
+    if [ -f .vim/bundle/dbgpclient/plugin/debugger.py ]; then
+        if [ -L .vim/plugin/debugger.py ]; then rm .vim/plugin/debugger.py; fi
+        ln -s ../bundle/dbgpclient/plugin/debugger.py .vim/plugin/debugger.py
+    fi
+    if [ -d .vim/bundle/commandt ]; then
+        cd .vim/bundle/commandt/ruby/command-t
+        ruby extconf.rb
+        make
+    fi
+    cd ~
 fi
-if [ -d .vim/bundle/commandt ]; then
-    cd .vim/bundle/commandt/ruby/command-t
-    ruby extconf.rb
-    make
-fi
-cd ~
 
 # .bash/*
 for f in _profile rc; do

@@ -175,12 +175,24 @@ syntax on
 set background=dark
 colorscheme desert
 if version >= 703
-    " Highlight trailing white-space, but not when I'm typing it in insert mode
+    " Highlight bad white-space and other bad characters:
+    "
+    " Highlight trailing white-space, only not when I'm typing it in insert
+    " mode, e.g.    
+    "
+    " Determine if tab- or space-indented by looking at right-most indent
+    " character; if it's a tab, then highlight all space indenting, and vice
+    " versa, e.g.
+    "      	   	tab-indented text
+    "	  	        space-indented text
+    "
+    " Highlight any occurrences of $$, which is usually a mistake
+    "
     highlight BadCharacters ctermbg=red
-    match BadCharacters /\s\+$/
-    autocmd BufWinEnter * match BadCharacters /\s\+$\|\$\$\@=/
-    autocmd InsertEnter * match BadCharacters /\s\+\%#\@<!$\|\$\$\@=/
-    autocmd InsertLeave * match BadCharacters /\s\+$\|\$\$\@=/
+    match BadCharacters /\s\+$\|\t\+\( \(\s* \)\?\S\)\@=\| \+\(\t\(\s*\t\)\?\S\)\@=\|\$\$\@=/
+    autocmd BufWinEnter * match BadCharacters /\s\+$\|\t\+\( \(\s* \)\?\S\)\@=\| \+\(\t\(\s*\t\)\?\S\)\@=\|\$\$\@=/
+    autocmd InsertEnter * match BadCharacters /\s\+\%#\@<!$\|\t\+\( \(\s* \)\?\S\)\@=\| \+\(\t\(\s*\t\)\?\S\)\@=\|\$\$\@=/
+    autocmd InsertLeave * match BadCharacters /\s\+$\|\t\+\( \(\s* \)\?\S\)\@=\| \+\(\t\(\s*\t\)\?\S\)\@=\|\$\$\@=/
     autocmd BufWinLeave * call clearmatches()
 endif
 
@@ -492,12 +504,12 @@ function! LoadTags(file)
    execute tagcommand
 endfunction
 command! -nargs=1 Ltag :call LoadTags("<args>")
-call LoadTags("httpdocs")
-"call LoadTags("Tig")
-"call LoadTags("Zend")
-"call LoadTags("doctrine")
+"call LoadTags("httpdocs")
+call LoadTags("Tig")
+call LoadTags("Zend")
+call LoadTags("doctrine")
 "call LoadTags("fpdf16")
-"call LoadTags("project")
+call LoadTags("project")
 "call LoadTags("symfony")
 
 " TagList

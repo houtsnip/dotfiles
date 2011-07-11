@@ -42,6 +42,7 @@ function extract {
         echo "Extracting $file to $dir/"
     else
         file="$1"
+        echo "Extracting $file to ./"
     fi
     if [[ -f "$file" ]] ; then
         case "$file" in

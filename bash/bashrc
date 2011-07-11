@@ -41,6 +41,7 @@ if [ -f ~/.shell_servers ]; then
     . ~/.shell_servers
 fi
 
+export BLOCKSIZE=M
 export EDITOR=vim
 export SVN_EDITOR=$EDITOR
 
