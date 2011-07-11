@@ -18,7 +18,7 @@
 	url = git://github.com/tomtom/checksyntax_vim.git
 [submodule "vim/bundle/commandt"]
 	path = vim/bundle/commandt
-	url = git://github.com/wincent/Command-T.git
+	url = git://github.com/houtsnip/vim-Command-T.git
 [submodule "vim/bundle/dbgpclient"]
 	path = vim/bundle/dbgpclient
 	url = git://github.com/houtsnip/vim-DBGp-client.git
