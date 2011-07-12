@@ -6,7 +6,8 @@ local ZSHDIR="$HOME/.zsh"
 # Environment variables
 ###############################
 
-export EDITOR="vim"
+export BLOCKSIZE=M
+export EDITOR=vim
 export PATH="$HOME/bin:$HOME/site/bin:$HOME/site/bin/tig:$HOME/dev/pear/bin:/opt/local/bin:/usr/local/mysql/bin:$PATH"
 
 
@@ -47,10 +48,11 @@ compinit
 ###############################
 
 source "$ZSHDIR/zsh_aliases"
-source ".shell_aliases"
+source "$HOME/.shell_aliases"
 source "$ZSHDIR/zsh_completion"
 source "$ZSHDIR/zsh_functions"
-source ".shell_servers"
+source "$HOME/.shell_functions"
+source "$HOME/.shell_servers"
 #source "$ZSHDIR/kde"
 
 ###############################

@@ -10,6 +10,11 @@ alias ll='ls -la'
 alias lrt='ls -lart'
 alias ls1='ls -1rt | tail -1'
 
+alias du='du -d 1'
+alias du1='du'
+alias du2='du -d 2'
+alias du3='du -d 3'
+
 alias md='mkdir'
 alias rd='rmdir'
 alias q='exit'
@@ -34,6 +39,7 @@ alias svn_rmall='for f in `svn st | grep "^\!" | sed "s/. *//"`; do svn rm $f; d
 alias svn_stc='svn st | grep "^ *C"'
 alias svn_mod2unix="svn st | grep '^M' | sed 's/^M \{7\}\(.*\)/\1/' | xargs dos2unix"
 alias svn_mod2dos="svn st | grep '^M' | sed 's/^M \{7\}\(.*\)/\1/' | xargs unix2dos"
+alias svn_rmsvndirs="find . -name .svn -type d | xargs rm -rf"
 
 alias snv='svn'
 
@@ -41,3 +47,5 @@ alias write_phpinfo="echo '<?php phpinfo();' > phpinfo.php"
 
 alias diff='diff -u'
 
+alias ip="curl -s http://checkip.dyndns.com/ | sed 's/[^0-9\.]//g'"
+alias localip="ipconfig getifaddr en1"
