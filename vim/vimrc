@@ -165,9 +165,11 @@ set nobackup
 set directory=~/.vim/.tmp,~/tmp,/tmp
 " Undoing
 set undolevels=1000 " maximum number of changes that can be undone
-set undofile " keep a persistent backup file
-set undodir=~/.vim/.undo,~/tmp,/tmp
-set undoreload=10000 " maximum number lines to save for undo on a buffer reload
+if version >= 703
+    set undofile " keep a persistent backup file
+    set undodir=~/.vim/.undo,~/tmp,/tmp
+    set undoreload=10000 " maximum number lines to save for undo on a buffer reload
+endif
 
 " Colours
 "
@@ -492,12 +494,12 @@ function! LoadTags(file)
    execute tagcommand
 endfunction
 command! -nargs=1 Ltag :call LoadTags("<args>")
-call LoadTags("httpdocs")
+"call LoadTags("httpdocs")
 "call LoadTags("Tig")
-"call LoadTags("Zend")
+call LoadTags("Zend")
 "call LoadTags("doctrine")
 "call LoadTags("fpdf16")
-"call LoadTags("project")
+call LoadTags("project")
 "call LoadTags("symfony")
 
 " TagList

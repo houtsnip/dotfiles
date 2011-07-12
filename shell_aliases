@@ -15,6 +15,7 @@ alias rd='rmdir'
 alias q='exit'
 alias su='sudo -s'
 
+alias scr='screen -D -R'
 alias ql='qlmanage -p 2>/dev/null'
 
 alias vi='vim'
