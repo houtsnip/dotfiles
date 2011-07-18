@@ -73,3 +73,6 @@
 [submodule "vim/bundle/jquery"]
 	path = vim/bundle/jquery
 	url = git://github.com/nono/jquery.vim.git
+[submodule "vim/bundle/surround"]
+	path = vim/bundle/surround
+	url = git://github.com/houtsnip/vim-surround.git
