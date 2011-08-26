@@ -17,3 +17,19 @@ setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://,:#
 
 " PHP manual pages
 set keywordprg=pman
+
+if version >= 703
+    " Highlight bad white-space and other bad characters:
+    "
+    " Highlight any occurrences of the following (which are usually a
+    " mistake):
+    "
+    " $$
+    " ,,
+    " 'string literal, followed by EOL'
+    "
+    highlight BadPhpCharacters ctermbg=red
+    match BadPhpCharacters /\$\$\@=\|,\@<=,\|['"]$/
+    autocmd BufWinEnter * match BadPhpCharacters /\$\$\@=\|,\@<=,\|['"]$/
+    autocmd BufWinLeave * call clearmatches()
+endif
