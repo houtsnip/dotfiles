@@ -59,6 +59,8 @@ inoremap <silent> <Esc><BS> <C-W>
 " Calling quit will prompt you to save unsaved buffers anyways.
 set hidden
 
+" Disable suspend Vim
+map <C-Z> <Nop>
 
 " Various minor modifications to in-built bindings
 "
@@ -78,8 +80,12 @@ xnoremap < <gv
 " faster viewport scrolling
 nnoremap <C-E> 3<C-E>
 nnoremap <C-Y> 3<C-Y>
+nnoremap <Esc><C-Y> <C-Y>
+nnoremap <Esc><C-E> <C-E>
 vnoremap <C-E> 3<C-E>
 vnoremap <C-Y> 3<C-Y>
+vnoremap <Esc><C-Y> <C-Y>
+vnoremap <Esc><C-E> <C-E>
 " Make j and k go one line down when lines are wrapped
 nnoremap j gj
 nnoremap k gk
@@ -188,8 +194,14 @@ if version >= 703
     "      	   	tab-indented text
     "	  	        space-indented text
     "
-    " Highlight any occurrences of $$, which is usually a mistake
+    " Highlight any occurrences of the following (which are usually a
+    " mistake):
     "
+    " $$
+    " ,,
+    " 'string literal, followed by EOL'
+    "
+    " deleted from regex:  \|,\@<=,\|['"]$
     highlight BadCharacters ctermbg=red
     match BadCharacters /\s\+$\|\t\+\( \(\s* \)\?\S\)\@=\| \+\(\t\(\s*\t\)\?\S\)\@=\|\$\$\@=/
     autocmd BufWinEnter * match BadCharacters /\s\+$\|\t\+\( \(\s* \)\?\S\)\@=\| \+\(\t\(\s*\t\)\?\S\)\@=\|\$\$\@=/
@@ -287,7 +299,7 @@ nnoremap <silent> <F8> :noh<Bar>:set nois<Bar>:echo<CR><Esc>
 "nnoremap <silent> <Leader>h :set hls! hls?<CR>
 
 " Delete all buffers, except for those with unsaved changes
-noremap <leader>bda :bufdo silent! bdelete<CR>
+noremap <Leader>bda :bufdo silent! bdelete<CR>
 
 " Use the arrow keys to move between buffers (useful when opening multiple
 " files from the command line)
@@ -316,9 +328,30 @@ nnoremap <Esc>> <C-W>5>
 nnoremap <Esc>< <C-W>5<
 nmap <Esc>_ <Esc>-
 
-" Custom <leader> macros
-" strip trailing whitespace
-"nnoremap <leader>ks :%s/\s\+$//<CR>:let @/=''<CR>
+" Custom <Leader> macros
+"
+function! <SID>ConvertTabsToSpaces()
+    " Preparation: save last search, and cursor position.
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    " Do the business:
+    %s/\t/        /eg
+    " Clean up: restore previous search history, and cursor position
+    let @/=_s
+    call cursor(l, c)
+endfunction
+function! <SID>StripTrailingCarriageReturns()
+    " Preparation: save last search, and cursor position.
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    " Do the business:
+    %s/\r\+$//e
+    " Clean up: restore previous search history, and cursor position
+    let @/=_s
+    call cursor(l, c)
+endfunction
 function! <SID>StripTrailingWhitespace()
     " Preparation: save last search, and cursor position.
     let _s=@/
@@ -330,14 +363,12 @@ function! <SID>StripTrailingWhitespace()
     let @/=_s
     call cursor(l, c)
 endfunction
+nmap <silent> <Leader>kt :call <SID>ConvertTabsToSpaces()<CR>
+nmap <silent> <Leader>kr :call <SID>StripTrailingCarriageReturns()<CR>
 nmap <silent> <Leader>ks :call <SID>StripTrailingWhitespace()<CR>
 
-" Convert tabs to spaces
-nnoremap <Leader>kt :%s/\t/  /g<CR>
-" Kill DOS line breaks
-nnoremap <Leader>kd :%s///g<CR>
 " Split window vertically
-nnoremap <leader>w <C-W>v<C-W>l
+nnoremap <Leader>w <C-W>v<C-W>l
 
 " Search options
 "
@@ -376,8 +407,8 @@ nnoremap <Esc><C-P> ?<C-P>
 cnoremap <Esc>p <C-P>
 cnoremap <Esc><C-P> <C-P>
 
-" Open help in a vertically-split window 78 columns wide, on the right
-cnoremap <F1> vertical rightbelow help<CR>78<C-W><Bar>:help<Space>
+" Open help in a vertically-split window 80 columns wide, on the right
+cnoremap <F1> vertical rightbelow help<CR>80<C-W><Bar>:help<Space>
 nmap <Leader>h :<F1>
 
 " Shortcuts for saving file
@@ -385,11 +416,11 @@ cnoremap w!! w !sudo tee % >/dev/null
 
 "
 " Quickly save from any mode except insert mode
-nnoremap <C-Z> :w<CR>
-vmap <C-Z> <C-C><C-Z>
-omap <C-Z> <C-C><C-Z>
-cmap <C-Z> <C-C><C-Z>
-inoremap <C-Z> <Nop>
+nnoremap <Esc>s :w<CR>
+vmap <Esc>s <C-C><Esc>s
+omap <Esc>s <C-C><Esc>s
+cmap <Esc>s <C-C><Esc>s
+inoremap <Esc>s <Nop>
 
 " Quickly close the current window
 nnoremap <Leader>q         :q<CR>
@@ -405,10 +436,10 @@ nnoremap <Leader>ls :!ls %:p:h/<CR>
 nnoremap <Leader>mv :!mv % %:p:h/.%:e<Left><Left><Left><Left>
 
 " Close the current buffer
-nnoremap <leader>bd :Bclose<CR>
+nnoremap <Leader>bd :Bclose<CR>
 
 " Close all the buffers
-nnoremap <leader>ba :1,300 bd!<CR>
+nnoremap <Leader>ba :1,300 bd!<CR>
 
 " ACK support
 set grepprg=ack-grep\ -a
@@ -446,7 +477,8 @@ let NERDTreeBookmarksFile = $HOME . "/.vim/NERDTreeBookmarks"
 let NERDTreeShowBookmarks=1
 let NERDTreeShowHidden=1
 let NERDTreeQuitOnOpen=1
-nnoremap <Leader>n :NERDTreeFromBookmark<Space>
+let NERDTreeWinSize=46
+nnoremap <Leader>n :OpenBookmark<Space>
 nnoremap <Esc>n    :NERDTreeToggle<CR>
 vmap <Esc>n <C-C><Esc>n
 omap <Esc>n <C-C><Esc>n
@@ -473,7 +505,7 @@ nnoremap <silent> <Leader>rw :call argumentrewrap#RewrapArguments()<CR>
 nnoremap <silent> <Leader><Leader>r :call argumentrewrap#RewrapArguments()<CR>
 
 " CommandT
-nmap <Esc>t <Leader>t
+nmap <Esc>t :CommandT<CR>
 vmap <Esc>t <C-C><Esc>t
 omap <Esc>t <C-C><Esc>t
 imap <Esc>t <F8><Esc>t
@@ -481,8 +513,7 @@ cmap <Esc>t <C-C><Esc>t
 let g:CommandTMaxHeight = 20
 let g:CommandTCursorLeftMap = '<C-B>'
 let g:CommandTCursorRightMap = '<C-F>'
-"let g:CommandTBackspaceMap = '<C-H>'
-let g:CommandTDeleteMap = '<C-D>'
+nnoremap <Leader>t :CommandTFlush<CR>
 
 " bufExplorer
 let g:bufExplorerSplitOutPathName = 0
@@ -513,6 +544,8 @@ call LoadTags("Zend")
 "call LoadTags("fpdf16")
 call LoadTags("project")
 "call LoadTags("symfony")
+
+nnoremap <Leader><Leader>p gg/extends<CR>:nohls<CR>:call histdel('/', -1)<CR>:let @/ = histget('/', -1)<CR>w<C-]>
 
 " TagList
 nnoremap <silent> <Esc>m :TlistToggle<CR>
@@ -561,6 +594,9 @@ let g:showmarks_textlower = ' '
 " LustyJuggler
 nnoremap <Esc>b :LustyJuggler<CR>
 
+" DBGp client
+let g:debuggerMaxChildren = 128
+
 " run file with PHP CLI (CTRL-M)
 autocmd FileType php noremap <Leader><Leader>m :w!<CR>:!/usr/bin/php %<CR>
 
@@ -583,13 +619,13 @@ endfunction
 " on save, make file executable if has shebang line with '/bin/'
 autocmd BufWritePost * if (getline(1) =~ "^#!.*/bin/") | :call MakeExecutable() | endif
 
-iab lorem Lorem ipsum dolor sit amet, consectetur adipisicing elit<Space>
-iab llorem Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation<Space>
-iab llorem Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<Space>
+iab lorem Lorem ipsum dolor sit amet, consectetur adipisicing elit
+iab llorem Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+iab lllorem Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 " Edit the vimrc file
-"nmap <silent> <leader>ev :e $MYVIMRC<CR>
-"nmap <silent> <leader>sv :so $MYVIMRC<CR>
+"nmap <silent> <Leader>ev :e $MYVIMRC<CR>
+"nmap <silent> <Leader>sv :so $MYVIMRC<CR>
 "autocmd! bufwritepost .vimrc source! %
 nnoremap <Leader>; :e ~/.vimrc<CR><C-W>_
 "nnoremap <Leader>;! :e! ~/.vimrc<CR><C-W>_
@@ -616,15 +652,18 @@ nmap <Leader>v "+gp
 "cmap vv <C-r>+
 set pastetoggle=<F7>
 " Yank/paste to the OS clipboard with ,y and ,p
-nmap <leader>y "+y
-nmap <leader>Y "+yy
-nmap <leader>p "+p
-nmap <leader>P "+P
+nmap <Leader>y "+y
+nmap <Leader>Y "+yy
+nmap <Leader>p "+p
+nmap <Leader>P "+P
 " Copy line - like yyp but keep cursor position
-nnoremap <silent> <Esc>c :copy .-1<CR>
+nnoremap <silent> <Esc>c :copy .<CR>
 imap     <silent> <Esc>c <C-O><Esc>c
+nnoremap <silent> <Esc>C :copy .-1<CR>
+imap     <silent> <Esc>C <C-O><Esc>C
 " In visual mode, copy selected text and keep selection
-xnoremap <Esc>c y'>pgv
+xnoremap <Esc>c y'<Pgv
+xnoremap <Esc>C y'>pgv
 
 " Quick command-line ranges
 " This slows down : but I have ; as a quicker map for command mode
@@ -657,6 +696,8 @@ nmap     :ab :a(
 nmap     :i( !i(<BS>
 nmap     :i) :i(
 nmap     :ib :i(
+nnoremap :at !at<BS>
+nnoremap :it !it<BS>
 
 " Better filter commands
 nnoremap !%  :%!
@@ -701,6 +742,8 @@ nmap     Zab Za(
 nmap     Zi( :i(s!!!g<Left><Left><Left>
 nmap     Zi) Zi(
 nmap     Zib Zi(
+nmap     Zat :ats!!!g<Left><Left><Left>
+nmap     Zit :its!!!g<Left><Left><Left>
 " Do a substitution within this selection
 xnoremap Zv  :s!!!g<Left><Left><Left>
 " Substitute the selected string
@@ -741,6 +784,8 @@ xmap     Zab Za(
 xmap     Zi( "zyZi(<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR><Right>
 xmap     Zi) Zi(
 xmap     Zib Zi(
+xmap     Zat "zyZat<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR><Right>
+xmap     Zit "zyZit<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<CR><Right>
 
 " Pull word under cursor into LHS of a substitution!
 nnoremap Zw%  "zyiw:%s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
@@ -781,6 +826,8 @@ nmap     Zwab Zwa(
 nmap     Zwi( "zyiw:i(s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
 nmap     Zwi) Zwi(
 nmap     Zwib Zwi(
+nmap     Zwat "zyiw:ats!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zwit "zyiw:its!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
 
 " Pull WORD under cursor into LHS of a substitution!
 nnoremap ZW%  "zyiW:%s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
@@ -821,6 +868,8 @@ nmap     ZWab ZWa(
 nmap     ZWi( "zyiW:i(s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
 nmap     ZWi) ZWi(
 nmap     ZWib ZWi(
+nmap     ZWat "zyiW:ats!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZWit "zyiW:its!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
 
 " Repeat-commands
 "
@@ -884,18 +933,18 @@ map <Esc>' lmn"my`m/<C-R>m<CR>`n
 map <Esc>@ lmn"my`m?<C-R>m<CR>`n
 
 " Insert Comment
-map <leader>/ I// <ESC>
-" map <leader>cc <plug>NERDCommenterAlignLeft
-" map <leader>cl <plug>NERDCommenterAlignLeft
-" map <leader>cu <plug>NERDCommenterUncomment
-" map <leader>ci <plug>NERDCommenterToggle
+map <Leader>/ I// <ESC>
+" map <Leader>cc <plug>NERDCommenterAlignLeft
+" map <Leader>cl <plug>NERDCommenterAlignLeft
+" map <Leader>cu <plug>NERDCommenterUncomment
+" map <Leader>ci <plug>NERDCommenterToggle
 
 " Also use emacs-style '1' to make this window the only one
-map <leader>1 <C-W>o
-map <leader>2 <C-W>s
-map <leader>3 <C-W>v
+map <Leader>1 <C-W>o
+map <Leader>2 <C-W>s
+map <Leader>3 <C-W>v
 " Close window shortcuts
-map <leader>0 <C-W>c
+map <Leader>0 <C-W>c
 
 " Quickfix Mappings {{{2
 " " Go next/prev error/search result
@@ -943,7 +992,7 @@ function! s:BlastBuffer()
         :BW!
     endif
 endfunction
-map <silent> <leader>k :call <SID>BlastBuffer()<Enter>
+map <silent> <Leader>k :call <SID>BlastBuffer()<Enter>
 
 " NextIndent()
 
@@ -1033,46 +1082,46 @@ digraphs Eu 8364 " Euro sign
 
 " Use ,d (or ,dd or ,dj or 20,dd) to delete a line without adding it to the
 " yanked stack (also, in visual mode)
-nnoremap <silent> <leader>d "_d
-xnoremap <silent> <leader>d "_d
+nnoremap <silent> <Leader>d "_d
+xnoremap <silent> <Leader>d "_d
 
 " Quick alignment of text
-nnoremap <leader>al :left<CR>
-nnoremap <leader>ar :right<CR>
-nnoremap <leader>ac :center<CR>
+nnoremap <Leader>al :left<CR>
+nnoremap <Leader>ar :right<CR>
+nnoremap <Leader>ac :center<CR>
 
 " Managing buffers with LustyJuggler {{{
 map ,b :LustyJuggler<CR>
 
 " Reselect text that was just pasted with ,v or ,V
-nnoremap <leader>v v`[
-nnoremap <leader>V `]V`[
+nnoremap <Leader>v v`[
+nnoremap <Leader>V `]V`[
 
 " Conflict markers {{{
 " highlight conflict markers
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 
 " shortcut to jump to next conflict marker
-" nnoremap <silent> <leader>c /^\(<\\|=\\|>\)\{7\}\([^=].\+\)\?$<CR>
+" nnoremap <silent> <Leader>c /^\(<\\|=\\|>\)\{7\}\([^=].\+\)\?$<CR>
 
 " Creating underline/overline headings for markup languages
 " Inspired by http://sphinx.pocoo.org/rest.html#sections
-nnoremap <leader>1 yyPVr=jyypVr=
-nnoremap <leader>2 yyPVr*jyypVr*
-nnoremap <leader>3 yypVr=
-nnoremap <leader>4 yypVr-
-nnoremap <leader>5 yypVr^
-nnoremap <leader>6 yypVr"
+nnoremap <Leader>1 yyPVr=jyypVr=
+nnoremap <Leader>2 yyPVr*jyypVr*
+nnoremap <Leader>3 yypVr=
+nnoremap <Leader>4 yypVr-
+nnoremap <Leader>5 yypVr^
+nnoremap <Leader>6 yypVr"
 
 " show the registers from things cut/yanked
-nnoremap <leader>r :registers<CR>
+nnoremap <Leader>r :registers<CR>
 
 " Hints for other movements
 " <c-w><c-r> rotate window to next spot
 " <c-w><c-x> swap window with current one
 
 " Search for potentially strange non-ascii characters
-map <leader>u :match Error /[\x7f-\xff]/<CR>
+map <Leader>u :match Error /[\x7f-\xff]/<CR>
 
 set complete+=.
 set complete+=k
@@ -1146,7 +1195,8 @@ nmap qfempty l?\(array_key_exists\<Bar>in_array\)(<CR>cwempty<F8>lldt,"_2xf)i[<C
 " Split line at cursor
 nnoremap S i<CR><Esc>k$
 " 'Inside-line' operator-pending-mode mapping
-onoremap <silent> il :<C-U>normal! 0v$h<CR>
+onoremap <silent> il :<C-U>normal! ^v$h<CR>
+onoremap <silent> iL :<C-U>normal! 0v$h<CR>
 
 nnoremap <Leader>bp :Bp<CR>
 
@@ -1161,7 +1211,7 @@ nnoremap gs :set nohls<CR>l?&\=\$<CR>dt,/&\=\$<CR>v/[,)]/s-1<CR>pF,P/&\=\$<CR>:s
 nnoremap gS :set nohls<CR>l?&\=\$<CR>d/[,)]<CR>F,hv?&\=\$<CR>pf,lp2?&\=\$<CR>:set hls<CR>:nohls<CR>
 
 " Toggle Color Column Keybinding
-map <leader>C :call g:ToggleColorColumn()<CR>"
+map <Leader>C :call g:ToggleColorColumn()<CR>"
 " Toggle Color Column
 function! g:ToggleColorColumn()
     if(&cc == 85)
@@ -1172,7 +1222,7 @@ function! g:ToggleColorColumn()
 endfun
 
 " Relative numbering shortcut
-nnoremap <leader>N :call g:ToggleRelativeNumbering()<CR>
+nnoremap <Leader>N :call g:ToggleRelativeNumbering()<CR>
 " Toggle Relative Numbering Function
 function! g:ToggleRelativeNumbering()
     if(&rnu == 1)
@@ -1183,15 +1233,22 @@ function! g:ToggleRelativeNumbering()
 endfunc
 
 " Markdown conversion
-map <leader>M :%!markdown<CR>
-vmap <leader>M :!markdown<CR>
-
-" Markdown Preview
-map <leader>p :Mm<cr>
+map <Leader>M :%!markdown<CR>
+vmap <Leader>M :!markdown<CR>
 
 nmap <Esc><Space> ysl<Space><Space>
-
 
 nmap <F9> <F2>
 nmap <F10> <F3>
 nmap <F11> <F4>
+
+" Alignment mappings
+xnoremap <Leader>a= :Align=<CR>
+xnoremap <Leader>aa :Align =><CR>
+xnoremap <Leader>a, :Align! P101 => , //<CR>
+xnoremap <Leader>af :Align! P110 function { }<CR>
+nmap <Leader>a= Vip<Leader>a=
+nmap <Leader>aa vi)Vk<Leader>aa
+nmap <Leader>a, vi)Vk<Leader>a,
+nmap <Leader>af Vip<Leader>af
+
