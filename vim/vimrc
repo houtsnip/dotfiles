@@ -1131,6 +1131,11 @@ nmap qsc l?\$this-><CR>cf>self::<F8>bb:nohls<CR>
 " Convert self::method to $this->method
 nmap qdc l?self::<CR>c2f:$this-><F8>F$:nohls<CR>
 
+" Convert echo "blah\n" to throw new Exception("blah")
+nmap qte ^ct"throw new Exception(<F8>A<BS><BS><BS><BS>");<F8>jddk^
+" Convert throw new Exception("blah") to echo "blah\n"
+nmap qee ^cf(echo <F8>A<BS><BS><BS>\n";<CR>exit(1);<F8>-
+
 " Convert isset($array['key']) to array_key_exists('key', $array)
 nmap qfake l?\(isset\<Bar>empty\)(<CR>cwarray_key_exists<F8>f[di]h"_2xF$Pa, <F8>?array_key_exists(<CR>:nohls<CR>
 nmap qfia l?\(isset\<Bar>empty\)(<CR>cwin_array<F8>f[di]h"_2xF$Pa, <F8>?in_array(<CR>:nohls<CR>
@@ -1186,3 +1191,7 @@ map <leader>p :Mm<cr>
 
 nmap <Esc><Space> ysl<Space><Space>
 
+
+nmap <F9> <F2>
+nmap <F10> <F3>
+nmap <F11> <F4>

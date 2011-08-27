@@ -28,7 +28,7 @@ alias vimr='vi `lsmr`'
 
 alias tree='tree -C'
 alias grep='grep --color=auto'
-alias apachectl="sudo /opt/local/apache2/bin/apachectl"
+alias apachectl="sudo /usr/sbin/apache2ctl"
 alias mongod="sudo mongod"
 
 alias last_trace='vi ~/dev/xdebug/`ls -t ~/dev/xdebug | sed -n "1p"`'
