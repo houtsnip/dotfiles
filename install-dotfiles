@@ -1,34 +1,35 @@
 #! /bin/bash
 
-dotfiles_dir=`dirname $0`
-cd ~
+home_dir=~
+cd `dirname $0`
+dotfiles_dir=`pwd -P`
 
 for f in ackrc gitconfig gitignore_global shell_aliases shell_functions shell_servers vim bash zsh; do
-    if [ -L .$f ]; then
-        rm .$f
+    if [ -L $home_dir/.$f ]; then
+        rm $home_dir/.$f
     fi
-    if [ -e .$f ]; then
-	echo .$f exists
+    if [ -e $home_dir/.$f ]; then
+	echo $home_dir/.$f exists
     fi
     if [ ! -e $dotfiles_dir/$f ]; then
 	echo $dotfiles_dir/$f doesnt exist
     fi
-    if [ ! -e .$f -a -e $dotfiles_dir/$f ]; then
-        ln -s $dotfiles_dir/$f .$f
+    if [ ! -e $home_dir/.$f -a -e $dotfiles_dir/$f ]; then
+        ln -s $dotfiles_dir/$f $home_dir/.$f
     fi
 done
 
 # .vim/*
-if [ -L .vimrc ]; then rm .vimrc; fi
-if [ -e .vim ]; then
-    if [ ! -e .vimrc ]; then ln -s .vim/vimrc .vimrc; fi
-    if [ ! -d .vim/plugin ]; then mkdir .vim/plugin; fi
-    if [ -f .vim/bundle/dbgpclient/plugin/debugger.py ]; then
-        if [ -L .vim/plugin/debugger.py ]; then rm .vim/plugin/debugger.py; fi
-        ln -s ../bundle/dbgpclient/plugin/debugger.py .vim/plugin/debugger.py
+if [ -L $home_dir/.vimrc ]; then rm $home_dir/.vimrc; fi
+if [ -e $home_dir/.vim ]; then
+    if [ ! -e $home_dir/.vimrc ]; then ln -s $home_dir/.vim/vimrc $home_dir/.vimrc; fi
+    if [ ! -d $home_dir/.vim/plugin ]; then mkdir $home_dir/.vim/plugin; fi
+    if [ -f $home_dir/.vim/bundle/dbgpclient/plugin/debugger.py ]; then
+        if [ -L $home_dir/.vim/plugin/debugger.py ]; then rm $home_dir/.vim/plugin/debugger.py; fi
+        ln -s ../bundle/dbgpclient/plugin/debugger.py $home_dir/.vim/plugin/debugger.py
     fi
-    if [ -d .vim/bundle/commandt ]; then
-        cd .vim/bundle/commandt/ruby/command-t
+    if [ -d $home_dir/.vim/bundle/commandt ]; then
+        cd $home_dir/.vim/bundle/commandt/ruby/command-t
         ruby extconf.rb
         make
     fi
@@ -37,19 +38,19 @@ fi
 
 # .bash/*
 for f in _profile rc; do
-    if [ -L .bash$f ]; then
-        rm .bash$f
+    if [ -L $home_dir/.bash$f ]; then
+        rm $home_dir/.bash$f
     fi
-    if [ ! -e .bash$f -a -e .bash/bash$f ]; then
-        ln -s .bash/bash$f .bash$f
+    if [ ! -e $home_dir/.bash$f -a -e $home_dir/.bash/bash$f ]; then
+        ln -s $home_dir/.bash/bash$f $home_dir/.bash$f
     fi
 done
 # .zsh/*
 for f in login profile shenv shrc; do
-    if [ -L .z$f ]; then
-        rm .z$f
+    if [ -L $home_dir/.z$f ]; then
+        rm $home_dir/.z$f
     fi
-    if [ ! -e .z$f -a -e .zsh/z$f ]; then
-        ln -s .zsh/z$f .z$f
+    if [ ! -e $home_dir/.z$f -a -e $home_dir/.zsh/z$f ]; then
+        ln -s $home_dir/.zsh/z$f .z$f
     fi
 done
