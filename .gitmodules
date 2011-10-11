@@ -78,4 +78,4 @@
 	url = git://github.com/nono/jquery.vim.git
 [submodule "vim/bundle/gundo"]
 	path = vim/bundle/gundo
-	url = http://github.com/sjl/gundo.vim.git
+	url = git://github.com/sjl/gundo.vim.git
