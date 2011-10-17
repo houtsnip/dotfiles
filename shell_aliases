@@ -10,10 +10,10 @@ alias ll='ls -la'
 alias lrt='ls -lart'
 alias ls1='ls -1rt | tail -1'
 
-alias du='du -d 1'
+alias du='du --max-depth 1'
 alias du1='du'
-alias du2='du -d 2'
-alias du3='du -d 3'
+alias du2='du --max-depth 2'
+alias du3='du --max-depth 3'
 
 alias md='mkdir'
 alias rd='rmdir'
@@ -23,6 +23,7 @@ alias su='sudo -s'
 alias scr='screen -D -R'
 alias ql='qlmanage -p 2>/dev/null'
 
+alias less='less -R'
 alias vi='vim'
 alias vimr='vi `lsmr`'
 

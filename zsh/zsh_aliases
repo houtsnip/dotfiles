@@ -1,6 +1,6 @@
 # .zsh_aliases
 
-alias ls='ls -FG'
+alias ls='ls -F --color=auto'
 alias diff='grc diff -u'
 alias less='less -R'
 alias ls_links="find ~ -type l -maxdepth 1 | grep -v '/\(\.\|site\)' | xargs ls -lFG"

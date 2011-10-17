@@ -29,6 +29,7 @@ if [ -e $home_dir/.vim ]; then
         ln -s ../bundle/dbgpclient/plugin/debugger.py $home_dir/.vim/plugin/debugger.py
     fi
     if [ -d $home_dir/.vim/bundle/commandt ]; then
+        # requires ruby, ruby1.8-dev
         cd $home_dir/.vim/bundle/commandt/ruby/command-t
         ruby extconf.rb
         make

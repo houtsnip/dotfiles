@@ -98,6 +98,8 @@ xnoremap g' g`
 " Don't prompt for 'Press ENTER or type command to continue' when viewing man pages
 nnoremap K K<CR>
 
+map € #
+
 
 " Define Meta-E as an easy binding for gE (move to end of previous WORD)
 nnoremap <Esc>e gE
