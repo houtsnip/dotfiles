@@ -4,7 +4,7 @@ home_dir=~
 cd `dirname $0`
 dotfiles_dir=`pwd -P`
 
-for f in ackrc gitconfig gitignore_global shell_aliases shell_functions shell_servers vim bash zsh; do
+for f in ackrc gitconfig gitignore_global shell_aliases shell_functions shell_servers vim bash xmodmap zsh; do
     if [ -L $home_dir/.$f ]; then
         rm $home_dir/.$f
     fi

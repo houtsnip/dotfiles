@@ -15,6 +15,11 @@ alias du1='du'
 alias du2='du --max-depth 2'
 alias du3='du --max-depth 3'
 
+alias tree1='tree -L 1'
+alias tree2='tree -L 2'
+alias tree3='tree -L 3'
+alias tree4='tree -L 4'
+
 alias md='mkdir'
 alias rd='rmdir'
 alias q='exit'
