@@ -4,9 +4,11 @@ home_dir=~
 cd `dirname $0`
 dotfiles_dir=`pwd -P`
 
+echo Initialising Git submodules ...
 git submodule init
 git submodule update --init --recursive
 
+echo Creating symlinks ...
 for f in ackrc gitconfig gitignore_global inputrc shell_aliases shell_functions vim bash xmodmap zsh; do
     if [ -L $home_dir/.$f ]; then
         rm $home_dir/.$f
@@ -32,7 +34,8 @@ if [ -e $home_dir/.vim ]; then
         ln -s ../bundle/dbgpclient/plugin/debugger.py $home_dir/.vim/plugin/debugger.py
     fi
     if [ -d $home_dir/.vim/bundle/commandt ]; then
-        # requires ruby, ruby1.8-dev
+        echo Compiling Command-T Vim plugin ...
+        # requires ruby, ruby1.8-e(v
         cd $home_dir/.vim/bundle/commandt/ruby/command-t/ext/command-t
         ruby extconf.rb
         make
@@ -40,7 +43,8 @@ if [ -e $home_dir/.vim ]; then
     cd ~
 fi
 
-# .bash/*
+echo Creating shell-specific symlinks ...
+# .bash/
 for f in _profile rc; do
     if [ -L $home_dir/.bash$f ]; then
         rm $home_dir/.bash$f
@@ -58,3 +62,4 @@ for f in login profile shenv shrc; do
         ln -s $home_dir/.zsh/z$f .z$f
     fi
 done
+
