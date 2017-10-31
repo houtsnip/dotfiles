@@ -4,7 +4,10 @@ home_dir=~
 cd `dirname $0`
 dotfiles_dir=`pwd -P`
 
-for f in ackrc gitconfig gitignore_global inputrc shell_aliases shell_functions shell_servers vim bash xmodmap zsh; do
+git submodule init
+git submodule update --init --recursive
+
+for f in ackrc gitconfig gitignore_global inputrc shell_aliases shell_functions vim bash xmodmap zsh; do
     if [ -L $home_dir/.$f ]; then
         rm $home_dir/.$f
     fi
@@ -30,7 +33,7 @@ if [ -e $home_dir/.vim ]; then
     fi
     if [ -d $home_dir/.vim/bundle/commandt ]; then
         # requires ruby, ruby1.8-dev
-        cd $home_dir/.vim/bundle/commandt/ruby/command-t
+        cd $home_dir/.vim/bundle/commandt/ruby/command-t/ext/command-t
         ruby extconf.rb
         make
     fi
