@@ -600,9 +600,9 @@ cmap <Esc>n <C-C><Esc>n
 let g:startify_change_to_dir = 0
 let g:startify_files_number = 5
 let g:startify_bookmarks = [
-\ { 'a': '~/live.deedpoll/private/Symfony/web/app.php' },
-\ { 'h': '~/live.deedpoll/private/Symfony/web/.htaccess' },
-\ { 'p': '~/live.deedpoll/private/Symfony/app/config/parameters_common.yml' },
+\ { 'a': '~/live.site/private/Symfony/web/app.php' },
+\ { 'h': '~/live.site/private/Symfony/web/.htaccess' },
+\ { 'p': '~/live.site/private/Symfony/app/config/parameters_common.yml' },
 \ { 't': '~/tmp' },
 \ { 'v': '~/.vimrc' },
 \ ]
@@ -1591,42 +1591,6 @@ iab infolink {{ macro.link(path('info', { page: '' }), '') }}<Left><Left><Left><
 iab infolink# {{ macro.link(path('info', { page: '' }) ~ '#', '') }}<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
 iab questionlink {{ macro.link(path('question', { question: '' }), '', 'help') }}<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
 iab phpecho <?php echo htmlspecialchars(); ?><Left><Left><Left><Left><Left>
-
-"iab dvla <abbr class="initialism" title="Driver and Vehicle Licensing Agency">DVLA</abbr>
-"iab ips <abbr class="initialism" title="Identity &amp; Passport Service">IPS</abbr>
-"iab grc <abbr class="initialism" title="Gender Recognition Certificate ">GRC</abbr>
-"iab gro <abbr class="initialism" title="General Register Office">GRO</abbr>
-"iab gros <abbr class="initialism" title="General Register Office for Scotland">GROS</abbr>
-"iab crb <abbr class="initialism" title="Criminal Records Bureau">CRB</abbr>
-"iab ukba <abbr class="initialism" title="U.K. Border Agency">UKBA</abbr>
-"iab nhs <abbr class="initialism" title="National Health Service">NHS</abbr>
-"iab gmc <abbr class="initialism" title="General Medical Council">GMC</abbr>
-"iab ipaddress <abbr class="initialism" title="Internet Protocol">IP</abbr> address
-"iab ico <abbr class="initialism" title="Information Commissioner's Office">ICO</abbr>
-"iab hmrc <abbr class="initialism" title="HM Revenue &amp; Customs">HMRC</abbr>
-"iab hmpo <abbr class="initialism" title="HM">HM</abbr> Passport Office
-"iab cis <abbr class="initialism" title="Construction Industry Scheme">CIS</abbr>
-"iab visor <abbr class="initialism not-uppercase" title="Violent and Sex Offender Register">ViSOR</abbr>
-"iab faq <abbr class="initialism" title="Frequently Asked Questions">FAQ</abbr>
-"iab pdf <abbr class="initialism" title="Portable Document Format">PDF</abbr>
-"iab isp <abbr class="initialism" title="Internet Service Provider">ISP</abbr>
-"iab csa <abbr class="initialism" title="Child Support Agency">CSA</abbr>
-"iab cms <abbr class="initialism" title="Child Maintenance Service">CMS</abbr>
-"iab ivf <abbr class="initialism" title="in vitro fertilisation">IVF</abbr>
-"iab dbs <abbr class="initialism" title="Disclosure and Barring Service">DBS</abbr>
-"iab fco <abbr class="initialism" title="Foreign &amp; Commonwealth Office">FCO</abbr>
-
-"iab dvlal Driver and Vehicle Licensing Agency
-"iab ipsl Identity &amp; Passport Service
-"iab grcl Gender Recognition Certificate
-"iab grol General Register Office
-"iab grosl General Register Office for Scotland
-"iab ukbal U.K. Border Agency
-"iab gmcl General Medical Council
-
-"iab dpo Deed Poll Office
-"iab dposite deed-poll-office.org.uk site
-"iab dsr Distance Selling Regulations
 
 iab 1st 1<sup>st</sup>
 iab 2nd 2<sup>nd</sup>
