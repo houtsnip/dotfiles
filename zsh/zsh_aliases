@@ -1,6 +1,10 @@
 # .zsh_aliases
 
-alias ls='ls -F --color=auto'
+if [ "`uname -s`" = 'Darwin' ]; then
+    alias ls='ls -FG'
+else
+    alias ls='ls -F --color=auto'
+fi
 alias diff='grc diff -u'
 alias less='less -R'
 alias ls_links="find ~ -type l -maxdepth 1 | grep -v '/\(\.\|site\)' | xargs ls -lFG"

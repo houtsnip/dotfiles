@@ -1,11 +1,11 @@
 # .bashrc
 
 # Source global definitions
-if [[ "$SHELL" == */zsh ]]; then
+if [[ "$SHELL" = */zsh ]]; then
     if [ -f /etc/zsh ]; then
         . /etc/zsh
     fi
-elif [[ "$SHELL" == */bash ]]; then
+elif [[ "$SHELL" = */bash ]]; then
     if [ -f /etc/bashrc ]; then
         . /etc/bashrc
     elif [ -f /etc/bash.bashrc ]; then
@@ -121,11 +121,9 @@ elif ! agent_has_keys; then
 fi
 unset env
 
-# MacPorts Installer addition on 2010-08-16_at_10:06:30: adding an appropriate PATH variable for use with MacPorts.
 if [ -d /opt/local ]; then
     export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 fi
-# Finished adapting your PATH environment variable for use with MacPorts.
 
 # Added by autojump install.sh
 if [ -f /etc/profile.d/autojump.bash ]; then

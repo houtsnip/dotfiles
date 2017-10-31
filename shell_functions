@@ -7,7 +7,7 @@ function rgrep {
 }
 
 function set_dev_site {
-    if [[ "$1" == "" ]]; then
+    if [[ "$1" = "" ]]; then
         return
     fi
     cd ~
@@ -26,7 +26,7 @@ function export_bol {
 function cdl { cd $1; ll; }
 
 function extract {
-    if [[ "-d" == "$1" ]]; then
+    if [[ "-d" = "$1" ]]; then
         file="$2"
         case $file in
             *.tar.*)  dir=${file%.tar.*}  ;;
@@ -61,7 +61,7 @@ function extract {
     else
         echo "'$file' is not a valid file"
     fi
-    if [[ "-d" == "$1" ]]; then
+    if [[ "-d" = "$1" ]]; then
         mv $file ..
         cd ..
     fi

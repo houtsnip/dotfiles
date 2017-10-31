@@ -280,8 +280,6 @@ setopt HIST_FIND_NO_DUPS
 
 #}}}
 
-
-# autojump
 if [ -e /etc/profile.d/autojump.zsh ]; then
     source /etc/profile.d/autojump.zsh
 fi

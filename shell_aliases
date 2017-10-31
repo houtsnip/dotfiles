@@ -11,10 +11,17 @@ alias ll='ls -la'
 alias lrt='ls -lart'
 alias ls1='ls -1rt | tail -1'
 
-alias du='du --max-depth 1'
-alias du1='du'
-alias du2='du --max-depth 2'
-alias du3='du --max-depth 3'
+if [ "`uname -s`" = 'Darwin' ]; then
+    alias du='du -d 1'
+    alias du1='du'
+    alias du2='du -d 2'
+    alias du3='du -d 3'
+else
+    alias du='du --max-depth 1'
+    alias du1='du'
+    alias du2='du --max-depth 2'
+    alias du3='du --max-depth 3'
+fi
 
 alias tree1='tree -L 1'
 alias tree2='tree -L 2'
@@ -39,7 +46,11 @@ alias vi='vim'
 alias vimr='vi `lsmr`'
 
 alias tree='tree -C'
-alias grep='ag'
+if [ "`uname -s`" = 'Darwin' ]; then
+    alias grep='grep --color=auto'
+else
+    alias grep='ag'
+fi
 alias apachectl="sudo /usr/sbin/apache2ctl"
 alias mongod="sudo mongod"
 
