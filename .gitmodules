@@ -7,9 +7,6 @@
 [submodule "vim/bundle/camelcasemotion"]
 	path = vim/bundle/camelcasemotion
 	url = git://github.com/bkad/CamelCaseMotion.git
-[submodule "vim/bundle/commandt"]
-	path = vim/bundle/commandt
-	url = git://github.com/houtsnip/vim-Command-T.git
 [submodule "vim/bundle/dbgpclient"]
 	path = vim/bundle/dbgpclient
 	url = git://github.com/houtsnip/vim-DBGp-client.git
