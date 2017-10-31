@@ -2,6 +2,7 @@
 # Aliases common to bash and zsh
 
 alias agi='sudo apt-get install'
+alias apt-search='apt-cache search'
 alias pi='sudo port install'
 alias yi='sudo yum install'
 
@@ -19,6 +20,11 @@ alias tree1='tree -L 1'
 alias tree2='tree -L 2'
 alias tree3='tree -L 3'
 alias tree4='tree -L 4'
+alias treed='tree -d'
+alias tree1d='tree -L 1 -d'
+alias tree2d='tree -L 2 -d'
+alias tree3d='tree -L 3 -d'
+alias tree4d='tree -L 4 -d'
 
 alias md='mkdir'
 alias rd='rmdir'
@@ -33,7 +39,7 @@ alias vi='vim'
 alias vimr='vi `lsmr`'
 
 alias tree='tree -C'
-alias grep='grep --color=auto'
+alias grep='ag'
 alias apachectl="sudo /usr/sbin/apache2ctl"
 alias mongod="sudo mongod"
 
@@ -55,4 +61,6 @@ alias diff='diff -u'
 
 alias ip="curl -s http://checkip.dyndns.com/ | sed 's/[^0-9\.]//g'"
 alias localip="ipconfig getifaddr en1"
+
+alias w3m="w3m https://encrypted.google.com/"
 

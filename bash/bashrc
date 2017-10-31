@@ -1,15 +1,25 @@
 # .bashrc
 
 # Source global definitions
-if [ -f /etc/bashrc ]; then
-    . /etc/bashrc
-fi
-# bash-completion
-if [ -f /opt/local/etc/bash_completion ]; then
-    . /opt/local/etc/bash_completion
+if [[ "$SHELL" == */zsh ]]; then
+    if [ -f /etc/zsh ]; then
+        . /etc/zsh
+    fi
+elif [[ "$SHELL" == */bash ]]; then
+    if [ -f /etc/bashrc ]; then
+        . /etc/bashrc
+    elif [ -f /etc/bash.bashrc ]; then
+        . /etc/bash.bashrc
+    fi
+    # bash-completion
+    if [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
+    elif [ -f /opt/local/etc/bash_completion ]; then
+        . /opt/local/etc/bash_completion
+    fi
 fi
 
-export PATH=~/site/bin:~/site/bin/tig:~/bin:/home/bin:~/dev/pear/bin:/usr/local/mysql/bin:$PATH
+export PATH=~/bin:/home/bin:/usr/local/pgsql/bin:/usr/local/mysql/bin:$PATH:/usr/local/bin
 
 umask 0002
 
@@ -56,15 +66,69 @@ export LESS_TERMCAP_us=$'\E[01;04;32m'
 
 export ACK_COLOR_MATCH=red
 
-bind '"\e[A"':history-search-backward
-bind '"\e[B"':history-search-forward
+if type bind >/dev/null 2>&1; then
+    bind '"\e[A"':history-search-backward
+    bind '"\e[B"':history-search-forward
+fi
+
+if type bindkey >/dev/null 2>&1; then
+    bindkey "^[[A" history-beginning-search-backward
+    bindkey "^[[B" history-beginning-search-forward
+fi
 
 # User specific aliases and functions
 
+# Run ssh-agent automatically
+# <https://help.github.com/articles/working-with-ssh-key-passphrases>
+#
+# Note: ~/.ssh/environment should not be used, as it
+#       already has a different purpose in SSH.
+env=~/.ssh/agent.env
+# Note: Don't bother checking SSH_AGENT_PID. It's not used
+#       by SSH itself, and it might even be incorrect
+#       (for example, when using agent-forwarding over SSH).
+agent_is_running() {
+    if [ "$SSH_AUTH_SOCK" ]; then
+        # ssh-add returns:
+        #   0 = agent running, has keys
+        #   1 = agent running, no keys
+        #   2 = agent not running
+        ssh-add -l >/dev/null 2>&1 || [ $? -eq 1 ]
+    else
+        false
+    fi
+}
+agent_has_keys() {
+    ssh-add -l >/dev/null 2>&1
+}
+agent_load_env() {
+    . "$env" >/dev/null
+}
+agent_start() {
+    (umask 077; ssh-agent >!"$env")
+    . "$env" >/dev/null
+}
+if ! agent_is_running; then
+    agent_load_env
+fi
+# if your keys are not stored in ~/.ssh/id_rsa.pub or ~/.ssh/id_dsa.pub, you'll need
+# to paste the proper path after ssh-add
+if ! agent_is_running; then
+    agent_start
+    ssh-add
+elif ! agent_has_keys; then
+    ssh-add
+fi
+unset env
+
 # MacPorts Installer addition on 2010-08-16_at_10:06:30: adding an appropriate PATH variable for use with MacPorts.
-export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+if [ -d /opt/local ]; then
+    export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+fi
 # Finished adapting your PATH environment variable for use with MacPorts.
 
 # Added by autojump install.sh
-source /etc/profile.d/autojump.bash
+if [ -f /etc/profile.d/autojump.bash ]; then
+    source /etc/profile.d/autojump.bash
+fi
 

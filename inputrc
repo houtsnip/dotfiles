@@ -1,0 +1,17 @@
+$if mode=emacs
+
+    "9": "["
+    "0": "]"
+    "(": "{"
+    ")": "}"
+
+    "7": "-"
+    "8": "="
+    "&": "_"
+    "*": "+"
+
+$endif
+
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+

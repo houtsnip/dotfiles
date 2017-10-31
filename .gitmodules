@@ -1,21 +1,12 @@
 [submodule "vim/bundle/abolish"]
 	path = vim/bundle/abolish
 	url = git://github.com/tpope/vim-abolish
-[submodule "vim/bundle/ack"]
-	path = vim/bundle/ack
-	url = git://github.com/mileszs/ack.vim.git
-[submodule "vim/bundle/align"]
-	path = vim/bundle/align
-	url = git://github.com/houtsnip/vim-align.git
 [submodule "vim/bundle/argumentrewrap"]
 	path = vim/bundle/argumentrewrap
 	url = git://github.com/jakobwesthoff/argumentrewrap.git
 [submodule "vim/bundle/camelcasemotion"]
 	path = vim/bundle/camelcasemotion
 	url = git://github.com/bkad/CamelCaseMotion.git
-[submodule "vim/bundle/checksyntax"]
-	path = vim/bundle/checksyntax
-	url = git://github.com/tomtom/checksyntax_vim.git
 [submodule "vim/bundle/commandt"]
 	path = vim/bundle/commandt
 	url = git://github.com/houtsnip/vim-Command-T.git
@@ -52,30 +43,114 @@
 [submodule "vim/bundle/snipmate"]
 	path = vim/bundle/snipmate
 	url = git://github.com/msanders/snipmate.vim.git
-[submodule "vim/bundle/surround"]
-	path = vim/bundle/surround
-	url = git://github.com/houtsnip/vim-surround.git
 [submodule "vim/bundle/tcomment"]
 	path = vim/bundle/tcomment
 	url = git://github.com/tomtom/tcomment_vim.git
 [submodule "vim/bundle/unimpaired"]
 	path = vim/bundle/unimpaired
 	url = git://github.com/tpope/vim-unimpaired.git
-[submodule "vim/bundle/vcscommand"]
-	path = vim/bundle/vcscommand
-	url = git://github.com/harleypig/vcscommand.vim.git
 [submodule "vim/bundle/task"]
 	path = vim/bundle/task
 	url = git://github.com/samsonw/vim-task.git
 [submodule "vim/bundle/wiki"]
 	path = vim/bundle/wiki
 	url = git://github.com/vim-scripts/vimwiki.git
-[submodule "vim/bundle/zencoding"]
-	path = vim/bundle/zencoding
-	url = git://github.com/mattn/zencoding-vim.git
 [submodule "vim/bundle/jquery"]
 	path = vim/bundle/jquery
 	url = git://github.com/nono/jquery.vim.git
 [submodule "vim/bundle/gundo"]
 	path = vim/bundle/gundo
 	url = git://github.com/sjl/gundo.vim.git
+[submodule "vim/bundle/agit.vim"]
+	path = vim/bundle/agit.vim
+	url = git://github.com/cohama/agit.vim.git
+[submodule "vim/bundle/airline"]
+	path = vim/bundle/airline
+	url = git://github.com/vim-airline/vim-airline.git
+[submodule "vim/bundle/numberstar"]
+	path = vim/bundle/numberstar
+	url = git://github.com/rhysd/vim-numberstar.git
+[submodule "vim/bundle/twig"]
+	path = vim/bundle/twig
+	url = git://github.com/evidens/vim-twig
+[submodule "vim/bundle/operator-replace"]
+	path = vim/bundle/operator-replace
+	url = git://github.com/kana/vim-operator-replace.git
+[submodule "vim/bundle/operator-star"]
+	path = vim/bundle/operator-star
+	url = git://github.com/tyru/operator-star.vim.git
+[submodule "vim/bundle/unite"]
+	path = vim/bundle/unite
+	url = git://github.com/Shougo/unite.vim.git
+[submodule "vim/bundle/speeddating"]
+	path = vim/bundle/speeddating
+	url = git://github.com/tpope/vim-speeddating.git
+[submodule "vim/bundle/visualstar"]
+	path = vim/bundle/visualstar
+	url = git://github.com/thinca/vim-visualstar
+[submodule "vim/bundle/operator-surround"]
+	path = vim/bundle/operator-surround
+	url = git://github.com/rhysd/vim-operator-surround.git
+[submodule "vim/bundle/operator-user"]
+	path = vim/bundle/operator-user
+	url = git://github.com/kana/vim-operator-user
+[submodule "vim/bundle/linediff"]
+	path = vim/bundle/linediff
+	url = git://github.com/AndrewRadev/linediff.vim.git
+[submodule "vim/bundle/textobj-anyblock"]
+	path = vim/bundle/textobj-anyblock
+	url = git://github.com/rhysd/vim-textobj-anyblock.git
+[submodule "vim/bundle/vim-startify"]
+	path = vim/bundle/vim-startify
+	url = git://github.com/mhinz/vim-startify.git
+[submodule "vim/bundle/textobj-user"]
+	path = vim/bundle/textobj-user
+	url = git://github.com/kana/vim-textobj-user.git
+[submodule "vim/bundle/textobj-between"]
+	path = vim/bundle/textobj-between
+	url = git://github.com/thinca/vim-textobj-between.git
+[submodule "vim/bundle/textobj-php"]
+	path = vim/bundle/textobj-php
+	url = git://github.com/akiyan/vim-textobj-php.git
+[submodule "vim/bundle/textobj-underscore"]
+	path = vim/bundle/textobj-underscore
+	url = git://github.com/kana/vim-textobj-underscore.git
+[submodule "vim/bundle/clever-f"]
+	path = vim/bundle/clever-f
+	url = git://github.com/rhysd/clever-f.vim.git
+[submodule "vim/bundle/multiple-cursors"]
+	path = vim/bundle/multiple-cursors
+	url = git://github.com/terryma/vim-multiple-cursors.git
+[submodule "vim/bundle/textobj-line"]
+	path = vim/bundle/textobj-line
+	url = git://github.com/kana/vim-textobj-line.git
+[submodule "vim/bundle/bufsurf"]
+	path = vim/bundle/bufsurf
+	url = git://github.com/ton/vim-bufsurf.git
+[submodule "vim/bundle/gitgutter"]
+	path = vim/bundle/gitgutter
+	url = git://github.com/airblade/vim-gitgutter.git
+[submodule "vim/bundle/ferret"]
+	path = vim/bundle/ferret
+	url = https://github.com/wincent/ferret.git
+[submodule "vim/bundle/easy-align"]
+	path = vim/bundle/easy-align
+	url = git://github.com/junegunn/vim-easy-align.git
+[submodule "vim/bundle/textobj-lastpat"]
+	path = vim/bundle/textobj-lastpat
+	url = git://github.com/kana/vim-textobj-lastpat.git
+[submodule "vim/bundle/characterize"]
+	path = vim/bundle/characterize
+	url = git://github.com/tpope/vim-characterize.git
+[submodule "vim/bundle/indent-guides"]
+	path = vim/bundle/indent-guides
+	url = git://github.com/nathanaelkane/vim-indent-guides.git
+[submodule "vim/bundle/textobj-comment"]
+	path = vim/bundle/textobj-comment
+	url = git://github.com/thinca/vim-textobj-comment.git
+[submodule "vim/bundle/vim-airline-themes"]
+	path = vim/bundle/vim-airline-themes
+	url = git://github.com/vim-airline/vim-airline-themes.git
+[submodule "vim/bundle/textobj-function"]
+	path = vim/bundle/textobj-function
+	url = git://github.com/kana/vim-textobj-function.git

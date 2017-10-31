@@ -35,6 +35,7 @@ fi
 
 echo "Creating tags for directory '$dir' using alias '$name'"
 cd $dir
+if [ ! -e ~/.vim.tags ]; then mkdir ~/.vim.tags; fi
 exec ctags -f ~/.vim.tags/$name \
 -h ".php" -R \
 --exclude="\.svn" \

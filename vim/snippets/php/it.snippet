@@ -1,0 +1,40 @@
+    /**
+     * Returns the current element
+     *
+     * @return mixed
+     */
+    public function current() { return current($this->_${1:data}); }
+
+    /**
+     * Returns the key of the current element
+     *
+     * @return scalar|null
+     */
+    public function key() { return key($this->_$1); }
+
+    /**
+     * Moves the current position to the next element
+     *
+     * This method is called after each foreach loop.
+     *
+     * @return void
+     */
+    public function next() { next($this->_$1); }
+
+    /**
+     * Rewinds back to the first element of the Iterator
+     *
+     * This is the first method called when starting a foreach loop. It will not
+     * be executed after foreach loops.
+     *
+     * @return void
+     */
+    public function rewind() { reset($this->_$1); }
+
+    /**
+     * This method is called after Iterator::rewind() and Iterator::next() to
+     * check if the current position is valid
+     *
+     * @return bool
+     */
+    public function valid() { return null !== key($this->_$1); }

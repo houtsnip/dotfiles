@@ -52,7 +52,9 @@ source "$HOME/.shell_aliases"
 source "$ZSHDIR/zsh_completion"
 source "$ZSHDIR/zsh_functions"
 source "$HOME/.shell_functions"
-source "$HOME/.shell_servers"
+if [ -e "$HOME/.shell_servers" ]; then
+    source "$HOME/.shell_servers"
+fi
 #source "$ZSHDIR/kde"
 
 ###############################
@@ -280,5 +282,7 @@ setopt HIST_FIND_NO_DUPS
 
 
 # autojump
-source /etc/profile.d/autojump.zsh
+if [ -e /etc/profile.d/autojump.zsh ]; then
+    source /etc/profile.d/autojump.zsh
+fi
 
