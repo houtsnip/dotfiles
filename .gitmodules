@@ -157,3 +157,6 @@
 [submodule "vim/bundle/loupe"]
 	path = vim/bundle/loupe
 	url = git://github.com/wincent/loupe.git
+[submodule "vim/bundle/scratch"]
+	path = vim/bundle/scratch
+	url = git://github.com/mtth/scratch.vim.git
