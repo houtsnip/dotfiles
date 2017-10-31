@@ -154,3 +154,6 @@
 [submodule "vim/bundle/operator-trailingspace-killer"]
 	path = vim/bundle/operator-trailingspace-killer
 	url = git://github.com/rhysd/vim-operator-trailingspace-killer.git
+[submodule "vim/bundle/loupe"]
+	path = vim/bundle/loupe
+	url = git://github.com/wincent/loupe.git
