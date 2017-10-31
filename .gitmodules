@@ -160,3 +160,6 @@
 [submodule "vim/bundle/scratch"]
 	path = vim/bundle/scratch
 	url = git://github.com/mtth/scratch.vim.git
+[submodule "vim/bundle/syntastic"]
+	path = vim/bundle/syntastic
+	url = git://github.com/vim-syntastic/syntastic.git
