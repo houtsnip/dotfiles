@@ -7,6 +7,8 @@ set nocompatible " There is no point in being vi compatible (this should also be
 filetype off
 execute pathogen#infect()
 
+call pathogen#helptags()
+
 " Alternative file endings for known file-types
 autocmd BufNewFile,BufRead *.inc set ft=php
 autocmd BufNewFile,BufRead *.phpt set ft=php
@@ -633,13 +635,15 @@ vmap <Esc>t <C-C><Esc>t
 omap <Esc>t <C-C><Esc>t
 imap <Esc>t <F8><Esc>t
 cmap <Esc>t <C-C><Esc>t
-let g:CommandTTraverseSCM = 'pwd'
-let g:CommandTMaxHeight = 20
+let g:CommandTTraverseSCM        = 'pwd'
+let g:CommandTMaxHeight          = 20
+let g:CommandTBackspaceMap       = [ '<BS>', '<C-H>' ]
+let g:CommandTDeleteMap          = [ '<Del>', '<C-D>' ]
 let g:CommandTAcceptSelectionMap = [ '<CR>', '<C-M' ]
-let g:CommandTBackspaceMap = [ '<BS>', '<C-H>' ]
-let g:CommandTCursorLeftMap = [ '<Left>', '<C-B>' ]
-let g:CommandTCursorRightMap = [ '<Right>', '<C-F>' ]
-let g:CommandTRefreshMap = '<C-R>'
+let g:CommandTCancelMap          = [ '<C-C>', '<Esc>', '<F8>' ]
+let g:CommandTRefreshMap         = '<C-R>'
+let g:CommandTCursorLeftMap      = [ '<Left>', '<C-B>' ]
+let g:CommandTCursorRightMap     = [ '<Right>', '<C-F>' ]
 nnoremap <Leader>t :CommandTFlush<CR>
 
 " bufExplorer
