@@ -148,3 +148,9 @@
 [submodule "vim/bundle/textobj-function"]
 	path = vim/bundle/textobj-function
 	url = git://github.com/kana/vim-textobj-function.git
+[submodule "vim/bundle/ferret"]
+	path = vim/bundle/ferret
+	url = git://github.com/wincent/ferret.git
+[submodule "vim/bundle/operator-trailingspace-killer"]
+	path = vim/bundle/operator-trailingspace-killer
+	url = git://github.com/rhysd/vim-operator-trailingspace-killer.git
