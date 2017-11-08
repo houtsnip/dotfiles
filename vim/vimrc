@@ -2,10 +2,13 @@ set nocompatible " There is no point in being vi compatible (this should also be
 
 " Put github plugins under .vim/bundle/ -- which allows keeping them updated
 " without having to do separate installation.
+
 " Call "filetype off" first to ensure that bundle ftplugins can be added to the
 " path before we re-enable it later in the vimrc.
 filetype off
 execute pathogen#infect()
+
+call pathogen#helptags()
 
 " Alternative file endings for known file-types
 autocmd BufNewFile,BufRead *.inc set ft=php
@@ -53,10 +56,10 @@ set ttimeoutlen=50
 set ttyfast
 
 " Emacs(-like) commands in insert mode for deletion
-inoremap <silent> <Esc><C-D> <Del>
-inoremap <silent> <Esc><BS> <C-W>
-imap <silent> <Esc><C-H> <Esc><BS>
-nnoremap <Esc>r q:?
+inoremap <silent> <D-C-D> <Del>
+inoremap <silent> <D-BS> <C-W>
+imap <silent> <D-C-H> <D-BS>
+nnoremap <D-r> q:?
 
 " "Hidden" buffers -- i.e., don't require saving before editing another file.
 " Calling quit will prompt you to save unsaved buffers anyways.
@@ -71,7 +74,7 @@ map <C-Z> <Nop>
 "set tildeop
 " Have Y behave analogously to D rather than to dd
 nnoremap Y y$
-nnoremap <Esc>Y v$y
+nnoremap <D-Y> v$y
 " Delete selection without updating the delete register in visual mode
 xnoremap x "_x
 xnoremap X "_X
@@ -82,19 +85,19 @@ xnoremap > >gv
 xnoremap < <gv
 " Don't automatically include the new-line character in visual mode selections
 xnoremap $ $h
-xnoremap <Esc>$ $
+xnoremap <D-$> $
 " Faster viewport scrolling
 nnoremap <C-E> 3<C-E>
 nnoremap <C-Y> 3<C-Y>
-nnoremap <Esc><C-Y> <C-Y>
-nnoremap <Esc><C-E> <C-E>
+nnoremap <D-C-Y> <C-Y>
+nnoremap <D-C-E> <C-E>
 vnoremap <C-E> 3<C-E>
 vnoremap <C-Y> 3<C-Y>
-vnoremap <Esc><C-Y> <C-Y>
-vnoremap <Esc><C-E> <C-E>
+vnoremap <D-C-Y> <C-Y>
+vnoremap <D-C-E> <C-E>
 " (Slow) scrolling in insert mode
-inoremap <Esc><C-E> <C-O><C-E>
-inoremap <Esc><C-Y> <C-O><C-Y>
+inoremap <D-C-E> <C-O><C-E>
+inoremap <D-C-Y> <C-O><C-Y>
 " Make j and k go one line down when lines are wrapped
 nnoremap j gj
 nnoremap k gk
@@ -117,28 +120,31 @@ nnoremap K K<CR>
 "nnoremap £ ~ll
 
 " Define Meta-E as an easier binding for ge (move to end of previous WORD)
-nnoremap <Esc>e ge
-xnoremap <Esc>e ge
-nnoremap <Esc>E gE
-xnoremap <Esc>E gE
+nnoremap <D-E> ge
+xnoremap <D-E> ge
+"nnoremap <D-e> ge
+"xnoremap <D-e> ge
+"nnoremap <D-E> gE
+"xnoremap <D-E> gE
 " Fix ge in operator-pending mode - it should behave more like b
 onoremap <silent> ge :<C-U>normal! hvgel<CR>
 onoremap <silent> gE :<C-U>normal! hvgEl<CR>
-omap <silent> <Esc>e ge
-omap <silent> <Esc>E gE
+omap <silent> <D-E> ge
+"omap <silent> <D-e> ge
+"omap <silent> <D-E> gE
 " : takes two keystrokes, ; takes one; map the latter to the former in normal
 " mode to get to the command line faster:
 noremap ; :
 
 " Easier bindings for completion in insert mode
 " for a file name:
-inoremap <Esc>f <C-X><C-F>
+inoremap <D-f> <C-X><C-F>
 " for a line:
-inoremap <Esc>l <C-X><C-L>
+inoremap <D-l> <C-X><C-L>
 " for a tag:
-inoremap <Esc>] <C-X><C-]>
+inoremap <D-]> <C-X><C-]>
 " for anything - guess (omni):
-inoremap <Esc>o <C-X><C-O>
+inoremap <D-o> <C-X><C-O>
 
 " Indentation
 "
@@ -197,7 +203,7 @@ set keywordprg=pman
 "source $VIMRUNTIME/ftplugin/man.vim
 "nnoremap K :Man --manpath=/usr/share/php/doc/php5-common/PEAR/pman/ <cword><CR>
 " Access man pages in insert mode with Meta-K
-inoremap <Esc>k <C-O>K
+inoremap <D-k> <C-O>K
 silent! nunmap \K
 
 " Do not keep backup files
@@ -342,7 +348,7 @@ let maplocalleader = ","
 " Re-map Caps Lock to Escape & get the Meta key working properly
 "
 " I have re-mapped Caps Lock to F8 in my OS.  Then I have F8 re-mapped to Escape in
-" vim, so that I can define Meta-<key> mappings using <Esc><key>, because in
+" vim, so that I can define Meta-<key> mappings using <D-key>, because in
 " my terminal the Meta key just prefixes the following key with Escape.  These
 " mappings slow down the Escape key (when used alone), because vim waits to see
 " if there is a key following the Escape, which would be interpreted as a
@@ -370,14 +376,14 @@ noremap <Right> :bn<CR>
 noremap <Left>  :bp<CR>
 
 " Move a line of text using Ctrl-Alt-J / Ctrl-Alt-K
-nnoremap <Esc><C-K> mz:m-2<CR>`z
-nnoremap <Esc><C-J> mz:m+<CR>`z
-vnoremap <Esc><C-K> :m'<-2<CR>`>my`<mzgv`yo`z
-vnoremap <Esc><C-J> :m'>+<CR>`<my`>mzgv`yo`z
-nnoremap <Esc><C-H> <<
-nnoremap <Esc><C-L> >>
-vmap <Esc><C-H> <
-vmap <Esc><C-L> >
+nnoremap <D-C-K> mz:m-2<CR>`z
+nnoremap <D-C-J> mz:m+<CR>`z
+vnoremap <D-C-K> :m'<-2<CR>`>my`<mzgv`yo`z
+vnoremap <D-C-J> :m'>+<CR>`<my`>mzgv`yo`z
+nnoremap <D-C-H> <<
+nnoremap <D-C-L> >>
+vmap <D-C-H> <
+vmap <D-C-L> >
 
 " Use Ctrl plus direction key to move around within windows
 nnoremap <C-H> <C-W>h
@@ -385,11 +391,11 @@ nnoremap <C-J> <C-W>j
 nnoremap <C-K> <C-W>k
 nnoremap <C-L> <C-W>l
 nnoremap <Leader>rd <C-L>
-nnoremap <Esc>+ <C-W>5+
-nnoremap <Esc>- <C-W>5-
-nnoremap <Esc>> <C-W>5>
-nnoremap <Esc>< <C-W>5<
-nmap <Esc>_ <Esc>-
+nnoremap <D-+> <C-W>5+
+nnoremap <D--> <C-W>5-
+nnoremap <D->> <C-W>5>
+nnoremap <D-<> <C-W>5<
+nmap <D-_> <D-->
 
 " Custom <Leader> macros
 "
@@ -440,8 +446,8 @@ set smartcase
 "set gdefault " always do substitions with g modifier
 set noincsearch
 " Meta-/ does incsearch (Escape then turns it off afterwards)
-nnoremap <Esc>/ :set is<CR>/
-nnoremap <Esc>? :set is<CR>?
+nnoremap <D-/> :set is<CR>/
+nnoremap <D-?> :set is<CR>?
 set showmatch
 set hlsearch
 set nowrapscan
@@ -464,10 +470,10 @@ sunmap <C-I>
 " (one of my favourite mappings)
 " xnoremap * :<C-U>let @x = @"<CR>gvy/<C-R>=substitute(escape(@", '/^$[.*~\\'), '\n', '\\n', 'g')<CR><CR>zz:let @" = @x<CR>
 " xnoremap # :<C-U>let @x = @"<CR>gvy?<C-R>=substitute(escape(@", '?^$[.*~\\'), '\n', '\\n', 'g')<CR><CR>zz:let @" = @x<CR>
-" map <Esc>* viW*
-" sunmap <Esc>*
-" map <Esc># viW#
-" sunmap <Esc>#
+" map <D-*> viW*
+" sunmap <D-*>
+" map <D-#> viW#
+" sunmap <D-#>
 nmap *  :set hls<CR><Plug>(operator-*)
 nmap <Nop> <Plug>(LoupeStar)
 "nmap g* <Plug>(operator-g*)
@@ -475,15 +481,15 @@ nmap #  <Plug>(operator-#)
 "nmap g# <Plug>(operator-g#)
 
 " Scroll back through last (forwards) searches with Meta-P
-nnoremap <Esc>p /<C-P>
-nnoremap <Esc><C-P> ?<C-P>
+nnoremap <D-p> /<C-P>
+nnoremap <D-C-P> ?<C-P>
 " Scroll back through last (backward) searches with Meta-Ctrl-P
-cnoremap <Esc>p <C-P>
-cnoremap <Esc><C-P> <C-P>
+cnoremap <D-p> <C-P>
+cnoremap <D-C-P> <C-P>
 
 " Add single character at the beginning / end of a line with Meta-I / Meta-A
-nnoremap <Esc>i 0i<Space><Esc>r
-nnoremap <Esc>a A<Space><Esc>r
+"nnoremap <D-i> 0i<Space><Esc>r
+"nnoremap <D-a> A<Space><Esc>r
 
 " Open help in a vertically-split window 80 columns wide, on the right
 cnoremap <F1> vertical rightbelow help<CR>80<C-W><Bar>:help<Space>
@@ -493,11 +499,11 @@ nmap <Leader>h :<F1>
 cnoremap w!! w !sudo tee % >/dev/null
 
 " Quickly save from any mode except insert mode
-nnoremap <Esc>s :w<CR>
-vmap <Esc>s <C-C><Esc>s
-omap <Esc>s <C-C><Esc>s
-cmap <Esc>s <C-C><Esc>s
-inoremap <Esc>s <Nop>
+nnoremap <D-s> :w<CR>
+vmap <D-s> <C-C><D-s>
+omap <D-s> <C-C><D-s>
+cmap <D-s> <C-C><D-s>
+inoremap <D-s> <Nop>
 
 " Quickly close the current window
 nnoremap <Leader>q         :q<CR>
@@ -521,51 +527,51 @@ nnoremap <Leader>ba :1,300 bd!<CR>
 " ag (silver-search) support
 set grepprg=ag
 let g:ackprg="ag -H --nocolor --nogroup --column"
-nnoremap <Esc>f<Esc>f :Ack<Space>
-nmap <Esc>f <Esc>f<Esc>f
-nnoremap <Esc>fa :Ack<Space><Space>Symfony/src/Zim<Home><Right><Right><Right><Right>
-nmap     <Esc>f<Esc>a <Esc>fa
-nnoremap <Esc>fw :Ack<Space><Space>Symfony/web<Home><Right><Right><Right><Right>
-nmap     <Esc>f<Esc>w <Esc>fw
-nnoremap <Esc>fp :Ack<Space><Space>Symfony/web/postcode<Home><Right><Right><Right><Right>
-nmap     <Esc>f<Esc>p <Esc>fp
-nnoremap <Esc>fj :Ack<Space><Space>Symfony/web/js --ignore-dir=Symfony/web/js/min --ignore-dir=Symfony/web/js/vendor --js<Home><Right><Right><Right><Right>
-nmap     <Esc>f<Esc>w <Esc>fw
-nnoremap <Esc>fv :Ack<Space><Space>Symfony/vendor<Home><Right><Right><Right><Right>
-nmap     <Esc>f<Esc>v <Esc>fv
-nnoremap <Esc>fs :Ack<Space><Space>Symfony/vendor/symfony<Home><Right><Right><Right><Right>
-nmap     <Esc>f<Esc>s <Esc>fs
-nnoremap <Esc>fd :Ack<Space><Space>Symfony/vendor/doctrine<Home><Right><Right><Right><Right>
-nmap     <Esc>f<Esc>d <Esc>fd
-nnoremap <Esc>ft :Ack<Space><Space>twitter-bootstrap/less<Home><Right><Right><Right><Right>
-nmap     <Esc>f<Esc>t <Esc>ft
-nnoremap <Esc>fz :Ack<Space><Space>lib/Zend<Home><Right><Right><Right><Right>
-nmap     <Esc>f<Esc>z <Esc>fz
-"cmap <Esc>f<Esc>f <C-C><Esc>f<Esc>f
-"imap <Esc>f<Esc>f <Esc><Esc>f<Esc>f
-"vmap <Esc>f<Esc>f <Esc><Esc>f<Esc>f
-"cmap <Esc>f <C-C><Esc>f
-"imap <Esc>f <Esc><Esc>f
-"vmap <Esc>f <Esc><Esc>f
-"cmap <Esc>fa <C-C><Esc>fa
-"imap <Esc>fa <Esc><Esc>fa
-"vmap <Esc>fa <Esc><Esc>fa
-"cmap <Esc>ft <C-C><Esc>ft
-"imap <Esc>ft <Esc><Esc>ft
-"vmap <Esc>ft <Esc><Esc>ft
-"cmap <Esc>fz <C-C><Esc>fz
-"imap <Esc>fz <Esc><Esc>fz
-"vmap <Esc>fz <Esc><Esc>fz
+nnoremap <D-f><D-f> :Ack<Space>
+nmap <D-f> <D-f><D-f>
+nnoremap <D-f>a :Ack<Space><Space>Symfony/src/Zim<Home><Right><Right><Right><Right>
+nmap     <D-f><D-a> <D-f>a
+nnoremap <D-f>w :Ack<Space><Space>Symfony/web<Home><Right><Right><Right><Right>
+nmap     <D-f><D-w> <D-f>w
+nnoremap <D-f>p :Ack<Space><Space>Symfony/web/postcode<Home><Right><Right><Right><Right>
+nmap     <D-f><D-p> <D-f>p
+nnoremap <D-f>j :Ack<Space><Space>Symfony/web/js --ignore-dir=Symfony/web/js/min --ignore-dir=Symfony/web/js/vendor --js<Home><Right><Right><Right><Right>
+nmap     <D-f><D-w> <D-f>w
+nnoremap <D-f>v :Ack<Space><Space>Symfony/vendor<Home><Right><Right><Right><Right>
+nmap     <D-f><D-v> <D-f>v
+nnoremap <D-f>s :Ack<Space><Space>Symfony/vendor/symfony<Home><Right><Right><Right><Right>
+nmap     <D-f><D-s> <D-f>s
+nnoremap <D-f>d :Ack<Space><Space>Symfony/vendor/doctrine<Home><Right><Right><Right><Right>
+nmap     <D-f><D-d> <D-f>d
+nnoremap <D-f>t :Ack<Space><Space>twitter-bootstrap/less<Home><Right><Right><Right><Right>
+nmap     <D-f><D-t> <D-f>t
+nnoremap <D-f>z :Ack<Space><Space>lib/Zend<Home><Right><Right><Right><Right>
+nmap     <D-f><D-z> <D-f>z
+"cmap <D-f><D-f> <C-C><D-f><D-f>
+"imap <D-f><D-f> <Esc><D-f><D-f>
+"vmap <D-f><D-f> <Esc><D-f><D-f>
+"cmap <D-f> <C-C><D-f>
+"imap <D-f> <Esc><D-f>
+"vmap <D-f> <Esc><D-f>
+"cmap <D-f>a <C-C><D-f>a
+"imap <D-f>a <Esc><D-f>a
+"vmap <D-f>a <Esc><D-f>a
+"cmap <D-f>t <C-C><D-f>t
+"imap <D-f>t <Esc><D-f>t
+"vmap <D-f>t <Esc><D-f>t
+"cmap <D-f>z <C-C><D-f>z
+"imap <D-f>z <Esc><D-f>z
+"vmap <D-f>z <Esc><D-f>z
 
 " Search for contractions using typewriters’ apostrophe, e.g. don't
-nnoremap <Esc>fc  /\c\([a-zA-Z0-9}>]'s\<Bar>n't\<Bar>[Iuey]'ve\<Bar>I'm\<Bar>[uey]'re\<Bar>[Iueyt]'\(ll\<Bar>d\)\)/s+1<CR>
-nnoremap <Esc>fcc /\c\<\(\(can\<Bar>could\<Bar>will\<Bar>would\<Bar>shall\<Bar>should\<Bar>must\<Bar>need\<Bar>do\<Bar>does\<Bar>did\<Bar>are\<Bar>is\<Bar>was\<Bar>were\<Bar>have\<Bar>has\<Bar>had\)\snot\<Bar>I\sam\<Bar>I\shave\<Bar>\(you\<Bar>we\<Bar>they\<Bar>there\)\s\(are\<Bar>have\)\<Bar>\(s\?he\<Bar>it\<Bar>there\)\s\(is\<Bar>has\)\<Bar>\(I\<Bar>you\<Bar>s\?he\<Bar>it\<Bar>we\<Bar>they\<Bar>there\)\s\(will\<Bar>would\<Bar>shall\<Bar>had\)\)\>/<CR>
-nnoremap <Esc>fcx /\c\<\(I’ve\<Bar>\(you\<Bar>we\<Bar>they\<Bar>there\)’\(re\<Bar>ve\)\<Bar>\(s\?he\<Bar>it\<Bar>there\)’s\<Bar>\(I\<Bar>you\<Bar>s\?he\<Bar>it\<Bar>we\<Bar>they\<Bar>there\)’\(ll\<Bar>d\)\)\snot\>/<CR>
-nnoremap <Esc>fcs /\c\([a-zA-Z0-9}]s'\)/s+2<CR>
+nnoremap <D-f>c  /\c\([a-zA-Z0-9}>]'s\<Bar>n't\<Bar>[Iuey]'ve\<Bar>I'm\<Bar>[uey]'re\<Bar>[Iueyt]'\(ll\<Bar>d\)\)/s+1<CR>
+nnoremap <D-f>cc /\c\<\(\(can\<Bar>could\<Bar>will\<Bar>would\<Bar>shall\<Bar>should\<Bar>must\<Bar>need\<Bar>do\<Bar>does\<Bar>did\<Bar>are\<Bar>is\<Bar>was\<Bar>were\<Bar>have\<Bar>has\<Bar>had\)\snot\<Bar>I\sam\<Bar>I\shave\<Bar>\(you\<Bar>we\<Bar>they\<Bar>there\)\s\(are\<Bar>have\)\<Bar>\(s\?he\<Bar>it\<Bar>there\)\s\(is\<Bar>has\)\<Bar>\(I\<Bar>you\<Bar>s\?he\<Bar>it\<Bar>we\<Bar>they\<Bar>there\)\s\(will\<Bar>would\<Bar>shall\<Bar>had\)\)\>/<CR>
+nnoremap <D-f>cx /\c\<\(I’ve\<Bar>\(you\<Bar>we\<Bar>they\<Bar>there\)’\(re\<Bar>ve\)\<Bar>\(s\?he\<Bar>it\<Bar>there\)’s\<Bar>\(I\<Bar>you\<Bar>s\?he\<Bar>it\<Bar>we\<Bar>they\<Bar>there\)’\(ll\<Bar>d\)\)\snot\>/<CR>
+nnoremap <D-f>cs /\c\([a-zA-Z0-9}]s'\)/s+2<CR>
 
 
 " Search for git conflict markers
-nnoremap <Esc>fgc /^\(<<<<<<<\<Bar>=======\<Bar>>>>>>>>\)<CR>
+nnoremap <D-f>gc /^\(<<<<<<<\<Bar>=======\<Bar>>>>>>>>\)<CR>
 
 " GitGutter update time (in milliseconds)
 set updatetime=250
@@ -590,11 +596,11 @@ let NERDTreeShowBookmarks=1
 let NERDTreeShowHidden=1
 let NERDTreeQuitOnOpen=1
 let NERDTreeWinSize=46
-nnoremap <Leader>n :OpenBookmark<Space>
-nnoremap <Esc>n    :NERDTreeToggle<CR>
-vmap <Esc>n <C-C><Esc>n
-omap <Esc>n <C-C><Esc>n
-cmap <Esc>n <C-C><Esc>n
+nnoremap <Leader>n      :OpenBookmark<Space>
+nnoremap <silent> <D-N> :NERDTreeToggle<CR>
+vmap <D-N> <C-C><D-N>
+omap <D-N> <C-C><D-N>
+cmap <D-N> <C-C><D-N>
 
 " Startify
 let g:startify_change_to_dir = 0
@@ -628,18 +634,20 @@ nnoremap <silent> <Leader>rw :call argumentrewrap#RewrapArguments()<CR>
 nnoremap <silent> <Leader><Leader>r :call argumentrewrap#RewrapArguments()<CR>
 
 " Command-T (“CommandT”)
-nmap <Esc>t :CommandT<CR>
-vmap <Esc>t <C-C><Esc>t
-omap <Esc>t <C-C><Esc>t
-imap <Esc>t <F8><Esc>t
-cmap <Esc>t <C-C><Esc>t
-let g:CommandTTraverseSCM = 'pwd'
-let g:CommandTMaxHeight = 20
+nmap <D-t> :CommandT<CR>
+vmap <D-t> <C-C><D-t>
+omap <D-t> <C-C><D-t>
+imap <D-t> <Esc><D-t>
+cmap <D-t> <C-C><D-t>
+let g:CommandTTraverseSCM        = 'pwd'
+let g:CommandTMaxHeight          = 20
+let g:CommandTBackspaceMap       = [ '<BS>', '<C-H>' ]
+let g:CommandTDeleteMap          = [ '<Del>', '<C-D>' ]
 let g:CommandTAcceptSelectionMap = [ '<CR>', '<C-M' ]
-let g:CommandTBackspaceMap = [ '<BS>', '<C-H>' ]
-let g:CommandTCursorLeftMap = [ '<Left>', '<C-B>' ]
-let g:CommandTCursorRightMap = [ '<Right>', '<C-F>' ]
-let g:CommandTRefreshMap = '<C-R>'
+let g:CommandTCancelMap          = [ '<C-C>', '<Esc>', '<F8>' ]
+let g:CommandTRefreshMap         = '<C-R>'
+let g:CommandTCursorLeftMap      = [ '<Left>', '<C-B>' ]
+let g:CommandTCursorRightMap     = [ '<Right>', '<C-F>' ]
 nnoremap <Leader>t :CommandTFlush<CR>
 
 " bufExplorer
@@ -647,11 +655,11 @@ let g:bufExplorerSplitOutPathName = 0
 let g:bufExplorerSplitRight = 1
 
 " Gundo
-nnoremap <silent> <Esc>u :GundoToggle<CR>
-vmap <Esc>u <C-C><Esc>u
-omap <Esc>u <C-C><Esc>u
-imap <Esc>u <F8><Esc>u
-cmap <Esc>u <C-C><Esc>u
+nnoremap <silent> <D-U> :GundoToggle<CR>
+vmap <D-U> <C-C><D-U>
+omap <D-U> <C-C><D-U>
+imap <D-U> <Esc><D-U>
+cmap <D-U> <C-C><D-U>
 
 " Tags
 "
@@ -676,11 +684,11 @@ command! -nargs=1 Ltag :call LoadTags("<args>")
 "set tags+=.git/tags
 
 " TagList
-nnoremap <silent> <Esc>m :TlistToggle<CR>
-vmap <Esc>m <C-C><Esc>m
-omap <Esc>m <C-C><Esc>m
-imap <Esc>m <F8><Esc>m
-cmap <Esc>m <C-C><Esc>m
+nnoremap <silent> <D-m> :TlistToggle<CR>
+vmap <D-m> <C-C><D-m>
+omap <D-m> <C-C><D-m>
+imap <D-m> <Esc><D-m>
+cmap <D-m> <C-C><D-m>
 let Tlist_Use_Right_Window = 1
 let Tlist_Compact_Format = 1
 let Tlist_Exit_OnlyWindow = 1
@@ -720,7 +728,7 @@ let g:showmarks_include   = 'qwertasdfgzxcvb'
 let g:showmarks_textlower = ' '
 
 " LustyJuggler
-nnoremap <Esc>b :LustyJuggler<CR>
+nnoremap <D-b> :LustyJuggler<CR>
 
 " DBGp client (remote debugging)
 let g:debuggerMaxChildren = 128
@@ -728,11 +736,11 @@ nnoremap <Leader>bp :Bp<CR>
 nmap <F9> <F2>
 nmap <F10> <F3>
 nmap <F11> <F4>
-nmap <Esc>" <F2>
-nmap <Esc>£ <F3>
-nmap <Esc>$ <F4>
-nmap <Esc>% <F5>
-nmap <Esc>^ <F6>
+nmap <D-"> <F2>
+nmap <D-£> <F3>
+nmap <D-$> <F4>
+nmap <D-%> <F5>
+nmap <D-^> <F6>
 
 " run file with PHP CLI (CTRL-M)
 autocmd FileType php noremap <Leader><Leader>m :w!<CR>:!/usr/bin/php %<CR>
@@ -794,46 +802,46 @@ nmap <Leader>Y "+yy
 nmap <Leader>p "+p
 nmap <Leader>P "+P
 " Copy line - like yyp but keep cursor position
-nnoremap <silent> <Esc>c :copy .<CR>
-imap     <silent> <Esc>c <C-O><Esc>c
-nnoremap <silent> <Esc>C :copy .-1<CR>
-imap     <silent> <Esc>C <C-O><Esc>C
+nnoremap <silent> <D-c> :copy .<CR>
+imap     <silent> <D-c> <C-O><D-c>
+nnoremap <silent> <D-C> :copy .-1<CR>
+imap     <silent> <D-C> <C-O><D-C>
 " In visual mode, copy selected text and keep selection
-xnoremap <Esc>c y'<Pgv
-xnoremap <Esc>C y'>pgv
+xnoremap <D-c> y'<Pgv
+xnoremap <D-C> y'>pgv
 
 " Quick command-line ranges
-nnoremap ;gg :1,.
-nnoremap ;G  :.,$
-nnoremap ;:  !!<BS>
-nnoremap ;{  :?^$?+1,.
-nnoremap ;2{ :?^$??^$?+1,.
-nnoremap ;3{ :?^$??^$??^$?+1,.
+nnoremap <D-;>gg :1,.
+nnoremap <D-;>G  :.,$
+nnoremap <D-;>:  !!<BS>
+nnoremap <D-;>{  :?^$?+1,.
+nnoremap <D-;>2{ :?^$??^$?+1,.
+nnoremap <D-;>3{ :?^$??^$??^$?+1,.
 " (More than 3 paragraphs is probably better done in visual mode)
-nnoremap ;}  :.,/^$/-1
-nnoremap ;2} :.,/^$//^$/-1
-nnoremap ;3} :.,/^$//^$//^$/-1
-nnoremap ;ap :?^$?+1,/^$/
-nnoremap ;ip :?^$?+1,/^$/-1
-nnoremap ;;  :.;+
-nnoremap ;'a :'a,.
-nnoremap ;'z :.,'z
-nnoremap ;/  :.,//-1<Left><Left><Left>
-nnoremap ;?  :??+1,.<Home><Right>
-nmap     ;a{ !a{<BS>
-nmap     ;a} ;a{
-nmap     ;aB ;a{
-nmap     ;i{ !i{<BS>
-nmap     ;i} ;i{
-nmap     ;iB ;i{
-nmap     ;a( !a(<BS>
-nmap     ;a) ;a(
-nmap     ;ab ;a(
-nmap     ;i( !i(<BS>
-nmap     ;i) ;i(
-nmap     ;ib ;i(
-nnoremap ;at !at<BS>
-nnoremap ;it !it<BS>
+nnoremap <D-;>}  :.,/^$/-1
+nnoremap <D-;>2} :.,/^$//^$/-1
+nnoremap <D-;>3} :.,/^$//^$//^$/-1
+nnoremap <D-;>ap :?^$?+1,/^$/
+nnoremap <D-;>ip :?^$?+1,/^$/-1
+nnoremap <D-;>;  :.;+
+nnoremap <D-;>'a :'a,.
+nnoremap <D-;>'z :.,'z
+nnoremap <D-;>/  :.,//-1<Left><Left><Left>
+nnoremap <D-;>?  :??+1,.<Home><Right>
+nmap     <D-;>a{ !a{<BS>
+nmap     <D-;>a} ;a{
+nmap     <D-;>aB ;a{
+nmap     <D-;>i{ !i{<BS>
+nmap     <D-;>i} ;i{
+nmap     <D-;>iB ;i{
+nmap     <D-;>a( !a(<BS>
+nmap     <D-;>a) ;a(
+nmap     <D-;>ab ;a(
+nmap     <D-;>i( !i(<BS>
+nmap     <D-;>i) ;i(
+nmap     <D-;>ib ;i(
+nnoremap <D-;>at !at<BS>
+nnoremap <D-;>it !it<BS>
 
 " Better filter commands
 nnoremap !%  :%!
@@ -1016,23 +1024,23 @@ nnoremap Z//  :.s!<C-R>/!!g<Left><Left>
 " Repeat last command and put cursor at start of change
 nnoremap . .`[
 " Repeat last command-line change with Meta-.
-"nnoremap <Esc>. @:
+"nnoremap <D-.> @:
 " Move to beginning / end of last change
-noremap <Esc>h `[
-noremap <Esc>l `]
+noremap <D-h> `[
+noremap <D-l> `]
 " (To select last-inserted text: enter visual mode, then Meta-H)
 " Move up/down one line and repeat last command
-nnoremap <Esc>j j.`[
-nnoremap <Esc>k k.`[
+nnoremap <D-j> j.`[
+nnoremap <D-k> k.`[
 " Move up/down one line and repeat last command-line change
-nnoremap <Esc>J j@:
-nnoremap <Esc>K k@:
+nnoremap <D-J> j@:
+nnoremap <D-K> k@:
 
 nnoremap <S-Tab> <C-^>
-nnoremap <Esc><Tab> <C-^>
+nnoremap <D-Tab> <C-^>
 
-"nmap <Esc>[ [[
-"nmap <Esc>] ]]
+"nmap <D-[> [[
+"nmap <D-]> ]]
 
 nnoremap <C-P> :<C-P>
 
@@ -1055,14 +1063,14 @@ function! FixCommaAndSemicolon(command)
    endif
    return ""
 endfunction
-"nnoremap <Esc>\ <Bar>
+"nnoremap <D-|> <Bar>
 
 " <Leader>cd to the dir of the current buffer for current window
-cnoremap <Esc>> %:p:h/
+cnoremap <D->> %:p:h/
 nnoremap <Leader>cd :lcd %:p:h<CR>
 
-nnoremap <silent> <Esc>, :BufSurfBack<CR>
-nnoremap <silent> <Esc>. :BufSurfForward<CR>
+nnoremap <silent> <D-,> :BufSurfBack<CR>
+nnoremap <silent> <D-.> :BufSurfForward<CR>
 
 nnoremap <Leader>Q Q
 nnoremap <Leader>l <C-L>
@@ -1070,9 +1078,9 @@ nnoremap <Leader>l <C-L>
 " Highlight text on the screen matching that under the cursor: Press Meta-; to
 " start; each subsequent Meta-' matches one more character.  Meta-@ does the
 " same but searches backwards.  Uses marks 'm' and 'n', and register 'm'.
-map <Esc>; mm
-map <Esc>' lmn"my`m/<C-R>m<CR>`n
-map <Esc>@ lmn"my`m?<C-R>m<CR>`n
+map <D-;> mm
+map <D-'> lmn"my`m/<C-R>m<CR>`n
+map <D-@> lmn"my`m?<C-R>m<CR>`n
 "operator#user#define
 
 " Insert Comment
@@ -1214,12 +1222,12 @@ function! ToggleList(bufname, pfx)
     wincmd p
   endif
 endfunction
-nmap <silent> <Esc>4 :call ToggleList("Quickfix List", 'c')<CR>
-nmap <silent> <Esc>5 :call ToggleList("Location List", 'l')<CR>
+nmap <silent> <D-4> :call ToggleList("Quickfix List", 'c')<CR>
+nmap <silent> <D-5> :call ToggleList("Location List", 'l')<CR>
 " map <F3> and <S-F3> to jump between locations in a quickfix list, or
 " differences if in window in diff mode
-nnoremap <expr> <silent> <Esc>2 (&diff ? "[c" : ":cprev\<CR>") . 'zz'
-nnoremap <expr> <silent> <Esc>3 (&diff ? "]c" : ":cnext\<CR>") . 'zz'
+nnoremap <expr> <silent> <D-2> (&diff ? "[c" : ":cprev\<CR>") . 'zz'
+nnoremap <expr> <silent> <D-3> (&diff ? "]c" : ":cnext\<CR>") . 'zz'
 
 " Missing digraphs
 digraphs -_ 173  " Soft Hyphen (optional hyphen to indicate possible break)
@@ -1276,10 +1284,10 @@ digraphs bm 65279 " Zero Width No-Break Space (Byte Order Mark) (deprecated in f
 
 
 " Easier-to-type mappings for [] and {}
-"noremap! <Esc>9 [
-"noremap! <Esc>0 ]
-"noremap! <Esc>( {
-"noremap! <Esc>) }
+"noremap! <D-9> [
+"noremap! <D-0> ]
+"noremap! <D-(> {
+"noremap! <D-)> }
 
 " Use ,d (or ,dd or ,dj or 20,dd) to delete a line without adding it to the
 " yanked stack (also, in visual mode)
@@ -1309,7 +1317,7 @@ nmap <Leader>uo- <Leader>u-k<Leader>o-j
 nmap <Leader>uo= <Leader>u=k<Leader>o=j
 nmap <Leader>uo* <Leader>u*k<Leader>o*j
 " Draw a box around
-nmap <Leader><Leader>b <Leader>u-A-+<Esc>I+-<Esc>yykPjA <Bar><Esc>I<Bar> <Esc>
+nmap <Leader><Leader>b <Leader>u-A-+<Esc>I+-<D-y>ykPjA <Bar><Esc>I<Bar> <Esc>
 
 " show the registers from things cut/yanked
 nnoremap <Leader>r :registers<CR>
@@ -1332,9 +1340,9 @@ set completeopt+=menuone,longest
 "let g:SuperTabLongestHighlight = 1
 "let g:SuperTabMidWordCompletion = 1
 
-inoremap <Esc>n <Space>.<Space>"\n"
-inoremap <Esc>. ->
-inoremap <Esc>> <Space>=><Space>
+inoremap <D-N> <Space>.<Space>"\n"
+inoremap <D-.> ->
+inoremap <D->> <Space>=><Space>
 
 nmap qcp gUllguw
 nmap qCp gUllguW
@@ -1348,7 +1356,7 @@ xnoremap qcc :s!_\(\l\)!\u\1!g
 " Delete block leaving contents
 nnoremap qdb hf{mm<%%S<Esc>'mS<Esc>
 " Put selected text inside block
-xnoremap qb ><Esc>`[ma`]o<C-D>}<Esc>'aO<C-D>{<Esc>
+xnoremap qb ><D-`>[ma`]o<C-D>}<Esc>'aO<C-D>{<Esc>
 nmap qbb Vqb
 nmap 2qbb Vjqb
 nmap 3qbb V2jqb
@@ -1360,12 +1368,12 @@ nmap 8qbb V7jqb
 nmap 9qbb V8jqb
 
 " Pull line into condition and insert empty block
-nmap q) yss)A<CR>{<CR>}<F8>kki <F8>i
-nmap q( yss(A<CR>{<CR>}<F8>kki <F8>i
+nmap q) yss)A<CR>{<CR>}<Esc>kki <Esc>i
+nmap q( yss(A<CR>{<CR>}<Esc>kki <Esc>i
 
 " Pull selected text into condition and insert empty block
-xmap q) S)d^%lC<CR>{<CR>}<F8>kki <F8>i
-xmap q( S(d^%lC<CR>{<CR>}<F8>kki <F8>i
+xmap q) S)d^%lC<CR>{<CR>}<Esc>kki <Esc>i
+xmap q( S(d^%lC<CR>{<CR>}<Esc>kki <Esc>i
 
 " Out-line an inline function
 nnoremap qolf ^f{i<BS><CR><Esc>la<CR><C-T><Esc>f}i<BS><CR><C-D><Esc>%
@@ -1381,24 +1389,24 @@ nnoremap qol? ^f?a<CR><C-T><Esc>f:a<CR><Esc>
 " Convert $array->key to $array['key'] (Array Key)
 nmap qak lF-xxveS'gvS]
 " Convert $object['property'] to $object->property (Object Property)
-nmap qop lF[llds'ds]i-><F8>h
+nmap qop lF[llds'ds]i-><Esc>h
 
 " Convert $this->method to self::method (Static Call)
-nmap qsc lF$cf>self::<F8>bb
+nmap qsc lF$cf>self::<Esc>bb
 " Convert self::method to $this->method (Dynamic Call)
-nmap qdc lBf:Fsc2f:$this-><F8>F$:nohls<CR>
+nmap qdc lBf:Fsc2f:$this-><Esc>F$:nohls<CR>
 
 " Convert echo "blah\n" to throw new Exception("blah") (Throw Exception)
-nmap qte ^ct"throw new Exception(<F8>A<BS><BS><BS><BS>");<F8>jddk^
+nmap qte ^ct"throw new Exception(<Esc>A<BS><BS><BS><BS>");<Esc>jddk^
 " Convert throw new Exception("blah") to echo "blah\n" (Echo Error)
-nmap qee ^cf(echo <F8>A<BS><BS><BS>\n";<CR>exit(1);<F8>-
+nmap qee ^cf(echo <Esc>A<BS><BS><BS>\n";<CR>exit(1);<Esc>-
 
 " Convert isset($array['key']) to array_key_exists('key', $array)
-nmap qfake l?\(isset\<Bar>empty\)(<CR>cwarray_key_exists<F8>f[di]h"_2xF$Pa, <F8>?array_key_exists(<CR>:nohls<CR>:call histdel('?', -1)<CR>:let @/ = histget('?', -1)<CR>
-nmap qfia l?\(isset\<Bar>empty\)(<CR>cwin_array<F8>f[di]h"_2xF$Pa, <F8>?in_array(<CR>:nohls<CR>:call histdel('?', -1)<CR>:let @/ = histget('?', -1)<CR>
+nmap qfake l?\(isset\<Bar>empty\)(<CR>cwarray_key_exists<Esc>f[di]h"_2xF$Pa, <Esc>?array_key_exists(<CR>:nohls<CR>:call histdel('?', -1)<CR>:let @/ = histget('?', -1)<CR>
+nmap qfia l?\(isset\<Bar>empty\)(<CR>cwin_array<Esc>f[di]h"_2xF$Pa, <Esc>?in_array(<CR>:nohls<CR>:call histdel('?', -1)<CR>:let @/ = histget('?', -1)<CR>
 " Convert array_key_exists('key', $array) to isset('key', $array) or empty(...)
-nmap qfisset l?\(array_key_exists\<Bar>in_array\)(<CR>cwisset<F8>lldt,"_2xf)i[<C-R>-]<F8>?isset(<CR>:nohls<CR>:call histdel('?', -1)<CR>:let @/ = histget('?', -1)<CR>
-nmap qfempty l?\(array_key_exists\<Bar>in_array\)(<CR>cwempty<F8>lldt,"_2xf)i[<C-R>-]<F8>?empty(<CR>:nohls<CR>:call histdel('?', -1)<CR>:let @/ = histget('?', -1)<CR>
+nmap qfisset l?\(array_key_exists\<Bar>in_array\)(<CR>cwisset<Esc>lldt,"_2xf)i[<C-R>-]<Esc>?isset(<CR>:nohls<CR>:call histdel('?', -1)<CR>:let @/ = histget('?', -1)<CR>
+nmap qfempty l?\(array_key_exists\<Bar>in_array\)(<CR>cwempty<Esc>lldt,"_2xf)i[<C-R>-]<Esc>?empty(<CR>:nohls<CR>:call histdel('?', -1)<CR>:let @/ = histget('?', -1)<CR>
 
 " Swap function arguments (PHP)
 nnoremap gs :set nohls<CR>l?&\=\$<CR>dt,/&\=\$<CR>v/[,)]/s-1<CR>pF,P/&\=\$<CR>:set hls<CR>:nohls<CR>
@@ -1414,7 +1422,7 @@ nnoremap <Leader><Leader>p gg/extends<CR>:nohls<CR>:call histdel('/', -1)<CR>:le
 
 " Split line at cursor
 nnoremap S i<CR><Esc>k$
-nnoremap <Esc>S i<CR><C-D><Esc>k$
+nnoremap <D-S> i<CR><C-D><Esc>k$
 
 " ‘Inside-line’ operator-pending-mode mapping
 "onoremap <silent> il :<C-U>normal! ^v$h<CR>
@@ -1458,7 +1466,7 @@ nnoremap ]k /->\<Bar>::/e+1<CR>
 nnoremap [k ?->\<Bar>::?e+1<CR>
 
 " Insert a line above current line, but indented as though inserting a line below
-nnoremap <Esc>o ko
+nnoremap <D-o> ko
 
 " Toggle Color Column Keybinding
 map <Leader>C :call g:ToggleColorColumn()<CR>"
@@ -1486,7 +1494,7 @@ endfunc
 map <Leader>M :%!markdown<CR>
 vmap <Leader>M :!markdown<CR>
 
-nmap <Esc><Space> ysl<Space><Space>
+nmap <D-Space> ysl<Space><Space>
 
 " Operator-surround
 "
@@ -1575,10 +1583,10 @@ nmap <Leader>afa Vip<Leader>afa
 "iab shan't    shan’t
 "iab shouldn't shouldn’t
 "iab mustn't   mustn’t
-noremap! <Esc>' ’
-noremap! <Esc>@ ‘
-nnoremap r<Esc>' r’
-nnoremap r<Esc>@ r‘
+noremap! <D-'> ’
+noremap! <D-@> ‘
+nnoremap r<D-'> r’
+nnoremap r<D-@> r‘
 
 nmap cs"" csa"“f“r”F
 nmap cs'" csa'“f“r”F
@@ -1607,4 +1615,202 @@ nmap <Leader>eutf16be :e ++enc=utf-16be
 nmap <Leader>eutf16le :e ++enc=utf-16le
 
 xmap gUc y'<mo'>mpo<Esc>P:.s!\<[a-z0-9']\+\>!\L\u\0!g<CR>yildd'ov'p"0p<Esc>
+
+" Map Mac meta combinations (which Vim understands as the same character with
+" the 8 bit set) to the same combination with the Command key (which we will
+" never use).
+" E.g. map <D-q>, which generates 'œ', but should generate 'ñ', to <D-q>.
+map ¦ <D-`>
+map ¡ <D-1>
+map ™ <D-2>
+map £ <D-3>
+map € <D-4>
+map ∞ <D-5>
+map ¶ <D-7>
+map ª <D-9>
+map º <D-0>
+map ≠ <D-=>
+
+map ⁄ <D-!>
+map € <D-">
+map ‹ <D-£>
+map › <D-$>
+map ﬁ <D-%>
+map ﬂ <D-^>
+map ‡ <D-&>
+map ° <D-*>
+map · <D-(>
+map ‚ <D-)>
+map ± <D-+>
+
+map … <D-;>
+map « <D-#>
+map ≤ <D-,>
+map ≥ <D-.>
+map ÷ <D-/>
+
+map Ú <D-:>
+map » <D-~>
+map ¯ <D-<>
+map ˘ <D->>
+map ¿ <D-?>
+map ` <D-\>
+
+map å <D-a>
+map ∫ <D-b>
+map ç <D-c>
+map ∂ <D-d>
+map ƒ <D-f>
+map © <D-g>
+map ˙ <D-h>
+map ∆ <D-j>
+map ˚ <D-k>
+map ¬ <D-l>
+map µ <D-m>
+map ø <D-o>
+map π <D-p>
+map œ <D-q>
+map ® <D-r>
+map ß <D-s>
+map † <D-t>
+map √ <D-v>
+map ∑ <D-w>
+map ≈ <D-x>
+map ¥ <D-y>
+map Ω <D-z>
+
+map Å <D-A>
+map ı <D-B>
+map Ç <D-C>
+map Î <D-D>
+map ´ <D-E>
+map Ï <D-F>
+map ˝ <D-G>
+map Ó <D-H>
+map ˆ <D-I>
+map Ô <D-J>
+map  <D-K>
+map Ò <D-L>
+map Â <D-M>
+map ˜ <D-N>
+map Ø <D-O>
+map ∏ <D-P>
+map Œ <D-Q>
+map ‰ <D-R>
+map Í <D-S>
+map ˇ <D-T>
+map ¨ <D-U>
+map ◊ <D-V>
+map „ <D-W>
+map ˛ <D-X>
+map Á <D-Y>
+map ¸ <D-Z>
+
+map! ¦ <D-`>
+map! ¡ <D-1>
+map! ™ <D-2>
+map! £ <D-3>
+map! € <D-4>
+map! ∞ <D-5>
+map! ¶ <D-7>
+map! ª <D-9>
+map! º <D-0>
+map! ≠ <D-=>
+
+map! ⁄ <D-!>
+map! € <D-">
+map! ‹ <D-£>
+map! › <D-$>
+map! ﬁ <D-%>
+map! ﬂ <D-^>
+map! ‡ <D-&>
+map! ° <D-*>
+map! · <D-(>
+map! ‚ <D-)>
+map! ± <D-+>
+
+map! … <D-;>
+map! « <D-#>
+map! ≤ <D-,>
+map! ≥ <D-.>
+map! ÷ <D-/>
+
+map! Ú <D-:>
+map! » <D-~>
+map! ¯ <D-<>
+map! ˘ <D->>
+map! ¿ <D-?>
+map! ` <D-\>
+
+map! å <D-a>
+map! ∫ <D-b>
+map! ç <D-c>
+map! ∂ <D-d>
+map! ƒ <D-f>
+map! © <D-g>
+map! ˙ <D-h>
+map! ∆ <D-j>
+map! ˚ <D-k>
+map! ¬ <D-l>
+map! µ <D-m>
+map! ø <D-o>
+map! π <D-p>
+map! œ <D-q>
+map! ® <D-r>
+map! ß <D-s>
+map! † <D-t>
+map! √ <D-v>
+map! ∑ <D-w>
+map! ≈ <D-x>
+map! ¥ <D-y>
+map! Ω <D-z>
+
+map! Å <D-A>
+map! ı <D-B>
+map! Ç <D-C>
+map! Î <D-D>
+map! ´ <D-E>
+map! Ï <D-F>
+map! ˝ <D-G>
+map! Ó <D-H>
+map! ˆ <D-I>
+map! Ô <D-J>
+map!  <D-K>
+map! Ò <D-L>
+map! Â <D-M>
+map! ˜ <D-N>
+map! Ø <D-O>
+map! ∏ <D-P>
+map! Œ <D-Q>
+map! ‰ <D-R>
+map! Í <D-S>
+map! ˇ <D-T>
+map! ¨ <D-U>
+map! ◊ <D-V>
+map! „ <D-W>
+map! ˛ <D-X>
+map! Á <D-Y>
+map! ¸ <D-Z>
+
+" Disabled meta combinations
+
+" Duplicate keys
+"map ± <D-¬>
+
+" Dead keys (for doing accents)
+"map ` <D-\>
+"map ´ <D-e>
+"map ˆ <D-i>
+"map ˜ <D-n>
+"map ¨ <D-u>
+
+" Useful ones to keep
+"map • <D-8>
+"map – <D-->
+"map — <D-_>
+"map ’ <D-6>
+"map “ <D-[>
+"map ‘ <D-]>
+"map ” <D-{>
+"map ’ <D-}>
 

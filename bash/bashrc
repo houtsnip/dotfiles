@@ -130,3 +130,5 @@ if [ -f /etc/profile.d/autojump.bash ]; then
     source /etc/profile.d/autojump.bash
 fi
 
+. ~/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
+~
