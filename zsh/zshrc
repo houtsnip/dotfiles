@@ -139,6 +139,35 @@ bindkey "\e[H" beginning-of-line
 bindkey "\e[F" end-of-line
 # completion in the middle of a line
 bindkey '^i' expand-or-complete-prefix
+# up and down arrows
+bindkey "\e[B": history-search-forward
+bindkey "\e[A": history-search-backward
+# for Mac OS when meta key is not enabled
+bindkey "ƒ" emacs-forward-word
+bindkey "∫" emacs-backward-word
+bindkey "¯" beginning-of-history
+bindkey "˘" end-of-history
+bindkey "˜" non-incremental-forward-search-history
+bindkey "∏" non-incremental-reverse-search-history
+bindkey "≥" yank-last-arg
+bindkey "†" transpose-words
+bindkey "¨" upcase-word
+bindkey "¬" downcase-word
+bindkey "ç" capitalize-word
+bindkey "∂" kill-word
+bindkey "\\" yank-pop
+bindkey "¿" possible-completions
+bindkey "°" insert-completions
+bindkey "÷" complete-filename
+bindkey "»" complete-username
+bindkey "›" complete-variable
+bindkey "Æ" complete-hostname
+bindkey "⁄" complete-command
+bindkey "”" complete-into-braces
+bindkey "®" revert-line
+bindkey "‡" tilde-expand
+bindkey "«" insert-comment
+bindkey "ﬂ" history-expand-line
 
 _my_extended_wordchars='*?_-.[]~=&;!#$%^(){}<>:@,\\';
 _my_extended_wordchars_space="${my_extended_wordchars} "
