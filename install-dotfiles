@@ -35,7 +35,7 @@ if [ -e $home_dir/.vim ]; then
     fi
     if [ -d $home_dir/.vim/bundle/commandt ]; then
         echo Compiling Command-T Vim plugin ...
-        # requires ruby, ruby1.8-e(v
+        # requires ruby, ruby1.8-dev
         cd $home_dir/.vim/bundle/commandt/ruby/command-t/ext/command-t
         ruby extconf.rb
         make
