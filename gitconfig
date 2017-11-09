@@ -4,6 +4,21 @@
 [github]
     user = houtsnip
 
+[core]
+    editor = vim
+    pager = less -FRSX
+    whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
+    excludesfile = ~/.gitignore_global
+
+[apply]
+    whitespace = fix
+
+[init]
+    templatedir = ~/.git_template
+
+[status]
+    submoduleSummary = true
+
 [color]
     diff = auto
     status = auto
@@ -22,24 +37,28 @@
     frag = magenta bold
     old = red bold
     new = green bold
+    whitespace = red reverse
 
 [color "status"]
     added = yellow
     changed = green
     untracked = cyan
-
-[core]
-    pager = less -FRSX
-    whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
-    excludesfile = ~/.gitignore_global
-
-[apply]
-    whitespace = fix
+    branch = green
+    nobranch = red
 
 [alias]
+    ai = add -i
+    ap = add -p
     b = branch
     ba = branch -a
+    c = commit
     ci = commit
+    ca = commit -a
+    cm = commit -m
+    cam = commit -a -m
+    camend = commit --amend
+    cundo = !git reset HEAD~1
+    cundos = !git reset --soft HEAD~1
     co = checkout
     di = diff
     dif = diff
@@ -51,22 +70,63 @@
     h = help
     k = !gitk &
     ka = !gitk --all &
+    l = log --oneline
     lc = log ORIG_HEAD.. --stat --no-merges
+    lg = log --oneline --graph --decorate
     lp = log --patch-with-stat
     mnf = merge --no-ff
     mnff = merge --no-ff
+    mo = merge origin
     mt = mergetool
     p = format-patch -1
+    rao = remote add origin
     rso = remote show origin
     serve = !git daemon --reuseaddr --verbose --base-path=. --export-all ./.git
     sra = svn rebase --all
     sh = !git-sh
-    st = status
-    stat = status
+    s = status -s -b
+    sa = status -s -b --ignored
+    sm = status -s -b --untracked=no
+    st = status --show-stash
+    sta = status --show-stash --ignored
     stm = status --untracked=no
-    stfu = status --untracked=no
     pullsrb = !git stash save && git pull --rebase && git stash pop && echo 'Success!'
+    sub = submodule
+    subinit = submodule init
+    subsync = submodule sync
+    subsyncr = submodule sync --recursive
+    subupdate = submodule update --init
+    subupdater = submodule update --init --recursive
+    subpull = !git pull && git submodule sync --recursive && git submodule update --init --recursive
+    tags = tag -l
+    this = !git init && git add . && git commmit -m \"first commit\"
+    unstage = reset HEAD --
     w = whatchanged
+    #############
+    aliases = !git config -l | grep alias | cut -c 7-
+    amend = !git log -n 1 --pretty=tformat:%s%n%n%b | git commit -F - --amend
+    bare = !sh -c 'git symbolic-ref HEAD refs/heads/$1 && git rm --cached -r . && git clean -xfd' -
+    bump = !sh -c 'git commit -am \"Version bump v$1\" && git psuoc && git release $1' -
+    human = name-rev --name-only --refs=refs/heads/*
+    release = !sh -c 'git tag v$1 && git pst' -
+    serve = daemon --reuseaddr --verbose --base-path=. --export-all ./.git
+    snap = !git stash save 'snapshot: $(date)' && git stash apply 'stash@{0}'
+    subrepo = !sh -c 'git filter-branch --prune-empty --subdirectory-filter $1 master' -
+    trim = !git reflog expire --expire=now --all && git gc --prune=now
+    unrelease = !sh -c 'git tag -d v$1 && git pso :v$1' -
+    whois = !sh -c 'git log -i -1 --author=\"$1\" --pretty=\"format:%an <%ae>\"' -
+    #############
+    ours = "!f() { git checkout --ours $@ && git add $@; }; f"
+    theirs = "!f() { git checkout --theirs $@ && git add $@; }; f"
 
-[init]
-    templatedir = ~/.git_template
+[url "https://bitbucket.org/"]
+    insteadOf = bb:
+
+[url "https://github.com/"]
+    insteadOf = gh:
+
+[url "https://gist.github.com/"]
+    insteadOf = gist:
+
+[diff]
+	submodule = log

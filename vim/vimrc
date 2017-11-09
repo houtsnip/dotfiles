@@ -650,6 +650,12 @@ let g:CommandTCursorLeftMap      = [ '<Left>', '<C-B>' ]
 let g:CommandTCursorRightMap     = [ '<Right>', '<C-F>' ]
 nnoremap <Leader>t :CommandTFlush<CR>
 
+" EmacsCommandLine
+let g:EmacsCommandLineForwardWordMap       = '<D-f>'
+let g:EmacsCommandLineBackwardWordMap      = '<D-b>'
+let g:EmacsCommandLineKillWordMap          = '<D-d>'
+let g:EmacsCommandLineBackwardKillWordMap  = '<D-BS>'
+
 " bufExplorer
 let g:bufExplorerSplitOutPathName = 0
 let g:bufExplorerSplitRight = 1
