@@ -127,8 +127,8 @@ bindkey "\e[5D" backward-word
 bindkey "\eOd" emacs-backward-word
 bindkey "\ee[C" forward-word
 bindkey "\ee[D" backward-word
-bindkey '^N' zsh-history-substring-search-forward
-bindkey '^P' zsh-history-substring-search-backward
+bindkey '^N' history-search-forward
+bindkey '^P' history-search-backward
 bindkey "^W" backward-delete-word
 bindkey "^U" backward-kill-line
 # for rxvt
@@ -314,5 +314,9 @@ setopt HIST_FIND_NO_DUPS
 
 if [ -e /etc/profile.d/autojump.zsh ]; then
     source /etc/profile.d/autojump.zsh
+fi
+
+if [ -e "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]; then
+    source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
