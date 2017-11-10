@@ -127,7 +127,10 @@ bindkey "\e[5D" backward-word
 bindkey "\eOd" emacs-backward-word
 bindkey "\ee[C" forward-word
 bindkey "\ee[D" backward-word
+bindkey '^N' zsh-history-substring-search-forward
+bindkey '^P' zsh-history-substring-search-backward
 bindkey "^W" backward-delete-word
+bindkey "^U" backward-kill-line
 # for rxvt
 bindkey "\e[8~" end-of-line
 bindkey "\e[7~" beginning-of-line
