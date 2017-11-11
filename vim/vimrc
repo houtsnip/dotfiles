@@ -1626,19 +1626,24 @@ xmap gUc y'<mo'>mpo<Esc>P:.s!\<[a-z0-9']\+\>!\L\u\0!g<CR>yildd'ov'p"0p<Esc>
 " the 8 bit set) to the same combination with the Command key (which we will
 " never use).
 " E.g. map <D-q>, which generates 'œ', but should generate 'ñ', to <D-q>.
+
+" Number row (`1234567890-=)
 map ¦ <D-`>
 map ¡ <D-1>
 map ™ <D-2>
 map £ <D-3>
 map € <D-4>
 map ∞ <D-5>
+map § <D-6>
 map ¶ <D-7>
+map • <D-8>
 map ª <D-9>
 map º <D-0>
+map – <D-->
 map ≠ <D-=>
 
+" Number row with shift key (¬!"£%^&*()_+)
 map ⁄ <D-!>
-map € <D-">
 map ‹ <D-£>
 map › <D-$>
 map ﬁ <D-%>
@@ -1647,15 +1652,24 @@ map ‡ <D-&>
 map ° <D-*>
 map · <D-(>
 map ‚ <D-)>
+map — <D-_>
 map ± <D-+>
 
+" Right-hand symbol keys
+map “ <D-[>
+map ‘ <D-]>
 map … <D-;>
+map æ <D-'>
 map « <D-#>
 map ≤ <D-,>
 map ≥ <D-.>
 map ÷ <D-/>
 
+" Right-hand symbol keys with shift key
+map ” <D-{>
+map ’ <D-}>
 map Ú <D-:>
+map Æ <D-@>
 map » <D-~>
 map ¯ <D-<>
 map ˘ <D->>
@@ -1712,19 +1726,24 @@ map ˛ <D-X>
 map Á <D-Y>
 map ¸ <D-Z>
 
+" Number row (¬1234567890-=)
 map! ¦ <D-`>
 map! ¡ <D-1>
 map! ™ <D-2>
-map! £ <D-3>
-map! € <D-4>
+" Not Alt-3, because it produces £, which is useful
+" Not Alt-4, because it produces €, which is useful
 map! ∞ <D-5>
+map! § <D-6>
 map! ¶ <D-7>
+" Not Alt-8, because it produces •, which is useful
 map! ª <D-9>
 map! º <D-0>
+" Not Alt--, because it produces – (en dash), which is useful
 map! ≠ <D-=>
 
+" Number row with shift key (¬!"£%^&*()_+)
 map! ⁄ <D-!>
-map! € <D-">
+" Not Alt-" because it produces €, which is useful
 map! ‹ <D-£>
 map! › <D-$>
 map! ﬁ <D-%>
@@ -1733,15 +1752,24 @@ map! ‡ <D-&>
 map! ° <D-*>
 map! · <D-(>
 map! ‚ <D-)>
+" Not Alt-_, because it produces — (em dash), which is useful
 map! ± <D-+>
 
+" Right-hand symbol keys
+" Not Alt-[, because it produces “, which is useful
+" Not Alt-], because it produces ‘, which is useful
 map! … <D-;>
+map! æ <D-'>
 map! « <D-#>
 map! ≤ <D-,>
 map! ≥ <D-.>
 map! ÷ <D-/>
 
+" Right-hand symbol keys with shift key
+" Not Alt-{, because it produces ”, which is useful
+" Not Alt-}, because it produces ’, which is useful
 map! Ú <D-:>
+map! Æ <D-@>
 map! » <D-~>
 map! ¯ <D-<>
 map! ˘ <D->>
@@ -1802,6 +1830,7 @@ map! ¸ <D-Z>
 
 " Duplicate keys
 "map ± <D-¬>
+"map € <D-">
 
 " Dead keys (for doing accents)
 "map ` <D-\>
@@ -1809,14 +1838,4 @@ map! ¸ <D-Z>
 "map ˆ <D-i>
 "map ˜ <D-n>
 "map ¨ <D-u>
-
-" Useful ones to keep
-"map • <D-8>
-"map – <D-->
-"map — <D-_>
-"map ’ <D-6>
-"map “ <D-[>
-"map ‘ <D-]>
-"map ” <D-{>
-"map ’ <D-}>
 
