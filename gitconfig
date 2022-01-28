@@ -87,8 +87,8 @@
     s = status -s -b
     sa = status -s -b --ignored
     sm = status -s -b --untracked=no
-    st = status --show-stash
-    sta = status --show-stash --ignored
+    st = status
+    sta = status --ignored
     stm = status --untracked=no
     pullsrb = !git stash save && git pull --rebase && git stash pop && echo 'Success!'
     sub = submodule
