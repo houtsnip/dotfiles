@@ -168,6 +168,9 @@ set autoread
 if v:version > 703 || v:version == 703 && has("patch541")
   set formatoptions+=j " Delete comment character when joining commented lines
 endif
+if &shell =~# 'fish$' && (v:version < 704 || v:version == 704 && !has('patch276'))
+  set shell=/bin/bash
+endif
 
 " Encoding
 "
@@ -180,11 +183,18 @@ if has("multi_byte")
   set fileencodings=utf-8,cp1252,latin1
 endif
 
+if &listchars ==# 'eol:$'
+  set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+endif
+
 " Mac settings
 set noanti
 set gfn=Courier:h13
 
 set history=10000
+if &tabpagemax < 50
+  set tabpagemax=50
+endif
 " Use viminfo
 " Tell vim to remember certain things when we exit
 "  '100  : save marks (a-z) for 100 files
@@ -195,6 +205,7 @@ set history=10000
 "  /1000 : save 100 lines from the search history
 "  h     : disable 'hlsearch' highlighting when starting
 set viminfo='100,f1,<1000,:10000,@1000,/1000,h
+set sessionoptions-=options
 
 " To avoid the 'Hit ENTER to continue' prompt
 set shortmess=aOIstT
@@ -217,6 +228,7 @@ if version >= 703
     set undodir=~/.vim/.undo,~/tmp,/tmp
     set undoreload=10000 " maximum number lines to save for undo on a buffer reload
 endif
+inoremap <C-U> <C-G>u<C-U>
 
 " Colours
 "
@@ -497,6 +509,8 @@ nmap <Leader>h :<F1>
 
 " Shortcuts for saving file
 cnoremap w!! w !sudo tee % >/dev/null
+cmap <D-S> w !sudo tee % >/dev/null<CR>
+nmap <D-S> w !sudo tee % >/dev/null<CR>
 
 " Quickly save from any mode except insert mode
 nnoremap <D-s> :w<CR>
@@ -641,20 +655,24 @@ imap <D-t> <Esc><D-t>
 cmap <D-t> <C-C><D-t>
 let g:CommandTTraverseSCM        = 'pwd'
 let g:CommandTMaxHeight          = 20
-let g:CommandTBackspaceMap       = [ '<BS>', '<C-H>' ]
-let g:CommandTDeleteMap          = [ '<Del>', '<C-D>' ]
-let g:CommandTAcceptSelectionMap = [ '<CR>', '<C-M' ]
-let g:CommandTCancelMap          = [ '<C-C>', '<Esc>', '<F8>' ]
+let g:CommandTBackspaceMap       = ['<BS>', '<C-H>']
+let g:CommandTDeleteMap          = ['<Del>', '<C-D>']
+let g:CommandTAcceptSelectionMap = ['<CR>', '<C-M']
+let g:CommandTCancelMap          = ['<C-C>', '<Esc>', '<F8>']
 let g:CommandTRefreshMap         = '<C-R>'
-let g:CommandTCursorLeftMap      = [ '<Left>', '<C-B>' ]
-let g:CommandTCursorRightMap     = [ '<Right>', '<C-F>' ]
+let g:CommandTCursorLeftMap      = ['<Left>', '<C-B>']
+let g:CommandTCursorRightMap     = ['<Right>', '<C-F>']
 nnoremap <Leader>t :CommandTFlush<CR>
 
 " EmacsCommandLine
-let g:EmacsCommandLineForwardWordMap       = '<D-f>'
-let g:EmacsCommandLineBackwardWordMap      = '<D-b>'
-let g:EmacsCommandLineKillWordMap          = '<D-d>'
-let g:EmacsCommandLineBackwardKillWordMap  = '<D-BS>'
+let g:EmacsCommandLineFirstLineInHistoryMap = '<D-<>'
+let g:EmacsCommandLineLastLineInHistoryMap  = '<D->>'
+let g:EmacsCommandLineForwardWordMap        = '<D-f>'
+let g:EmacsCommandLineBackwardWordMap       = '<D-b>'
+let g:EmacsCommandLineKillWordMap           = '<D-d>'
+let g:EmacsCommandLineBackwardKillWordMap   = '<D-BS>'
+let g:EmacsCommandLineTransposeWordMap      = '<D-t>'
+let g:EmacsCommandLineYankLastArgMap        = ['<D-.>', '<D-_>']
 
 " bufExplorer
 let g:bufExplorerSplitOutPathName = 0
