@@ -1,3 +1,4 @@
 shell_servers
 gitconfig
 gitconfig.ignore
+vim/bundle/**

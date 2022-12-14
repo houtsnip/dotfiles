@@ -61,7 +61,7 @@ $endif
 "ç": capitalize-word
 
 "∂": kill-word
-"\\": yank-pop
+"¥": yank-pop
 
 "¿": possible-completions
 "°": insert-completions

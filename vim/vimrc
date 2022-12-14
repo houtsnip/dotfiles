@@ -85,7 +85,6 @@ xnoremap > >gv
 xnoremap < <gv
 " Don't automatically include the new-line character in visual mode selections
 xnoremap $ $h
-xnoremap <D-$> $
 " Faster viewport scrolling
 nnoremap <C-E> 3<C-E>
 nnoremap <C-Y> 3<C-Y>
@@ -103,6 +102,8 @@ nnoremap j gj
 nnoremap k gk
 xnoremap j gj
 xnoremap k gk
+nnoremap <D-$> g$
+xnoremap <D-$> g$
 " Remap ' to ` but not vice-versa (which I think is confusing) and not in
 " operator-pending mode (where I think the original meaning is still useful)
 nnoremap ' `
@@ -408,6 +409,7 @@ nnoremap <D--> <C-W>5-
 nnoremap <D->> <C-W>5>
 nnoremap <D-<> <C-W>5<
 nmap <D-_> <D-->
+nnoremap <D-H> :hid<CR>
 
 " Custom <Leader> macros
 "
@@ -541,58 +543,70 @@ nnoremap <Leader>ba :1,300 bd!<CR>
 " ag (silver-search) support
 set grepprg=ag
 let g:ackprg="ag -H --nocolor --nogroup --column"
-nnoremap <D-f><D-f> :Ack<Space>
-nmap <D-f> <D-f><D-f>
-nnoremap <D-f>a :Ack<Space><Space>Symfony/src/Zim<Home><Right><Right><Right><Right>
-nmap     <D-f><D-a> <D-f>a
-nnoremap <D-f>w :Ack<Space><Space>Symfony/web<Home><Right><Right><Right><Right>
-nmap     <D-f><D-w> <D-f>w
-nnoremap <D-f>p :Ack<Space><Space>Symfony/web/postcode<Home><Right><Right><Right><Right>
-nmap     <D-f><D-p> <D-f>p
-nnoremap <D-f>j :Ack<Space><Space>Symfony/web/js --ignore-dir=Symfony/web/js/min --ignore-dir=Symfony/web/js/vendor --js<Home><Right><Right><Right><Right>
-nmap     <D-f><D-w> <D-f>w
-nnoremap <D-f>v :Ack<Space><Space>Symfony/vendor<Home><Right><Right><Right><Right>
-nmap     <D-f><D-v> <D-f>v
-nnoremap <D-f>s :Ack<Space><Space>Symfony/vendor/symfony<Home><Right><Right><Right><Right>
-nmap     <D-f><D-s> <D-f>s
-nnoremap <D-f>d :Ack<Space><Space>Symfony/vendor/doctrine<Home><Right><Right><Right><Right>
-nmap     <D-f><D-d> <D-f>d
-nnoremap <D-f>t :Ack<Space><Space>twitter-bootstrap/less<Home><Right><Right><Right><Right>
-nmap     <D-f><D-t> <D-f>t
-nnoremap <D-f>z :Ack<Space><Space>lib/Zend<Home><Right><Right><Right><Right>
-nmap     <D-f><D-z> <D-f>z
-"cmap <D-f><D-f> <C-C><D-f><D-f>
-"imap <D-f><D-f> <Esc><D-f><D-f>
-"vmap <D-f><D-f> <Esc><D-f><D-f>
-"cmap <D-f> <C-C><D-f>
-"imap <D-f> <Esc><D-f>
-"vmap <D-f> <Esc><D-f>
-"cmap <D-f>a <C-C><D-f>a
-"imap <D-f>a <Esc><D-f>a
-"vmap <D-f>a <Esc><D-f>a
-"cmap <D-f>t <C-C><D-f>t
-"imap <D-f>t <Esc><D-f>t
-"vmap <D-f>t <Esc><D-f>t
-"cmap <D-f>z <C-C><D-f>z
-"imap <D-f>z <Esc><D-f>z
-"vmap <D-f>z <Esc><D-f>z
+nnoremap <Leader>ff :Ack<Space>
+nmap <Leader>f <Leader>ff
+nnoremap <Leader>fa :Ack<Space><Space>Symfony/src/Zim<Home><Right><Right><Right><Right>
+nmap     <Leader>f<D-a> <Leader>fa
+nnoremap <Leader>fw :Ack<Space><Space>Symfony/web<Home><Right><Right><Right><Right>
+nmap     <Leader>f<D-w> <Leader>fw
+nnoremap <Leader>fp :Ack<Space><Space>Symfony/web/postcode<Home><Right><Right><Right><Right>
+nmap     <Leader>f<D-p> <Leader>fp
+nnoremap <Leader>fj :Ack<Space><Space>Symfony/web/js --ignore-dir=Symfony/web/js/min --ignore-dir=Symfony/web/js/vendor --js<Home><Right><Right><Right><Right>
+nmap     <Leader>f<D-w> <Leader>fw
+nnoremap <Leader>fv :Ack<Space><Space>Symfony/vendor<Home><Right><Right><Right><Right>
+nmap     <Leader>f<D-v> <Leader>fv
+nnoremap <Leader>fs :Ack<Space><Space>Symfony/vendor/symfony<Home><Right><Right><Right><Right>
+nmap     <Leader>f<D-s> <Leader>fs
+nnoremap <Leader>fd :Ack<Space><Space>Symfony/vendor/doctrine<Home><Right><Right><Right><Right>
+nmap     <Leader>f<D-m> <Leader>fm
+nnoremap <Leader>fm :Ack<Space><Space>Symfony/vendor/doctrine/mongodb-odm/lib<Home><Right><Right><Right><Right>
+nmap     <Leader>f<D-d> <Leader>fd
+nnoremap <Leader>ft :Ack<Space><Space>../twitter-bootstrap/less<Home><Right><Right><Right><Right>
+nmap     <Leader>f<D-t> <Leader>ft
+nnoremap <Leader>fz :Ack<Space><Space>lib/Zend<Home><Right><Right><Right><Right>
+nmap     <Leader>f<D-z> <Leader>fz
+"cmap <Leader>ff <C-C><Leader>ff
+"imap <Leader>ff <Esc><Leader>ff
+"vmap <Leader>ff <Esc><Leader>ff
+"cmap <Leader>f <C-C><Leader>f
+"imap <Leader>f <Esc><Leader>f
+"vmap <Leader>f <Esc><Leader>f
+"cmap <Leader>fa <C-C><Leader>fa
+"imap <Leader>fa <Esc><Leader>fa
+"vmap <Leader>fa <Esc><Leader>fa
+"cmap <Leader>ft <C-C><Leader>ft
+"imap <Leader>ft <Esc><Leader>ft
+"vmap <Leader>ft <Esc><Leader>ft
+"cmap <Leader>fz <C-C><Leader>fz
+"imap <Leader>fz <Esc><Leader>fz
+"vmap <Leader>fz <Esc><Leader>fz
 
-" Search for contractions using typewriters’ apostrophe, e.g. don't
-nnoremap <D-f>c  /\c\([a-zA-Z0-9}>]'s\<Bar>n't\<Bar>[Iuey]'ve\<Bar>I'm\<Bar>[uey]'re\<Bar>[Iueyt]'\(ll\<Bar>d\)\)/s+1<CR>
-nnoremap <D-f>cc /\c\<\(\(can\<Bar>could\<Bar>will\<Bar>would\<Bar>shall\<Bar>should\<Bar>must\<Bar>need\<Bar>do\<Bar>does\<Bar>did\<Bar>are\<Bar>is\<Bar>was\<Bar>were\<Bar>have\<Bar>has\<Bar>had\)\snot\<Bar>I\sam\<Bar>I\shave\<Bar>\(you\<Bar>we\<Bar>they\<Bar>there\)\s\(are\<Bar>have\)\<Bar>\(s\?he\<Bar>it\<Bar>there\)\s\(is\<Bar>has\)\<Bar>\(I\<Bar>you\<Bar>s\?he\<Bar>it\<Bar>we\<Bar>they\<Bar>there\)\s\(will\<Bar>would\<Bar>shall\<Bar>had\)\)\>/<CR>
-nnoremap <D-f>cx /\c\<\(I’ve\<Bar>\(you\<Bar>we\<Bar>they\<Bar>there\)’\(re\<Bar>ve\)\<Bar>\(s\?he\<Bar>it\<Bar>there\)’s\<Bar>\(I\<Bar>you\<Bar>s\?he\<Bar>it\<Bar>we\<Bar>they\<Bar>there\)’\(ll\<Bar>d\)\)\snot\>/<CR>
-nnoremap <D-f>cs /\c\([a-zA-Z0-9}]s'\)/s+2<CR>
+" Search for contractions using typewriters’ apostrophe, e.g. “don't”
+nnoremap <Leader>fc  /\c\([a-zA-Z0-9}>]'s\<Bar>n't\<Bar>[iIueyd]'ve\<Bar>I'm\<Bar>[uey]'re\<Bar>[iIueyt]'\(ll\<Bar>d\)\)/s+1<CR>
+nnoremap <Leader>fcc /\c\<\(\(can\<Bar>could\<Bar>will\<Bar>would\<Bar>shall\<Bar>should\<Bar>must\<Bar>need\<Bar>do\<Bar>does\<Bar>did\<Bar>are\<Bar>is\<Bar>was\<Bar>were\<Bar>have\<Bar>has\<Bar>had\)\snot\<Bar>I\sam\<Bar>I\shave\<Bar>\(you\<Bar>we\<Bar>they\<Bar>there\)\s\(are\<Bar>have\)\<Bar>\(s\?he\<Bar>it\<Bar>there\)\s\(is\<Bar>has\)\<Bar>\(I\<Bar>you\<Bar>s\?he\<Bar>it\<Bar>we\<Bar>they\<Bar>there\)\s\(will\<Bar>would\<Bar>shall\<Bar>had\)\)\>/<CR>
+nnoremap <Leader>fcx /\c\<\(I’ve\<Bar>\(you\<Bar>we\<Bar>they\<Bar>there\)’\(re\<Bar>ve\)\<Bar>\(s\?he\<Bar>it\<Bar>there\)’s\<Bar>\(I\<Bar>you\<Bar>s\?he\<Bar>it\<Bar>we\<Bar>they\<Bar>there\)’\(ll\<Bar>d\)\)\snot\>/<CR>
+nnoremap <Leader>fcs /\c\([a-zA-Z0-9}]s'\)/s+2<CR>
+":%s!\([0-9]\|e\.g\|i\.e\)\@<\!\. \+!\.  !gc
 
 
 " Search for git conflict markers
-nnoremap <D-f>gc /^\(<<<<<<<\<Bar>=======\<Bar>>>>>>>>\)<CR>
+nnoremap <Leader>fgc /^\(<<<<<<<\<Bar>=======\<Bar>>>>>>>>\)\($\<Bar>\s\)\@=<CR>
 
 " GitGutter update time (in milliseconds)
 set updatetime=250
 let g:gitgutter_max_signs = 4000
+"nmap [c <Plug>GitGutterPrevHunk
+"nmap ]c <Plug>GitGutterNextHunk
+
+" Clever-f options/mappings
+nmap <D-f> <Plug>(clever-f-repeat-forward)
+xmap <D-f> <Plug>(clever-f-repeat-forward)
+omap <D-f> <Plug>(clever-f-repeat-forward)
+nmap <D-F> <Plug>(clever-f-repeat-back)
+xmap <D-F> <Plug>(clever-f-repeat-back)
+omap <D-F> <Plug>(clever-f-repeat-back)
 
 " Syntastic options
-"
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
@@ -663,6 +677,9 @@ let g:CommandTRefreshMap         = '<C-R>'
 let g:CommandTCursorLeftMap      = ['<Left>', '<C-B>']
 let g:CommandTCursorRightMap     = ['<Right>', '<C-F>']
 nnoremap <Leader>t :CommandTFlush<CR>
+
+" Loupe
+let g:LoupeVeryMagic = 0
 
 " EmacsCommandLine
 let g:EmacsCommandLineFirstLineInHistoryMap = '<D-<>'
@@ -755,16 +772,16 @@ let g:showmarks_textlower = ' '
 nnoremap <D-b> :LustyJuggler<CR>
 
 " DBGp client (remote debugging)
-let g:debuggerMaxChildren = 128
-nnoremap <Leader>bp :Bp<CR>
-nmap <F9> <F2>
-nmap <F10> <F3>
-nmap <F11> <F4>
-nmap <D-"> <F2>
-nmap <D-£> <F3>
-nmap <D-$> <F4>
-nmap <D-%> <F5>
-nmap <D-^> <F6>
+"let g:debuggerMaxChildren = 128
+"nnoremap <Leader>bp :Bp<CR>
+"nmap <F9> <F2>
+"nmap <F10> <F3>
+"nmap <F11> <F4>
+"nmap <D-"> <F2>
+"nmap <D-£> <F3>
+"nmap <D-$> <F4>
+"nmap <D-%> <F5>
+"nmap <D-^> <F6>
 
 " run file with PHP CLI (CTRL-M)
 autocmd FileType php noremap <Leader><Leader>m :w!<CR>:!/usr/bin/php %<CR>
@@ -838,6 +855,7 @@ xnoremap <D-C> y'>pgv
 nnoremap <D-;>gg :1,.
 nnoremap <D-;>G  :.,$
 nnoremap <D-;>:  !!<BS>
+nnoremap <D-;><D-;> !!<BS>
 nnoremap <D-;>{  :?^$?+1,.
 nnoremap <D-;>2{ :?^$??^$?+1,.
 nnoremap <D-;>3{ :?^$??^$??^$?+1,.
@@ -869,49 +887,49 @@ nnoremap <D-;>it !it<BS>
 
 " Better filter commands
 nnoremap !%  :%!
-nmap     !gg ;gg!
-nmap     !{  ;{!
-nmap     !2{ ;2{!
-nmap     !3{ ;3{!
-nmap     !ap ;ap!
-nmap     !ip ;ip!
-nmap     !;  ;;!<Left>
-nmap     !'a ;'a!
+nmap     !gg <D-;>gg!
+nmap     !{  <D-;>{!
+nmap     !2{ <D-;>2{!
+nmap     !3{ <D-;>3{!
+nmap     !ap <D-;>ap!
+nmap     !ip <D-;>ip!
+nmap     !;  <D-;><D-;>!<Left>
+nmap     !'a <D-;>'a!
 nnoremap !/  :.,//-1!<Left><Left><Left><Left>
 nnoremap !?  :??+1,.<Home><Right>
 
 " Substitutions
 nnoremap Z%  :%s!!!g<Left><Left><Left>
-nmap     Zgg ;ggs!!!g<Left><Left><Left>
-nmap     ZG  ;Gs!!!g<Left><Left><Left>
-nmap     ZZ  ;;s!!!g<Left><Left><Left>
-nmap     Z{  ;{s!!!g<Left><Left><Left>
-nmap     Z2{ ;2{s!!!g<Left><Left><Left>
-nmap     Z3{ ;3{s!!!g<Left><Left><Left>
-nmap     Z}  ;}s!!!g<Left><Left><Left>
-nmap     Z2} ;2}s!!!g<Left><Left><Left>
-nmap     Z3} ;3}s!!!g<Left><Left><Left>
-nmap     Zap ;aps!!!g<Left><Left><Left>
-nmap     Zip ;ips!!!g<Left><Left><Left>
-nmap     Z;  ;;s!!!g<Home><Right><Right><Right>
-nmap     Z'a ;'as!!!g<Left><Left><Left>
-nmap     Z'z ;'zs!!!g<Left><Left><Left>
+nmap     Zgg <D-;>ggs!!!g<Left><Left><Left>
+nmap     ZG  <D-;>Gs!!!g<Left><Left><Left>
+nmap     ZZ  <D-;><D-;>s!!!g<Left><Left><Left>
+nmap     Z{  <D-;>{s!!!g<Left><Left><Left>
+nmap     Z2{ <D-;>2{s!!!g<Left><Left><Left>
+nmap     Z3{ <D-;>3{s!!!g<Left><Left><Left>
+nmap     Z}  <D-;>}s!!!g<Left><Left><Left>
+nmap     Z2} <D-;>2}s!!!g<Left><Left><Left>
+nmap     Z3} <D-;>3}s!!!g<Left><Left><Left>
+nmap     Zap <D-;>aps!!!g<Left><Left><Left>
+nmap     Zip <D-;>ips!!!g<Left><Left><Left>
+nmap     Z;  <D-;><D-;>s!!!g<Home><Right><Right><Right>
+nmap     Z'a <D-;>'as!!!g<Left><Left><Left>
+nmap     Z'z <D-;>'zs!!!g<Left><Left><Left>
 nnoremap Z/  :.,//-1s!!!g<Home><Right><Right><Right>
 nnoremap Z?  :??+1,.s!!!g<Home><Right>
-nmap     Za{ ;a{s!!!g<Left><Left><Left>
+nmap     Za{ <D-;>a{s!!!g<Left><Left><Left>
 nmap     Za} Za{
 nmap     ZaB Za{
-nmap     Zi{ ;i{s!!!g<Left><Left><Left>
+nmap     Zi{ <D-;>i{s!!!g<Left><Left><Left>
 nmap     Zi} Zi{
 nmap     ZiB Zi{
-nmap     Za( ;a(s!!!g<Left><Left><Left>
+nmap     Za( <D-;>a(s!!!g<Left><Left><Left>
 nmap     Za) Za(
 nmap     Zab Za(
-nmap     Zi( ;i(s!!!g<Left><Left><Left>
+nmap     Zi( <D-;>i(s!!!g<Left><Left><Left>
 nmap     Zi) Zi(
 nmap     Zib Zi(
-nmap     Zat ;ats!!!g<Left><Left><Left>
-nmap     Zit ;its!!!g<Left><Left><Left>
+nmap     Zat <D-;>ats!!!g<Left><Left><Left>
+nmap     Zit <D-;>its!!!g<Left><Left><Left>
 " Do a substitution within this selection
 xnoremap Zv  :s!!!g<Left><Left><Left>
 " Substitute the selected string
@@ -958,86 +976,86 @@ xmap     Zit "zyZit<C-R>=substitute(escape(@z, '!^$[.*~\\'), '\n', '\\n', 'g')<C
 " Pull word under cursor into LHS of a substitution!
 nnoremap Zw%  "zyiw:%s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
 nnoremap Zw%  "zyiw:%s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
-nmap     Zwgg "zyiw;ggs!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
-nmap     ZwG  "zyiw;Gs!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zwgg "zyiw<D-;>ggs!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     ZwG  "zyiw<D-;>Gs!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
 nnoremap Zww  "zyiw:.s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
-nmap     Zw{  "zyiw;{s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
-nmap     Zw2{ "zyiw;2{s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
-nmap     Zw3{ "zyiw;3{s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
-nmap     Zw}  "zyiw;}s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
-nmap     Zw2} "zyiw;2}s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
-nmap     Zw3} "zyiw;3}s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
-nmap     Zwap "zyiw;aps!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
-nmap     Zwip "zyiw;ips!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
-nmap     Zw;  "zyiw;;s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Home><Right><Right><Right>
-nmap     Zw'a "zyiw;'as!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
-nmap     Zw'z "zyiw;'zs!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zw{  "zyiw<D-;>{s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zw2{ "zyiw<D-;>2{s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zw3{ "zyiw<D-;>3{s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zw}  "zyiw<D-;>}s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zw2} "zyiw<D-;>2}s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zw3} "zyiw<D-;>3}s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zwap "zyiw<D-;>aps!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zwip "zyiw<D-;>ips!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zw;  "zyiw<D-;><D-;>s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Home><Right><Right><Right>
+nmap     Zw'a "zyiw<D-;>'as!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zw'z "zyiw<D-;>'zs!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
 nnoremap Zw/  "zyiw:.,//-1s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Home><Right><Right><Right>
 nnoremap Zw?  "zyiw:??+1,.s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Home><Right>
-nmap     2Zww Zw;1<End><Left><Left>
-nmap     3Zww Zw;2<End><Left><Left>
-nmap     4Zww Zw;3<End><Left><Left>
-nmap     5Zww Zw;4<End><Left><Left>
-nmap     6Zww Zw;5<End><Left><Left>
-nmap     7Zww Zw;6<End><Left><Left>
-nmap     8Zww Zw;7<End><Left><Left>
-nmap     9Zww Zw;8<End><Left><Left>
-nmap     Zwa{ "zyiw;a{s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     2Zww Zw<D-;>1<End><Left><Left>
+nmap     3Zww Zw<D-;>2<End><Left><Left>
+nmap     4Zww Zw<D-;>3<End><Left><Left>
+nmap     5Zww Zw<D-;>4<End><Left><Left>
+nmap     6Zww Zw<D-;>5<End><Left><Left>
+nmap     7Zww Zw<D-;>6<End><Left><Left>
+nmap     8Zww Zw<D-;>7<End><Left><Left>
+nmap     9Zww Zw<D-;>8<End><Left><Left>
+nmap     Zwa{ "zyiw<D-;>a{s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
 nmap     Zwa} Zwa{
 nmap     ZwaB Zwa{
-nmap     Zwi{ "zyiw;i{s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zwi{ "zyiw<D-;>i{s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
 nmap     Zwi} Zwi{
 nmap     ZwiB Zwi{
-nmap     Zwa( "zyiw;a(s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zwa( "zyiw<D-;>a(s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
 nmap     Zwa) Zwa(
 nmap     Zwab Zwa(
-nmap     Zwi( "zyiw;i(s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zwi( "zyiw<D-;>i(s!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
 nmap     Zwi) Zwi(
 nmap     Zwib Zwi(
-nmap     Zwat "zyiw;ats!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
-nmap     Zwit "zyiw;its!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zwat "zyiw<D-;>ats!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
+nmap     Zwit "zyiw<D-;>its!\<<C-R>=escape(@z, '!^$[.*~\\')<CR>\>!!g<Left><Left>
 
 " Pull WORD under cursor into LHS of a substitution!
 nnoremap ZW%  "zyiW:%s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
 nnoremap ZW%  "zyiW:%s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
-nmap     ZWgg "zyiW;ggs!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
-nmap     ZWG  "zyiW;Gs!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZWgg "zyiW<D-;>ggs!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZWG  "zyiW<D-;>Gs!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
 nnoremap ZWW  "zyiW:.s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
-nmap     ZW{  "zyiW;{s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
-nmap     ZW2{ "zyiW;2{s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
-nmap     ZW3{ "zyiW;3{s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
-nmap     ZW}  "zyiW;}s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
-nmap     ZW2} "zyiW;2}s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
-nmap     ZW3} "zyiW;3}s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
-nmap     ZWap "zyiW;aps!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
-nmap     ZWip "zyiW;ips!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
-nmap     ZW;  "zyiW;;s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Home><Right><Right><Right>
-nmap     ZW'a "zyiW;'as!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
-nmap     ZW'z "zyiW;'zs!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZW{  "zyiW<D-;>{s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZW2{ "zyiW<D-;>2{s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZW3{ "zyiW<D-;>3{s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZW}  "zyiW<D-;>}s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZW2} "zyiW<D-;>2}s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZW3} "zyiW<D-;>3}s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZWap "zyiW<D-;>aps!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZWip "zyiW<D-;>ips!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZW;  "zyiW<D-;><D-;>s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Home><Right><Right><Right>
+nmap     ZW'a "zyiW<D-;>'as!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZW'z "zyiW<D-;>'zs!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
 nnoremap ZW/  "zyiW:.,//-1s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Home><Right><Right><Right>
 nnoremap ZW?  "zyiW:??+1,.s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Home><Right>
-nmap     2ZWW ZW;1<End><Left><Left>
-nmap     3ZWW ZW;2<End><Left><Left>
-nmap     4ZWW ZW;3<End><Left><Left>
-nmap     5ZWW ZW;4<End><Left><Left>
-nmap     6ZWW ZW;5<End><Left><Left>
-nmap     7ZWW ZW;6<End><Left><Left>
-nmap     8ZWW ZW;7<End><Left><Left>
-nmap     9ZWW ZW;8<End><Left><Left>
-nmap     ZWa{ "zyiW;a{s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     2ZWW ZW<D-;><D-;>1<End><Left><Left>
+nmap     3ZWW ZW<D-;>2<End><Left><Left>
+nmap     4ZWW ZW<D-;>3<End><Left><Left>
+nmap     5ZWW ZW<D-;>4<End><Left><Left>
+nmap     6ZWW ZW<D-;>5<End><Left><Left>
+nmap     7ZWW ZW<D-;>6<End><Left><Left>
+nmap     8ZWW ZW<D-;>7<End><Left><Left>
+nmap     9ZWW ZW<D-;>8<End><Left><Left>
+nmap     ZWa{ "zyiW<D-;>a{s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
 nmap     ZWa} ZWa{
 nmap     ZWaB ZWa{
-nmap     ZWi{ "zyiW;i{s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZWi{ "zyiW<D-;>i{s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
 nmap     ZWi} ZWi{
 nmap     ZWiB ZWi{
-nmap     ZWa( "zyiW;a(s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZWa( "zyiW<D-;>a(s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
 nmap     ZWa) ZWa(
 nmap     ZWab ZWa(
-nmap     ZWi( "zyiW;i(s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZWi( "zyiW<D-;>i(s!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
 nmap     ZWi) ZWi(
 nmap     ZWib ZWi(
-nmap     ZWat "zyiW;ats!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
-nmap     ZWit "zyiW;its!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZWat "zyiW<D-;>ats!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
+nmap     ZWit "zyiW<D-;>its!\(^\<Bar>\s\)\@<=<C-R>=escape(@z, '!^$[.*~\\')<CR>\($\<Bar>\s\)\@=!!g<Left><Left>
 
 " Pull contents of search register into LHS of a substitution
 nnoremap Z/%  :%s!<C-R>/!!g<Left><Left>
@@ -1099,10 +1117,10 @@ nnoremap <silent> <D-.> :BufSurfForward<CR>
 nnoremap <Leader>Q Q
 nnoremap <Leader>l <C-L>
 
-" Highlight text on the screen matching that under the cursor: Press Meta-; to
+" Highlight text on the screen matching that under the cursor: Press Meta-: to
 " start; each subsequent Meta-' matches one more character.  Meta-@ does the
 " same but searches backwards.  Uses marks 'm' and 'n', and register 'm'.
-map <D-;> mm
+map <D-:> mm
 map <D-'> lmn"my`m/<C-R>m<CR>`n
 map <D-@> lmn"my`m?<C-R>m<CR>`n
 "operator#user#define
@@ -1400,7 +1418,8 @@ xmap q) S)d^%lC<CR>{<CR>}<Esc>kki <Esc>i
 xmap q( S(d^%lC<CR>{<CR>}<Esc>kki <Esc>i
 
 " Out-line an inline function
-nnoremap qolf ^f{i<BS><CR><Esc>la<CR><C-T><Esc>f}i<BS><CR><C-D><Esc>%
+nnoremap qolf ^f{i<Space><Esc>dT)i<CR><Esc>la<CR><C-T><Esc>f}i<BS><CR><C-D><Esc>%
+" Can’t get this to work: nnoremap qolf ^f{i<Space><Esc>dT)i<CR><Esc>la<CR><C-T><Esc>f}i<Space><Esc>lgElDi<CR><C-D><Esc>%
 " Out-line an inline block, e.g.
 " if (condition) expression;
 nnoremap qolb ^f(%a<CR>{<CR><C-T><Esc>o<C-D>}<Esc>-
@@ -1676,7 +1695,7 @@ map ± <D-+>
 " Right-hand symbol keys
 map “ <D-[>
 map ‘ <D-]>
-map … <D-;>
+"map … <D-;>
 map æ <D-'>
 map « <D-#>
 map ≤ <D-,>
@@ -1692,7 +1711,6 @@ map » <D-~>
 map ¯ <D-<>
 map ˘ <D->>
 map ¿ <D-?>
-map ` <D-\>
 
 map å <D-a>
 map ∫ <D-b>
@@ -1703,7 +1721,9 @@ map © <D-g>
 map ˙ <D-h>
 map ∆ <D-j>
 map ˚ <D-k>
+" Alt-L (lower-case) may depend on keyboard settings:
 map ¬ <D-l>
+map ¢ <D-l>
 map µ <D-m>
 map ø <D-o>
 map π <D-p>
@@ -1725,7 +1745,7 @@ map ´ <D-E>
 map Ï <D-F>
 map ˝ <D-G>
 map Ó <D-H>
-map ˆ <D-I>
+"map ˆ <D-I> " Alt-Shift-I is not mapped to anything right now
 map Ô <D-J>
 map  <D-K>
 map Ò <D-L>
@@ -1754,8 +1774,8 @@ map! ∞ <D-5>
 map! § <D-6>
 map! ¶ <D-7>
 " Not Alt-8, because it produces •, which is useful
-map! ª <D-9>
-map! º <D-0>
+" Not Alt-9, because it produces ª, which is useful
+" Not Alt-0, because it produces º, which is useful
 " Not Alt--, because it produces – (en dash), which is useful
 map! ≠ <D-=>
 
@@ -1776,7 +1796,7 @@ map! ± <D-+>
 " Right-hand symbol keys
 " Not Alt-[, because it produces “, which is useful
 " Not Alt-], because it produces ‘, which is useful
-map! … <D-;>
+"map! … <D-;>
 map! æ <D-'>
 map! « <D-#>
 map! ≤ <D-,>
@@ -1792,7 +1812,6 @@ map! » <D-~>
 map! ¯ <D-<>
 map! ˘ <D->>
 map! ¿ <D-?>
-map! ` <D-\>
 
 map! å <D-a>
 map! ∫ <D-b>
@@ -1803,7 +1822,9 @@ map! © <D-g>
 map! ˙ <D-h>
 map! ∆ <D-j>
 map! ˚ <D-k>
+" Alt-L (lower-case) may depend on keyboard settings:
 map! ¬ <D-l>
+map! ¢ <D-l>
 map! µ <D-m>
 map! ø <D-o>
 map! π <D-p>
@@ -1821,23 +1842,19 @@ map! Å <D-A>
 map! ı <D-B>
 map! Ç <D-C>
 map! Î <D-D>
-map! ´ <D-E>
 map! Ï <D-F>
 map! ˝ <D-G>
 map! Ó <D-H>
-map! ˆ <D-I>
 map! Ô <D-J>
 map!  <D-K>
 map! Ò <D-L>
 map! Â <D-M>
-map! ˜ <D-N>
 map! Ø <D-O>
 map! ∏ <D-P>
 map! Œ <D-Q>
 map! ‰ <D-R>
 map! Í <D-S>
 map! ˇ <D-T>
-map! ¨ <D-U>
 map! ◊ <D-V>
 map! „ <D-W>
 map! ˛ <D-X>
@@ -1857,3 +1874,17 @@ map! ¸ <D-Z>
 "map ˜ <D-n>
 "map ¨ <D-u>
 
+" Useful ones to keep
+"map! £ <D-3>
+"map! € <D-4>
+"map! • <D-8>
+"map! ª <D-9>
+"map! º <D-0>
+"map! € <D-">
+"map! – <D-->
+"map! — <D-_>
+"map! ’ <D-6>
+"map! “ <D-[>
+"map! ‘ <D-]>
+"map! ” <D-{>
+"map! ’ <D-}>

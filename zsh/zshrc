@@ -146,31 +146,57 @@ bindkey '^i' expand-or-complete-prefix
 bindkey "\e[B": history-search-forward
 bindkey "\e[A": history-search-backward
 # for Mac OS when meta key is not enabled
-#bindkey "ƒ" emacs-forward-word
-#bindkey "∫" emacs-backward-word
-#bindkey "¯" beginning-of-history
-#bindkey "˘" end-of-history
-#bindkey "˜" non-incremental-forward-search-history
-#bindkey "∏" non-incremental-reverse-search-history
-#bindkey "≥" yank-last-arg
-#bindkey "†" transpose-words
-#bindkey "¨" upcase-word
-#bindkey "¬" downcase-word
-#bindkey "ç" capitalize-word
-#bindkey "∂" kill-word
-#bindkey "\\" yank-pop
-#bindkey "¿" possible-completions
-#bindkey "°" insert-completions
-#bindkey "÷" complete-filename
-#bindkey "»" complete-username
-#bindkey "›" complete-variable
-#bindkey "Æ" complete-hostname
-#bindkey "⁄" complete-command
-#bindkey "”" complete-into-braces
-#bindkey "®" revert-line
-#bindkey "‡" tilde-expand
-#bindkey "«" insert-comment
-#bindkey "ﬂ" history-expand-line
+#bindkey "ƒ" emacs-forward-word # Alt-f (bash: forward-word)
+#bindkey "Ï" emacs-forward-word # Alt-F (bash: forward-word)
+#bindkey "∫" emacs-backward-word # Alt-b (bash: backward-word)
+#bindkey "ı" emacs-backward-word # Alt-B (bash: backward-word)
+#bindkey "¯" beginning-of-buffer-or-history # Alt-< (bash: beginning-of-history)
+#bindkey "˘" end-of-buffer-or-history # Alt-> (bash: end-of-history)
+#bindkey "˜" history-search-forward # Alt-n (bash: non-incremental-forward-search-history)
+#bindkey "π" history-search-backward # Alt-p (bash: non-incremental-reverse-search-history)
+#bindkey "∏" history-search-backward # Alt-P (bash: non-incremental-reverse-search-history)
+#bindkey "≥" insert-last-word # Alt-. (bash: yank-last-arg)
+#bindkey "—" insert-last-word # Alt-_ (bash: yank-last-arg)
+#bindkey "æ" quote-line # Alt-'
+#bindkey "€" quote-region # Alt-"
+#bindkey "†" transpose-words # Alt-t
+#bindkey "ˇ" transpose-words # Alt-T
+#bindkey "¨" up-case-word # Alt-u (bash: upcase-word)
+#bindkey "ç" capitalize-word # Alt-c
+#bindkey "Ç" capitalize-word # Alt-C
+#bindkey "¬" down-case-word # Alt-l (bash: downcase-word)
+#bindkey "Ò" down-case-word # Alt-L (bash: downcase-word)
+#bindkey "∑" copy-region-as-kill # Alt-w
+#bindkey "„" copy-region-as-kill # Alt-W
+#bindkey "∂" kill-word # Alt-d
+#bindkey "Î" kill-word # Alt-D
+#bindkey "¥" yank-pop # Alt-y
+#bindkey "¿" possible-completions # Alt-?
+#bindkey "°" insert-completions # Alt-*
+#bindkey "÷" complete-filename # Alt-/
+#bindkey "»" complete-username # Alt-~
+#bindkey "›" complete-variable # Alt-$
+#bindkey "Æ" complete-hostname # Alt-@
+#bindkey "⁄" complete-command # Alt-!
+#bindkey "”" complete-into-braces # Alt-{
+#bindkey "®" revert-line # Alt-r
+#bindkey "‡" tilde-expand # Alt-&
+#bindkey "«" insert-comment # Alt-#
+#bindkey "©" glob-complete-word # Alt-g
+#bindkey "ﬂ" history-expand-line # Alt-^
+#bindkey " " expand-history # Alt-space
+#bindkey "⁄" expand-history # Alt-!
+#bindkey "å" accept-and-hold # Alt-a
+#bindkey "Å" accept-and-hold # Alt-A
+#bindkey "≈" execute-named-cmd # Alt-x
+#bindkey "Ω" execute-last-named-cmd # Alt-z
+#bindkey "©" get-line # Alt-g
+#bindkey "˝" get-line # Alt-G
+#bindkey "œ" push-line # Alt-q
+#bindkey "Œ" push-line # Alt-Q
+#bindkey "˙" run-help # Alt-h
+#bindkey "Ó" run-help # Alt-H
+#bindkey "¿" which-command # Alt-?
 
 _my_extended_wordchars='*?_-.[]~=&;!#$%^(){}<>:@,\\';
 _my_extended_wordchars_space="${my_extended_wordchars} "
